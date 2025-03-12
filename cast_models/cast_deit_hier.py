@@ -56,16 +56,13 @@ class CAST(VisionTransformer):
             self.num_manufacturer = 0
 
 
-        #####################
-        #self.head = nn.Linear(self.embed_dim, self.num_classes) if self.num_classes > 0 else nn.Identity()
         self.family_head = nn.Linear(self.embed_dim, self.num_family) if self.num_family > 0 else nn.Identity()
         if len(nb_classes) == 3:
             self.manufacturer_head = nn.Linear(self.embed_dim, self.num_manufacturer) if self.num_manufacturer > 0 else nn.Identity()
 
-        # self.family_head.apply(self._init_weights)
-        # self.manufacturer_head.apply(self._init_weights)
-        # --------------------------------------------------------------------------
-        # Encoder specifics
+        self.family_head.apply(self._init_weights)
+        self.manufacturer_head.apply(self._init_weights)
+
         cumsum_depth = [0]
         for d in depths:
             cumsum_depth.append(d + cumsum_depth[-1])
@@ -123,29 +120,28 @@ class CAST(VisionTransformer):
         return (x, cls_token, pool_logit, centroid,
                 pool_pad_mask, pool_inds, out)
 
-    def forward_features(self, x, y): # x: B x 3 x 224 x 224, y: B x 224 x 224
-        x = self.patch_embed(x) # NxHxWxC Bx28x28x384
+    def forward_features(self, x, y): 
+        x = self.patch_embed(x) 
         N, H, W, C = x.shape
         # Collect features within each segment
         y = y.unsqueeze(1).float()
         y = F.interpolate(y, x.shape[1:3], mode='nearest')
-        y = y.squeeze(1).long()  # Bx28x28
-        x = segment_mean_nd(x, y) # Bx196x384   
+        y = y.squeeze(1).long()  
+        x = segment_mean_nd(x, y) 
         # Create padding mask
         ones = torch.ones((N, H, W, 1), dtype=x.dtype, device=x.device)
         avg_ones = segment_mean_nd(ones, y).squeeze(-1)
         x_padding_mask = avg_ones <= 0.5
 
         # Collect positional encodings within each segment
-        pos_embed = self.pos_embed[:, 1:].view(1, H, W, C).expand(N, -1, -1, -1) #Bx28x28x384 (B만큼 복사됨?)
-        pos_embed = segment_mean_nd(pos_embed, y)  #Bx196x384
+        pos_embed = self.pos_embed[:, 1:].view(1, H, W, C).expand(N, -1, -1, -1) 
+        pos_embed = segment_mean_nd(pos_embed, y)  
 
         # Add positional encodings
-        x = self.pos_drop(x + pos_embed)  # Bx196x384
+        x = self.pos_drop(x + pos_embed)  
 
         # Add class token.
-        #self.cls_token: 1x1x384
-        cls_token = self.cls_token.expand(x.shape[0], -1, -1) #Bx1x384
+        cls_token = self.cls_token.expand(x.shape[0], -1, -1)
         cls_token = cls_token + self.pos_embed[:, :1]
 
         # intermediate results
@@ -156,7 +152,7 @@ class CAST(VisionTransformer):
          pool_padding_mask1, pool_inds1, out1) = self._block_operations(
             x, cls_token, x_padding_mask,
             self.blocks1, self.pool1, None)
-        # cls_token1: Bx1x384, pool_padding_mask1: Bx64, centroid1: Bx64x384, out1: Bx384 logit: Bx194x64
+
         intermediates1 = {
             'logit1': pool_logit1, 'centroid1': centroid1, 'block1': block1,
             'padding_mask1': x_padding_mask, 'sampled_inds1': pool_inds1,
@@ -169,7 +165,7 @@ class CAST(VisionTransformer):
          pool_padding_mask2, pool_inds2, out2) = self._block_operations(
             centroid1, cls_token1, pool_padding_mask1,
             self.blocks2, self.pool2, None)
-        # cls_token2: Bx1x384, pool_padding_mask2: Bx32, centroid2: Bx32x384, out2: Bx384 logit: Bx64x32
+
         intermediates2 = {
             'logit2': pool_logit2, 'centroid2': centroid2, 'block2': block2,
             'padding_mask2': pool_padding_mask1, 'sampled_inds2': pool_inds2, 'out2': out2, 
@@ -181,7 +177,7 @@ class CAST(VisionTransformer):
          pool_padding_mask3, pool_inds3, out3) = self._block_operations(
             centroid2, cls_token2, pool_padding_mask2,
             self.blocks3, self.pool3, None)
-        # cls_token3: Bx1x384, pool_padding_mask3: Bx16, centroid3: Bx16x384, out3: Bx384 logit: Bx32x16
+
         intermediates3 = {
             'logit3': pool_logit3, 'centroid3': centroid3, 'block3': block3,
             'padding_mask3': pool_padding_mask2, 'sampled_inds3': pool_inds3, 'out3': out3,
@@ -193,7 +189,7 @@ class CAST(VisionTransformer):
          pool_padding_mask4, pool_inds4, out4) = self._block_operations(
             centroid3, cls_token3, pool_padding_mask3,
             self.blocks4, self.pool4, self.norm)
-        # cls_token4: Bx1x384, pool_padding_mask4: Bx8, centroid4: Bx8x384, out4: Bx384 logit: Bx16x8
+
         out4 = self.pre_logits(out4)
 
         intermediates4 = {
@@ -204,19 +200,17 @@ class CAST(VisionTransformer):
 
         return intermediates
 
-    def forward(self, x, y): #### order changed 1/9
-        intermediates = self.forward_features(x, y)  # B x 384
-
+    def forward(self, x, y):
+        intermediates = self.forward_features(x, y)  
         if self.num_manufacturer:
-            manu_out = self.manufacturer_head(intermediates['out2']) # B x 1000
+            manu_out = self.manufacturer_head(intermediates['out4']) 
             family_out = self.family_head(intermediates['out3'])
-            out = self.head(intermediates['out4']) 
-
+            out = self.head(intermediates['out2']) 
             return out, family_out, manu_out
     
         else:
-            family_out = self.family_head(intermediates['out3'])
-            out = self.head(intermediates['out4']) 
+            family_out = self.family_head(intermediates['out4'])
+            out = self.head(intermediates['out3']) 
 
             return out, family_out
 

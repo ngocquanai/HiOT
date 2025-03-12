@@ -30,14 +30,11 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     
     if args.globalkl:
         gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
-    elif args.globalbce:
-        gk_criterion = torch.nn.BCEWithLogitsLoss()
+
     if args.cosub:
         criterion = torch.nn.BCEWithLogitsLoss()
     
     if len(args.nb_classes) == 3:
-        # 학습 시간 측정 시작
-        #start_time = time.time()
         for samples, segments, targets, family_targets, mf_targets in metric_logger.log_every(data_loader, print_freq, header):
             samples = samples.to(device, non_blocking=True)
             segments = segments.to(device, non_blocking=True)
@@ -71,11 +68,6 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         gk_loss = gk_criterion(all_outputs, all_targets)
                         loss = loss + gk_loss * args.gk_weight
-                    elif args.globalbce:
-                        all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
-                        all_targets = torch.cat((mf_targets, family_targets, targets), dim=1)
-                        gk_loss = gk_criterion(all_outputs, all_targets)
-                        loss = loss + gk_loss * args.gk_weight
                 else:
                     outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
                     loss = 0.25 * criterion(outputs[0], targets) 
@@ -104,14 +96,11 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             metric_logger.update(sp_loss=loss_species.item())
             metric_logger.update(fam_loss=loss_family.item())
             metric_logger.update(manu_loss=loss_manufacturer.item())
-            if args.globalkl or args.globalbce:
+            if args.globalkl:
                 metric_logger.update(gk_loss=gk_loss.item())
             metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
-        # # 학습 시간 측정 종료
-        # end_time = time.time()
-        # total_time = end_time - start_time
-        # print(f"Training epoch [{epoch}] completed in: {total_time:.5f} seconds")
+
 
     
     elif len(args.nb_classes) == 2:
@@ -146,11 +135,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         gk_loss = gk_criterion(all_outputs, all_targets)
                         loss = loss + gk_loss * args.gk_weight
-                    elif args.globalbce:
-                        all_outputs = torch.cat((family_out, outputs), dim=1)
-                        all_targets = torch.cat((family_targets, targets), dim=1)
-                        gk_loss = gk_criterion(all_outputs, all_targets)
-                        loss = loss + gk_loss * args.gk_weight
+
                 else:
                     outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
                     loss = 0.25 * criterion(outputs[0], targets) 
@@ -178,7 +163,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             #metric_logger.update(loss=loss_value)
             metric_logger.update(sp_loss=loss_species.item())
             metric_logger.update(fam_loss=loss_family.item())
-            if args.globalkl or args.globalbce:
+            if args.globalkl:
                 metric_logger.update(gk_loss=gk_loss.item())
             metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 

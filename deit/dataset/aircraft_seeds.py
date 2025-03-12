@@ -46,9 +46,19 @@ class FGVCAircraft(VisionDataset):
         if not self._check_exists():
             raise RuntimeError("Dataset not found. You can use download=True to download it")
         annotation_file = os.path.join(self._data_path, "data", "variants.txt")
-        with open(annotation_file, "r") as f:
-            self.classes = [line.strip() for line in f]
-        self.class_to_idx = dict(zip(self.classes, range(len(self.classes))))
+        # with open(annotation_file, "r") as f:
+        #     self.classes = [line.strip() for line in f]
+        # self.class_to_idx = dict(zip(self.classes, range(len(self.classes))))
+        
+        f = open('deit/Air.csv', 'r', encoding='utf-8-sig')
+        lines = f.readlines()
+        f.close()
+        clsname_to_id = {}
+        for line in lines:
+            image_name, label_name = line.strip().split(",", 1)
+            image_name = image_name.strip('"')
+            clsname_to_id[image_name] = label_name
+
         image_data_folder = os.path.join(self._data_path, "data", "images")
         
         if is_train:
@@ -62,7 +72,8 @@ class FGVCAircraft(VisionDataset):
             for line in f:
                 image_name, label_name = line.strip().split(" ", 1)
                 self._image_files.append(os.path.join(image_data_folder, f"{image_name}.jpg"))
-                self._labels.append(self.class_to_idx[label_name])
+                #self._labels.append(self.class_to_idx[label_name])
+                self._labels.append(int(clsname_to_id[label_name])-1)
 
         end_time = time.time()  # 데이터 로드 시간 측정 종료
         print(f"Data loading time: {end_time - start_time:.4f} seconds")

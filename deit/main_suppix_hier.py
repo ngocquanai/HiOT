@@ -172,7 +172,7 @@ def get_args_parser():
                         help='path where to save, empty for no saving')
     parser.add_argument('--device', default='cuda',
                         help='device to use for training / testing')
-    parser.add_argument('--seed', default=0, type=int)
+    parser.add_argument('--seed', default=1, type=int)
     parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
@@ -210,7 +210,6 @@ def get_args_parser():
 
 def main(args):
     print(args)
-    #print("engine_hier_ab_loss!!!!!!!!!")
 
     if args.distributed:
         utils.init_distributed_mode(args)
@@ -218,7 +217,7 @@ def main(args):
     if args.distillation_type != 'none' and args.finetune and not args.eval:
         raise NotImplementedError("Finetuning with distillation not yet supported")
     device = torch.device(args.device)
-    # fix the seed for reproducibility
+
     if args.distributed:
         seed = args.seed + utils.get_rank()
     else:
@@ -226,17 +225,11 @@ def main(args):
     print('seed', seed)
     torch.manual_seed(seed)
     np.random.seed(seed)
-    # random.seed(seed)
 
     cudnn.benchmark = True
 
     dataset_train, args.nb_classes = build_dataset(is_train=True, args=args)
     print('args.nb_classes', args.nb_classes)
-    if 'LT' in args.data_set:
-        if 'BREEDS' in args.data_set:
-            args.family_cls_num_list, args.species_cls_num_list = dataset_train.get_cls_num_list()
-        else:
-            args.order_cls_num_list, args.family_cls_num_list, args.species_cls_num_list = dataset_train.get_cls_num_list()
     dataset_val, _ = build_dataset(is_train=False, args=args)
 
     if args.distributed:

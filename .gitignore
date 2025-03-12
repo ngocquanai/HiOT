@@ -114,6 +114,7 @@ inat_cast/
 pred_segs/
 imagenet_seg/
 logs/
+output/
 tmp/
 living17_ablation/
 living17_subsets/
@@ -137,3 +138,5 @@ lincls_log
 inat21_mini_train.txt
 inat21_mini_val.txt
 visualize_ovseg_cast.ipynb
+scripts/
+

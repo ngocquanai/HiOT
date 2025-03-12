@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=bird_hcast
+#SBATCH --job-name=bird_hcast_seed0
 #SBATCH --mail-user=seulki@umich.edu
 #SBATCH --mail-type=FAIL,END
 #SBATCH --nodes=1
@@ -17,10 +17,8 @@ export PYTHONPATH=deit/dataset/:$PYTHONPATH
 
 
 module purge
-module load cuda/11.6.2 cudnn/11.6-v8.4.1
-
-source activate hcast
-
+module load cuda/12.1.1 gcc/11.2.0
+source activate py310
 
 python deit/main_suppix_hier.py \
   --model cast_small \
