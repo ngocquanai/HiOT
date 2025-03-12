@@ -1,6 +1,6 @@
 # Visually Consistent Hierarchical Image Classification (H-CAST)
 By [Seulki Park](https://sites.google.com/view/seulkipark/home), [Youren Zhang](https://www.linkedin.com/in/youren-zhang-92a447251/), [Stella X. Yu](https://web.eecs.umich.edu/~stellayu/), [Sara Beery](https://beerys.github.io/), and [Jonathan Huang](http://www.jonathan-huang.org)   
-Official implementation of ["Visually Consistent Hierarchical Image Classification"](https://openreview.net/forum?id=IRcv4yFX6z), ICLR 2025.
+Official implementation of ["Visually Consistent Hierarchical Image Classification"](https://openreview.net/forum?id=7HEMpBTb3R), ICLR 2025.
 
 ## 🔍 Overview
 Our method ensures that all levels of hierarchical classification, from fine-grained species recognition to broader category distinctions, are **grounded in consistent visual cues** through segmentation. This shared visual foundation improves prediction consistency across the taxonomy, enhancing accuracy at all levels.   
