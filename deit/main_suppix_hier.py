@@ -1,8 +1,5 @@
 # Copyright (c) 2015-present, Facebook, Inc.
 # All rights reserved.
-import SoftTargetCrossEntropy
-
-sys.path.append(os.path.abspath("dataset"))
 
 import os
 import argparse

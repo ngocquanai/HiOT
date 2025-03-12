@@ -8,13 +8,16 @@ ImageNet-pretrained [CAST](https://openreview.net/forum?id=IRcv4yFX6z)-small mod
 
 
 ## Installation
+cuda = 11.6
+python=3.9
 
 Create a conda environment with the following command:
 ```
-# initiate conda env
-> conda update conda
-> conda env create -f environment.yaml
+# create conda env
+> conda create -n hcast python=3.9
 > conda activate hcast
+> pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
+
 
 # install dgl (https://www.dgl.ai/pages/start.html)
 > pip install dgl==1.1.3+cu116 -f https://data.dgl.ai/wheels/cu116/dgl-1.1.3%2Bcu116-cp39-cp39-manylinux1_x86_64.whl

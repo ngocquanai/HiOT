@@ -3,24 +3,25 @@
 #SBATCH --job-name=bird_hcast
 #SBATCH --mail-user=seulki@umich.edu
 #SBATCH --mail-type=FAIL,END
-#SBATCH --ntasks=1 
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=24g
-#SBATCH --time=12:00:00
-#SBATCH --account=145466848039
+#SBATCH --time=240:00:00
+#SBATCH --account=stellayu
+#SBATCH --partition=stellayu
 #SBATCH --output=./logs/%x-%j.log
 
 export PYTHONPATH=deit/:$PYTHONPATH
+export PYTHONPATH=deit/dataset/:$PYTHONPATH
 
 
 module purge
-module load CUDA/11.6.0
+module load cuda/11.6.2 cudnn/11.6-v8.4.1
 
-source activate cast
+source activate hcast
 
-Birds
+
 python deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
@@ -28,8 +29,8 @@ python deit/main_suppix_hier.py \
   --num-superpixels 196 --num_workers 8 \
   --globalkl --gk_weight 0.5 \
   --data-set BIRD-HIER-SUPERPIXEL \
-  --data-path /scratch/user/u.sp270400/data/CUB_200_2011/images \
+  --data-path /nfs/turbo/coe-stellayu/shared_data/CUB_200_2011/CUB_200_2011/images_split \
   --output_dir ./output/bird_hcast \
-  --finetune best_checkpoint.pth
+  --finetune /nfs/turbo/coe-stellayu/seulki/CAST/snapshots/best_checkpoint.pth
   
 
