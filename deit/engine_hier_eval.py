@@ -38,7 +38,7 @@ def evaluate_detail(data_loader, model, device, filename, nb_classes, dataset='A
     results = []
     
     tice_cnt = 0
-    fpc_cnt = 0
+    fpa_cnt = 0
     total_cnt = 0
     cum = 0
     
@@ -87,27 +87,23 @@ def evaluate_detail(data_loader, model, device, filename, nb_classes, dataset='A
             for i in range(batch_size):
                 results.append([mf_targets[i], manu_pred[i], family_targets[i], family_pred[i], target[i], pred[i]])
                 if pred[i] == target[i] and family_pred[i] == family_targets[i] and manu_pred[i] == mf_targets[i]:
-                    fpc_cnt += 1
+                    fpa_cnt += 1
 
                 if 'AIR' in dataset:
                     tice_results = [pred[i]+1, family_pred[i]+1, manu_pred[i]+1]
                     if tice_results in air_trees:
-                        #print(tice_results)
                         tice_cnt += 1
                 elif 'BIRD' in dataset:
                     tice_results = [pred[i]+1, manu_pred[i]+1, family_pred[i]+1]
                     if tice_results in birds_trees:
-                        #print(tice_results)
                         tice_cnt += 1
                 elif 'INAT18' in dataset:
                     tice_results = [pred[i], family_pred[i], manu_pred[i]]
                     if tice_results in inat_trees:
-                        #print(tice_results)
                         tice_cnt += 1
                 elif 'INAT21' in dataset:
                     tice_results = [pred[i], family_pred[i], manu_pred[i]]
                     if tice_results in inat_trees:
-                        #print(tice_results)
                         tice_cnt += 1
     
         # gather the stats from all processes
@@ -157,30 +153,8 @@ def evaluate_detail(data_loader, model, device, filename, nb_classes, dataset='A
                 if tice_results in trees:
                     tice_cnt += 1
                 if pred[i] == target[i] and family_pred[i] == family_targets[i]:
-                    fpc_cnt += 1
+                    fpa_cnt += 1
 
-                # title = '/nfs/turbo/coe-stellayu/seulki/CAST/entity30_cast/' + str(cum) + '_'
-
-                # if pred[i] == target[i]:
-                #     title += 'o_'
-                #     if family_pred[i] == family_targets[i]:
-                #         title += 'o_'
-                        
-                #     else:
-                #         title += 'x_'
-
-                # else:
-                #     title += 'x_'
-                #     if family_pred[i] == family_targets[i]:
-                #         title += 'o_'
-
-                #     else:
-                #         title += 'x_'
-
-                # title += (str(target[i].item()) + '_' + str(pred[i].item()) + '_' +
-                #           str(family_targets[i].item()) + '_' + str(family_pred[i].item()))
-                # shutil.copyfile(path[i], title+'.png')  
-                # cum += 1
         
         # gather the stats from all processes
         metric_logger.synchronize_between_processes()
@@ -189,12 +163,12 @@ def evaluate_detail(data_loader, model, device, filename, nb_classes, dataset='A
             .format(top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.sploss, fmlosses=metric_logger.famloss,
                     familytop1=metric_logger.family_acc1))
 
-    print('tice: ', tice_cnt, 'total: ', total_cnt, 'fpc: ', fpc_cnt)
+    print(f"FPA: {(fpa_cnt / total_cnt) * 100:.3f}% | TICE: {((total_cnt - tice_cnt) / total_cnt) * 100:.3f}% ")
+
     with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerows(results)
-        csvwriter.writerows(str(tice_cnt))
-        
+ 
     
     return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
 

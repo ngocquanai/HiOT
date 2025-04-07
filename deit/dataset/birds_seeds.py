@@ -26,8 +26,7 @@ class ImageFolder(datasets.ImageFolder):
                  compactness: float = 10.0,
                  blur_ops: Optional[Callable] = None,
                  scale_factor=1.0,
-                 random_seed: int = 1,
-                 train: bool = True):
+                 ):
         super(ImageFolder, self).__init__(
             root=root,
             transform=transform,

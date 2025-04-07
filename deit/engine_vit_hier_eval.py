@@ -29,14 +29,11 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
     elif 'INAT21' in dataset:
         inat_trees = json.load(open('inat21_3tree.json'))
 
-
-
-
     # switch to evaluation mode
     model.eval()
     results = []
     tice_cnt = 0
-    fpc_cnt = 0
+    fpa_cnt = 0
     total_cnt = 0
     if n_classes == 3:
         results.append(['m_gt', 'm_pred', 'f_gt', 'f_pred', 's_gt', 's_pred'])
@@ -83,7 +80,7 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
                 tice_results = [pred[i]+1, family_pred[i]+1, manu_pred[i]+1]
                 
                 if pred[i] == target[i] and family_pred[i] == family_targets[i] and manu_pred[i] == mf_targets[i]:
-                    fpc_cnt += 1
+                    fpa_cnt += 1
 
                 if 'AIR' in dataset:
                     tice_results = [pred[i]+1, family_pred[i]+1, manu_pred[i]+1]
@@ -151,7 +148,7 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
                 if tice_results in trees:
                     tice_cnt += 1
                 if pred[i] == target[i] and family_pred[i] == family_targets[i]:
-                    fpc_cnt += 1
+                    fpa_cnt += 1
 
         # gather the stats from all processes
         metric_logger.synchronize_between_processes()
@@ -159,11 +156,12 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
             ' sploss {losses.global_avg:.3f} fmloss {fmlosses.global_avg:.3f}'
             .format(top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.sploss, fmlosses=metric_logger.famloss, 
                     familytop1=metric_logger.family_acc1))
-    print('tice: ', tice_cnt, 'total: ', total_cnt, 'fpc: ', fpc_cnt)
+    print(f"FPA: {(fpa_cnt / total_cnt) * 100:.3f}% | TICE: {((total_cnt - tice_cnt) / total_cnt) * 100:.3f}% ")
+
     with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerows(results)
-        csvwriter.writerows(str(tice_cnt))
+
     return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
 
 air_trees = [

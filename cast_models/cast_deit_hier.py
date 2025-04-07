@@ -59,9 +59,9 @@ class CAST(VisionTransformer):
         self.family_head = nn.Linear(self.embed_dim, self.num_family) if self.num_family > 0 else nn.Identity()
         if len(nb_classes) == 3:
             self.manufacturer_head = nn.Linear(self.embed_dim, self.num_manufacturer) if self.num_manufacturer > 0 else nn.Identity()
-
+            self.manufacturer_head.apply(self._init_weights)
+        
         self.family_head.apply(self._init_weights)
-        self.manufacturer_head.apply(self._init_weights)
 
         cumsum_depth = [0]
         for d in depths:

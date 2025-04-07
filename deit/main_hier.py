@@ -159,12 +159,10 @@ def get_args_parser():
     # Dataset parameters
     parser.add_argument('--data-path', default='/datasets01/imagenet_full_size/061417/', type=str,
                         help='dataset path')
-    parser.add_argument('--data-set', default='IMNET', choices=['CIFAR', 'IMNET', 'INAT', 'INAT19', 'AIR', 'AIR-HIER',
-                                                                'BIRD-HIER', 'INAT18-HIER', 'INAT21-MINI-HIER', 'BREEDS-HIER',
-                                                                'BREEDS-HIER-LT', 'AIR-HIER-LT'],
+    parser.add_argument('--data-set', default='BIRD-HIER', choices=['AIR-HIER', 'BIRD-HIER', 'INAT18-HIER', 'INAT21-MINI-HIER', 
+                                                                    'BREEDS-HIER'],
                         type=str, help='Image Net dataset path')
     parser.add_argument('--breeds_sort', default='entity13', type=str, choices=['entity13', 'living17', 'nonliving26', 'entity30'])
-    parser.add_argument('--issource', action='store_false')
     parser.add_argument('--path-yn', action='store_true')
     parser.add_argument('--inat-category', default='name',
                         choices=['kingdom', 'phylum', 'class', 'order', 'supercategory', 'family', 'genus', 'name'],
@@ -194,10 +192,7 @@ def get_args_parser():
                         help='number of distributed processes')
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     
-    parser.add_argument('--filename', default='reverse_best.csv', type=str)
-    parser.add_argument('--imb_type', default='exp', type=str, choices=['exp', 'bal'])
-    parser.add_argument('--img_max', default=None, type=int)
-    parser.add_argument('--sourcefile', default='_train_source.txt', type=str)
+    parser.add_argument('--filename', default='results.csv', type=str)
     parser.add_argument('--random_seed', default=1, type=int)
     return parser
 

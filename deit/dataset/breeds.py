@@ -30,13 +30,13 @@ class BreedsDataset(Dataset):
 
         if is_train:
             filename = sort + sourcefile
-            txt = os.path.join(filename)
+            txt = os.path.join('data', filename)
         else:
             if is_source:
                 filename = sort + '_val_source.txt'
             else:
                 filename = sort + '_val_target.txt'
-            txt = os.path.join(filename)
+            txt = os.path.join('data', filename)
 
         with open(txt) as f:
             for line in f:
@@ -54,7 +54,6 @@ class BreedsDataset(Dataset):
     def __getitem__(self, index):
 
         path = self.img_path[index]
-        #label = torch.tensor([self.super_label_list[index], self.order_label_list[index], self.class_label_list[index]])
 
         with open(path, 'rb') as f:
             sample = Image.open(f).convert('RGB')

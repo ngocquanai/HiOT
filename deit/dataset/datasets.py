@@ -77,8 +77,6 @@ def build_dataset(is_train, args):
             compactness=10.0,
             blur_ops=None,
             scale_factor=1.0,
-            random_seed=args.random_seed,
-            train=is_train,
         )
         nb_classes = [200, 38, 13]
 
@@ -117,9 +115,7 @@ def build_dataset(is_train, args):
             transform=transform,
             is_hier=True,
             sort = args.breeds_sort,
-            is_source = args.issource,
             path_yn=args.path_yn,
-            sourcefile=args.sourcefile,
         )
         if args.breeds_sort == 'entity13':
             nb_classes = [130, 13]
@@ -139,9 +135,7 @@ def build_dataset(is_train, args):
             transform=transform,
             is_hier=True,
             sort = args.breeds_sort,
-            is_source = args.issource,
             path_yn=args.path_yn,
-            sourcefile=args.sourcefile,
         )
         if args.breeds_sort == 'entity13':
             nb_classes = [130, 13]

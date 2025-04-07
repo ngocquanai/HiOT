@@ -20,6 +20,7 @@ Create a conda environment with the following command:
 # create conda env
 > conda create -n hcast python=3.10
 > conda activate hcast
+> pip install -r requirements.txt
 > pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu121
 
 
@@ -28,15 +29,17 @@ Create a conda environment with the following command:
 ```
 
 
-## ▶️  Usage
+## ▶️  Training
 - ImageNet-pretrained [CAST](https://openreview.net/forum?id=IRcv4yFX6z)-small model can be downloaded from: [Link](https://huggingface.co/twke/CAST/blob/main/snapshots/deit/imagenet1k/cast_small/best_checkpoint.pth)
+
+```
+export PYTHONPATH=deit/:$PYTHONPATH
+export PYTHONPATH=deit/dataset/:$PYTHONPATH
+```
 
 ### [CUB-200-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)
 - arrange_birds.py: Split the CUB dataset into separate train and test folders ('images' -> 'images_split').
 ```
-export PYTHONPATH=deit/:$PYTHONPATH
-export PYTHONPATH=deit/dataset/:$PYTHONPATH
-
 python deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
@@ -51,7 +54,17 @@ python deit/main_suppix_hier.py \
 
 ### Aircraft
 ```
-To-be updated
+python deit/main_suppix_hier.py \
+  --model cast_small \
+  --batch-size 256 \
+  --epochs 100 \
+  --num-superpixels 196 --num_workers 8 \
+  --globalkl --gk_weight 0.5 \
+  --lr 0.001 --warmup-lr 0.0001 \
+  --data-set AIR-HIER-SUPERPIXEL \
+  --data-path /data \
+  --output_dir ./output/air_hcast \
+  --finetune best_checkpoint.pth      # location of ImageNet-pretrained CAST checkpoint
 ```
 ### BREEDS
 ```
@@ -59,6 +72,19 @@ To-be updated
 ```
 
 ---
+
+## 📊  Evaluation
+```
+python deit/main_suppix_hier.py \
+  --model cast_small \
+  --batch-size 256 \
+  --num-superpixels 196 --num_workers 8 \
+  --data-set BIRD-HIER-SUPERPIXEL \
+  --data-path /data/CUB_200_2011/images_split \
+  --output_dir ./output/bird_hcast \
+  --resume ./output/bird_hcast/best_checkpoint.pth \
+  --eval 
+```
 
 ## 🔗 Code Base
 This repository is heavily based on **[CAST](https://github.com/twke18/CAST.git)**.  

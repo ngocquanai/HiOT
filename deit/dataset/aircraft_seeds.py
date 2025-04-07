@@ -31,7 +31,6 @@ class FGVCAircraft(VisionDataset):
             root=root,
             transform=transform,
             target_transform=target_transform)
-        start_time = time.time()  # 데이터 로드 시간 측정 시작
         self.mean = mean
         self.std = std
         self.n_segments = n_segments
@@ -42,15 +41,10 @@ class FGVCAircraft(VisionDataset):
         self.category = category
 
         self._data_path = os.path.join(self.root, "fgvc-aircraft-2013b")
-        print('self.data_path', self._data_path)
         if not self._check_exists():
             raise RuntimeError("Dataset not found. You can use download=True to download it")
-        annotation_file = os.path.join(self._data_path, "data", "variants.txt")
-        # with open(annotation_file, "r") as f:
-        #     self.classes = [line.strip() for line in f]
-        # self.class_to_idx = dict(zip(self.classes, range(len(self.classes))))
-        
-        f = open('deit/Air.csv', 'r', encoding='utf-8-sig')
+
+        f = open('data/Air.csv', 'r', encoding='utf-8-sig')
         lines = f.readlines()
         f.close()
         clsname_to_id = {}
@@ -72,11 +66,8 @@ class FGVCAircraft(VisionDataset):
             for line in f:
                 image_name, label_name = line.strip().split(" ", 1)
                 self._image_files.append(os.path.join(image_data_folder, f"{image_name}.jpg"))
-                #self._labels.append(self.class_to_idx[label_name])
                 self._labels.append(int(clsname_to_id[label_name])-1)
 
-        end_time = time.time()  # 데이터 로드 시간 측정 종료
-        print(f"Data loading time: {end_time - start_time:.4f} seconds")
 
     def __len__(self) -> int:
         return len(self._labels)
@@ -124,9 +115,6 @@ class FGVCAircraft(VisionDataset):
 
 
         # Generate superpixels.
-        # Superpixel generation timing
-        start_time = time.time()  # superpixel 생성 시간 측정 시작
-
         if isinstance(sample, (list, tuple)):
             segments = []
             for samp, comp, n_seg, blur_op, scale in zip(sample, compactness, n_segments, blur_ops, scale_factor):
@@ -157,10 +145,6 @@ class FGVCAircraft(VisionDataset):
             segments = seeds.getLabels()
             segments = torch.LongTensor(segments)
 
-        end_time = time.time()  # superpixel 생성 시간 측정 종료
-        print(f"Superpixel generation time for index {index}: {end_time - start_time:.4f} seconds")
-
-
         if self.is_hier:
             return sample, segments, target, family_target, mf_target
         else:
@@ -170,8 +154,9 @@ class FGVCAircraft(VisionDataset):
                 return sample, segments, family_target
             else:
                 return sample, segments, mf_target
-#target, family, order
 
+
+#target, family, order
 trees = [
 [1, 1, 1],
 [2, 2, 1],

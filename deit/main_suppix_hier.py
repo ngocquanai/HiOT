@@ -159,10 +159,9 @@ def get_args_parser():
     # Dataset parameters
     parser.add_argument('--data-path', default='/datasets01/imagenet_full_size/061417/', type=str,
                         help='dataset path')
-    parser.add_argument('--data-set', default='IMNET', choices=['AIR-HIER-SUPERPIXEL', 'BIRD-HIER-SUPERPIXEL', 'BREEDS-HIER-SUPERPIXEL',
+    parser.add_argument('--data-set', default='BIRD-HIER-SUPERPIXEL', choices=['AIR-HIER-SUPERPIXEL', 'BIRD-HIER-SUPERPIXEL', 'BREEDS-HIER-SUPERPIXEL',
                                                                 'INAT21-MINI-HIER-SUPERPIXEL'],
                         type=str, help='Image Net dataset path')
-    parser.add_argument('--issource', action='store_false')
     parser.add_argument('--path-yn', action='store_true')
     parser.add_argument('--inat-category', default='name',
                         choices=['kingdom', 'phylum', 'class', 'order', 'supercategory', 'family', 'genus', 'name'],
@@ -197,11 +196,8 @@ def get_args_parser():
     parser.add_argument('--globalkl', action='store_true', default=False, help='Use global KL loss')
     parser.add_argument('--globalbce', action='store_true', default=False, help='Use global bce loss')
     parser.add_argument('--gk_weight', default=1, type=float)
-    parser.add_argument('--filename', default='reverse_best.csv', type=str)
+    parser.add_argument('--filename', default='results.csv', type=str)
     parser.add_argument('--breeds_sort', default='entity13', type=str, choices=['entity13', 'living17', 'nonliving26', 'entity30'])
-    parser.add_argument('--imb_type', default='exp', type=str, choices=['exp', 'bal'])
-    parser.add_argument('--img_max', default=None, type=int)
-    parser.add_argument('--sourcefile', default='_train_source.txt', type=str)
     parser.add_argument('--random_seed', default=1, type=int)
     parser.add_argument('--local_rank', type=int, default=-1, help='Local rank for distributed training')
 

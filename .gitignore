@@ -140,3 +140,4 @@ inat21_mini_val.txt
 visualize_ovseg_cast.ipynb
 scripts/
 
+train_imagenet1k_cast.sh
