@@ -32,13 +32,17 @@ Create a conda environment with the following command:
 ## ▶️  Training
 - ImageNet-pretrained [CAST](https://openreview.net/forum?id=IRcv4yFX6z)-small model can be downloaded from: [Link](https://huggingface.co/twke/CAST/blob/main/snapshots/deit/imagenet1k/cast_small/best_checkpoint.pth)
 
+- ImageNet-pretrained [DeiT](https://arxiv.org/abs/2012.12877)-small model can be downloaded from: [Link](https://dl.fbaipublicfiles.com/deit/deit_small_patch16_224-cd65a155.pth)
+
 ```
 export PYTHONPATH=deit/:$PYTHONPATH
 export PYTHONPATH=deit/dataset/:$PYTHONPATH
 ```
 
-### [CUB-200-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)
+###  [CUB-200-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)
 - arrange_birds.py: Split the CUB dataset into separate train and test folders ('images' -> 'images_split').
+
+#### H-CAST
 ```
 python deit/main_suppix_hier.py \
   --model cast_small \
@@ -52,7 +56,21 @@ python deit/main_suppix_hier.py \
   --finetune best_checkpoint.pth      # location of ImageNet-pretrained CAST checkpoint
 ```
 
-### Aircraft
+#### Hier-ViT
+```
+python deit/main_hier.py \
+  --model deit_small_patch16_224 \
+  --batch-size 256 \
+  --epochs 100 \
+  --num_workers 8 \
+  --data-set BIRD-HIER \
+  --data-path /data/CUB_200_2011/images_split \
+  --output_dir ./output/bird_hvit \
+  --finetune deit_small_patch16_224-cd65a155.pth # location of ImageNet-pretrained DeiT checkpoint
+```
+
+### [Aircraft](https://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/)
+#### H-CAST
 ```
 python deit/main_suppix_hier.py \
   --model cast_small \
@@ -66,9 +84,78 @@ python deit/main_suppix_hier.py \
   --output_dir ./output/air_hcast \
   --finetune best_checkpoint.pth      # location of ImageNet-pretrained CAST checkpoint
 ```
-### BREEDS
+#### Hier-ViT
 ```
-To-be updated
+python deit/main_hier.py \
+  --model deit_small_patch16_224 \
+  --batch-size 256 \
+  --epochs 100 \
+  --num_workers 8 \
+  --data-set AIR-HIER \
+  --data-path /data \
+  --output_dir ./output/air_hvit \
+  --finetune deit_small_patch16_224-cd65a155.pth # location of ImageNet-pretrained DeiT checkpoint
+```
+
+### [BREEDS](https://github.com/MadryLab/BREEDS-Benchmarks) (for 4 GPUs)
+- We trained using a single GPU, but provide options for multi-GPU training.
+- Download the [ImageNet (2012) dataset](https://www.image-net.org/download.php).
+- The BREEDS train/validation files are generated in the `data` folder.
+- Available `breeds_sort` options: `living17`, `nonliving26`, `entity13`, `entity30`
+#### H-CAST
+```
+torchrun --nproc_per_node=4 deit/main_suppix_hier.py \
+  --model cast_small \
+  --batch-size 256 \
+  --epochs 100 \
+  --num-superpixels 196 --num_workers 12 \
+  --data-set BREEDS-HIER-SUPERPIXEL \
+  --breeds_sort living17 \
+  --data-path ILSVRC2012/imagenet \
+  --output_dir ./output/living17_hcast \
+  --globalkl --gk_weight 0.5 \
+  --distributed
+```
+#### Hier-ViT
+```
+torchrun --nproc_per_node=4 deit/main_hier.py \
+  --model deit_small_patch16_224 \
+  --batch-size 256 \
+  --num_workers 12 \
+  --epochs 100 \
+  --data-set BREEDS-HIER \
+  --breeds_sort living17 \
+  --data-path ILSVRC2012/imagenet \
+  --output_dir ./output/living17_hvit \
+  --distributed
+```
+### [iNat21-Mini](https://github.com/visipedia/inat_comp/tree/master/2021) (for 4 GPUs)
+#### H-CAST
+```
+torchrun --nproc_per_node=4 deit/main_suppix_hier.py \
+  --model cast_small \
+  --batch-size 256 \
+  --epochs 100 \
+  --num-superpixels 196 --num_workers 12 \
+  --data-set INAT21-MINI-HIER-SUPERPIXEL \
+  --data-path iNat2021 \
+  --output_dir ./output/inat21_mini_hcast \
+  --globalkl --gk_weight 0.5 \
+  --finetune best_checkpoint.pth      # location of ImageNet-pretrained CAST checkpoint
+  --distributed
+```
+#### Hier-ViT
+```
+torchrun --nproc_per_node=4 deit/main_hier.py \
+  --model deit_small_patch16_224 \
+  --batch-size 256 \
+  --epochs 100 \
+  --num_workers 12 \
+  --data-set INAT21-MINI-HIER \
+  --data-path iNat2021 \
+  --output_dir ./output/inat21_mini_hvit \
+  --finetune deit_small_patch16_224-cd65a155.pth # location of ImageNet-pretrained DeiT checkpoint
+  --distributed
 ```
 
 ---

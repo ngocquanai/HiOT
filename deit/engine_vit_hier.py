@@ -15,7 +15,7 @@ from timm.utils import accuracy, ModelEma
 from losses import DistillationLoss
 import utils
 
-import time
+
 def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
                     device: torch.device, epoch: int, loss_scaler, max_norm: float = 0,
@@ -31,8 +31,6 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
         criterion = torch.nn.BCEWithLogitsLoss()
     
     if len(args.nb_classes) == 3:
-        # 학습 시간 측정 시작
-        start_time = time.time()
         for samples, targets, family_targets, mf_targets in metric_logger.log_every(data_loader, print_freq, header):
             samples = samples.to(device, non_blocking=True)
             targets = targets.to(device, non_blocking=True)
@@ -85,11 +83,6 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             metric_logger.update(manu_loss=loss_manufacturer.item())
             metric_logger.update(lr=optimizer.param_groups[0]["lr"])
         # gather the stats from all processes
-        # 학습 시간 측정 종료
-        end_time = time.time()
-        total_time = end_time - start_time
-        print(f"Training epoch [{epoch}] completed in: {total_time:.5f} seconds")
-
         metric_logger.synchronize_between_processes()
         print("Averaged stats:", metric_logger)
         return {k: meter.global_avg for k, meter in metric_logger.meters.items()}

@@ -15,7 +15,6 @@ from mixup_hier import Mixup
 from losses import DistillationLoss
 import utils
 import torch.nn.functional as F
-import time
 
 def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,

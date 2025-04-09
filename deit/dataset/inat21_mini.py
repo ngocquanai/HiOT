@@ -27,9 +27,9 @@ class iNat21MiniDataset(Dataset):
         self.order_label_list = []
 
         if is_train:
-            filename = 'inat21_mini_train.txt'
+            filename = 'data/inat21_mini_train.txt'
         else:
-            filename = 'inat21_mini_val.txt'
+            filename = 'data/inat21_mini_val.txt'
 
         with open(filename) as f:
             for line in f:
@@ -49,8 +49,7 @@ class iNat21MiniDataset(Dataset):
     def __getitem__(self, index):
 
         path = self.img_path[index]
-        #label = torch.tensor([self.super_label_list[index], self.order_label_list[index], self.class_label_list[index]])
-
+        
         with open(path, 'rb') as f:
             sample = Image.open(f).convert('RGB')
 

@@ -30,7 +30,7 @@ def evaluate_detail(data_loader, model, device, filename, nb_classes, dataset='A
         inat_trees = json.load(open('inat_3tree.json'))
 
     elif 'INAT21' in dataset:
-        inat_trees = json.load(open('inat21_3tree.json'))
+        inat_trees = json.load(open('data/inat21_3tree.json'))
 
 
     # switch to evaluation mode
@@ -114,7 +114,7 @@ def evaluate_detail(data_loader, model, device, filename, nb_classes, dataset='A
                     familytop1=metric_logger.family_acc1, manutop1=metric_logger.manu_acc1))
     
     elif len(nb_classes) == 2:
-        trees = json.load(open(breeds_sort + '_tree.json'))
+        trees = json.load(open('data/'+breeds_sort + '_tree.json'))
         results.append(['f_gt', 'f_pred', 's_gt', 's_pred'])
         for images, segments, target, family_targets in metric_logger.log_every(data_loader, 1, header):
             images = images.to(device, non_blocking=True)

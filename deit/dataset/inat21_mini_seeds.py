@@ -41,9 +41,9 @@ class iNat21MiniDataset(Dataset):
         self.order_label_list = []
 
         if is_train:
-            filename = 'inat21_mini_train.txt'
+            filename = 'data/inat21_mini_train.txt'
         else:
-            filename = 'inat21_mini_val.txt'
+            filename = 'data/inat21_mini_val.txt'
 
         with open(filename) as f:
             for line in f:

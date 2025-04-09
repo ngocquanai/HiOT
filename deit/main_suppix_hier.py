@@ -16,6 +16,7 @@ from mixup_hier import Mixup
 from timm.models import create_model
 from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
 from timm.scheduler import create_scheduler
+from timm.scheduler.cosine_lr import CosineLRScheduler
 from timm.optim import create_optimizer
 from timm.utils import NativeScaler, get_state_dict, ModelEma
 
@@ -171,7 +172,7 @@ def get_args_parser():
                         help='path where to save, empty for no saving')
     parser.add_argument('--device', default='cuda',
                         help='device to use for training / testing')
-    parser.add_argument('--seed', default=1, type=int)
+    parser.add_argument('--seed', default=0, type=int)
     parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
@@ -189,8 +190,7 @@ def get_args_parser():
     parser.add_argument('--distributed', action='store_true', default=False, help='Enabling distributed training')
     parser.add_argument('--world_size', default=1, type=int,
                         help='number of distributed processes')
-    parser.add_argument('--dist_url', default='tcp://localhost:10007', help='url used to set up distributed training')
-    #parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
+    parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     
     ## Added
     parser.add_argument('--globalkl', action='store_true', default=False, help='Use global KL loss')
@@ -378,7 +378,15 @@ def main(args):
     optimizer = create_optimizer(args, model_without_ddp)
     loss_scaler = NativeScaler()
 
-    lr_scheduler, _ = create_scheduler(args, optimizer)
+    #lr_scheduler, _ = create_scheduler(args, optimizer)
+    lr_scheduler = CosineLRScheduler(
+        optimizer,
+        t_initial=300,  
+        lr_min=args.min_lr,
+        warmup_t=args.warmup_epochs,
+        warmup_lr_init=args.warmup_lr,
+        t_in_epochs=True
+    )
 
     criterion = LabelSmoothingCrossEntropy() 
 
@@ -438,7 +446,7 @@ def main(args):
         lr_scheduler.step(args.start_epoch)
     if args.eval:
         if 'accuracy' in checkpoint:
-            print('Checkpoint Accuracy:', checkpoint['accuracy'])
+            print('Checkpoint Accuracy:', checkpoint['accuracy'], 'at Epoch ', checkpoint['epoch'])
         test_stats = evaluate_detail(data_loader_val, model, device, os.path.join(args.output_dir, args.filename), 
                                      args.nb_classes, args.data_set, args.breeds_sort)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")

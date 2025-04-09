@@ -27,7 +27,7 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
         inat_trees = json.load(open('inat_3tree.json'))
 
     elif 'INAT21' in dataset:
-        inat_trees = json.load(open('inat21_3tree.json'))
+        inat_trees = json.load(open('data/inat21_3tree.json'))
 
     # switch to evaluation mode
     model.eval()
@@ -110,7 +110,7 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
             .format(top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.sploss, fmlosses=metric_logger.famloss, mflosses=metric_logger.manuloss,
                     familytop1=metric_logger.family_acc1, manutop1=metric_logger.manu_acc1))
     else:
-        trees = json.load(open(breeds_sort + '_tree.json'))
+        trees = json.load(open('data/'+breeds_sort + '_tree.json'))
         results.append(['f_gt', 'f_pred', 's_gt', 's_pred'])
         for images, target, family_targets in metric_logger.log_every(data_loader, 10, header):
             images = images.to(device, non_blocking=True)

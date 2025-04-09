@@ -1,0 +1,1570 @@
+Namespace(batch_size=512, epochs=100, bce_loss=False, unscale_lr=False, model='cast_small', input_size=224, drop=0.0, drop_path=0.1, model_ema=True, model_ema_decay=0.99996, model_ema_force_cpu=False, num_superpixels=196, opt='adamw', opt_eps=1e-08, opt_betas=None, clip_grad=None, momentum=0.9, weight_decay=0.05, sched='cosine', lr=0.0005, lr_noise=None, lr_noise_pct=0.67, lr_noise_std=1.0, warmup_lr=1e-06, min_lr=1e-05, decay_epochs=30, warmup_epochs=5, cooldown_epochs=10, patience_epochs=10, decay_rate=0.1, color_jitter=0.3, aa='rand-m9-mstd0.5-inc1', smoothing=0.1, train_interpolation='bicubic', repeated_aug=True, train_mode=True, ThreeAugment=False, src=False, reprob=0.25, remode='pixel', recount=1, resplit=False, mixup=0.8, cutmix=1.0, cutmix_minmax=None, mixup_prob=1.0, mixup_switch_prob=0.5, mixup_mode='batch', teacher_model='regnety_160', teacher_path='', distillation_type='none', distillation_alpha=0.5, distillation_tau=1.0, cosub=False, finetune='', attn_only=False, data_path='/nfs/turbo/coe-stellayu/shared_data/iNat2021/', data_set='INAT21-MINI-HIER-SUPERPIXEL', issource=True, path_yn=False, inat_category='name', output_dir='/nfs/turbo/coe-stellayu/seulki/CAST/snapshots/inat21_mini_hcast', device='cuda', seed=0, resume='/nfs/turbo/coe-stellayu/seulki/CAST/snapshots/inat21_mini_hcast/checkpoint.pth', start_epoch=0, eval=False, eval_crop_ratio=0.875, dist_eval=False, num_workers=8, pin_mem=True, distributed=False, world_size=1, dist_url='env://', globalkl=True, globalbce=False, gk_weight=0.5, filename='inat21_mini_hcast.csv', breeds_sort='entity13', imb_type='exp', img_max=None, sourcefile='_train_source.txt', random_seed=1, local_rank=-1)
+seed 0
+args.nb_classes [10000, 1103, 273]
+Creating model: cast_small
+CAST(
+  (patch_embed): ConvStem(
+    (proj): Sequential(
+      (0): Conv2d(3, 48, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU(inplace=True)
+      (3): Conv2d(48, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (4): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU(inplace=True)
+      (6): Conv2d(96, 192, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (7): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (8): ReLU(inplace=True)
+      (9): Conv2d(192, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (10): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (11): ReLU(inplace=True)
+      (12): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+    )
+    (norm): Identity()
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (blocks): Sequential(
+    (0): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (1): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (2): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (3): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (4): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (5): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (6): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (7): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (8): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (9): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (10): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+  (pre_logits): Identity()
+  (head): Linear(in_features=384, out_features=10000, bias=True)
+  (family_head): Linear(in_features=384, out_features=1103, bias=True)
+  (manufacturer_head): Linear(in_features=384, out_features=273, bias=True)
+  (blocks1): Sequential(
+    (0): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (1): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (2): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool1): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+  (blocks2): Sequential(
+    (3): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (4): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (5): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool2): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+  (blocks3): Sequential(
+    (6): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (7): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (8): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool3): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+  (blocks4): Sequential(
+    (9): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (10): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool4): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+)
+number of params: 30556704
+start epoch:  7
+Start training for 100 epochs
+Epoch: [7]  [  0/976]  eta: 1 day, 1:58:19  lr: 0.000494  sp_loss: 7.0204 (7.0204)  fam_loss: 4.5704 (4.5704)  manu_loss: 3.2674 (3.2674)  gk_loss: 3.3066 (3.3066)  time: 95.7984  data: 89.6577  max mem: 20630
+Epoch: [7]  [ 10/976]  eta: 4:25:21  lr: 0.000494  sp_loss: 6.8780 (6.6680)  fam_loss: 4.4101 (4.3207)  manu_loss: 3.1446 (3.1213)  gk_loss: 3.1937 (3.1438)  time: 16.4815  data: 15.2423  max mem: 20808
+Epoch: [7]  [ 20/976]  eta: 4:39:28  lr: 0.000494  sp_loss: 6.6647 (6.5552)  fam_loss: 4.2813 (4.2436)  manu_loss: 3.0789 (3.0621)  gk_loss: 3.0890 (3.0771)  time: 13.6269  data: 12.8727  max mem: 20808
+Epoch: [7]  [ 30/976]  eta: 5:13:12  lr: 0.000494  sp_loss: 6.6647 (6.5467)  fam_loss: 4.2434 (4.2408)  manu_loss: 3.0511 (3.0539)  gk_loss: 3.0445 (3.0668)  time: 21.7267  data: 20.9729  max mem: 20808
+Epoch: [7]  [ 40/976]  eta: 4:51:36  lr: 0.000494  sp_loss: 6.4469 (6.4546)  fam_loss: 4.0887 (4.1737)  manu_loss: 2.9297 (3.0071)  gk_loss: 2.9449 (3.0190)  time: 19.9044  data: 19.1566  max mem: 20808
+Epoch: [7]  [ 50/976]  eta: 4:54:32  lr: 0.000494  sp_loss: 6.3752 (6.4361)  fam_loss: 4.0887 (4.1635)  manu_loss: 2.9297 (3.0029)  gk_loss: 2.9449 (3.0103)  time: 17.8740  data: 17.1263  max mem: 20808
+Epoch: [7]  [ 60/976]  eta: 5:15:39  lr: 0.000494  sp_loss: 6.3752 (6.3822)  fam_loss: 4.0865 (4.1278)  manu_loss: 2.9852 (2.9784)  gk_loss: 2.9679 (2.9865)  time: 24.7410  data: 23.9923  max mem: 20808
+Epoch: [7]  [ 70/976]  eta: 4:54:35  lr: 0.000494  sp_loss: 6.2530 (6.3275)  fam_loss: 4.0558 (4.0920)  manu_loss: 2.9001 (2.9505)  gk_loss: 2.9077 (2.9598)  time: 20.5917  data: 19.8425  max mem: 20808
+Epoch: [7]  [ 80/976]  eta: 4:43:16  lr: 0.000494  sp_loss: 6.1464 (6.3072)  fam_loss: 4.0342 (4.0795)  manu_loss: 2.9388 (2.9417)  gk_loss: 2.8886 (2.9487)  time: 13.7632  data: 13.0150  max mem: 20808
+Epoch: [7]  [ 90/976]  eta: 4:48:19  lr: 0.000494  sp_loss: 6.2063 (6.2938)  fam_loss: 4.0483 (4.0709)  manu_loss: 2.9456 (2.9358)  gk_loss: 2.9033 (2.9433)  time: 19.5814  data: 18.8333  max mem: 20808
+Epoch: [7]  [100/976]  eta: 4:49:01  lr: 0.000494  sp_loss: 6.4836 (6.3101)  fam_loss: 4.1995 (4.0812)  manu_loss: 3.0765 (2.9436)  gk_loss: 3.0324 (2.9520)  time: 23.1460  data: 22.3976  max mem: 20808
+Epoch: [7]  [110/976]  eta: 4:31:37  lr: 0.000494  sp_loss: 6.4836 (6.3071)  fam_loss: 4.1995 (4.0776)  manu_loss: 3.0765 (2.9424)  gk_loss: 3.0468 (2.9501)  time: 15.6084  data: 14.8604  max mem: 20808
+Epoch: [7]  [120/976]  eta: 4:24:45  lr: 0.000494  sp_loss: 6.3372 (6.3078)  fam_loss: 4.1273 (4.0779)  manu_loss: 2.9079 (2.9407)  gk_loss: 2.9274 (2.9501)  time: 12.3028  data: 11.5551  max mem: 20808
+Epoch: [7]  [130/976]  eta: 4:20:03  lr: 0.000494  sp_loss: 6.3315 (6.2937)  fam_loss: 4.1028 (4.0675)  manu_loss: 2.9317 (2.9336)  gk_loss: 2.9374 (2.9430)  time: 16.3629  data: 15.6149  max mem: 20808
+Epoch: [7]  [140/976]  eta: 4:19:46  lr: 0.000494  sp_loss: 6.1077 (6.2789)  fam_loss: 3.9662 (4.0580)  manu_loss: 2.9017 (2.9261)  gk_loss: 2.8830 (2.9369)  time: 19.1638  data: 18.4159  max mem: 20808
+Epoch: [7]  [150/976]  eta: 4:17:23  lr: 0.000494  sp_loss: 6.0100 (6.2633)  fam_loss: 3.9117 (4.0496)  manu_loss: 2.8758 (2.9195)  gk_loss: 2.8002 (2.9293)  time: 20.3511  data: 19.6035  max mem: 20808
+Epoch: [7]  [160/976]  eta: 4:10:05  lr: 0.000494  sp_loss: 6.2593 (6.2682)  fam_loss: 4.1010 (4.0529)  manu_loss: 2.9620 (2.9225)  gk_loss: 2.9408 (2.9313)  time: 16.5926  data: 15.8447  max mem: 20808
+Epoch: [7]  [170/976]  eta: 4:00:29  lr: 0.000494  sp_loss: 6.2593 (6.2611)  fam_loss: 4.0455 (4.0454)  manu_loss: 2.9213 (2.9178)  gk_loss: 2.9333 (2.9257)  time: 11.9058  data: 11.1582  max mem: 20808
+Epoch: [7]  [180/976]  eta: 3:50:24  lr: 0.000494  sp_loss: 6.1310 (6.2404)  fam_loss: 3.9396 (4.0308)  manu_loss: 2.8187 (2.9067)  gk_loss: 2.8305 (2.9155)  time: 9.1480  data: 8.4003  max mem: 20808
+Epoch: [7]  [190/976]  eta: 3:41:50  lr: 0.000494  sp_loss: 5.9988 (6.2383)  fam_loss: 3.8160 (4.0279)  manu_loss: 2.8040 (2.9044)  gk_loss: 2.8140 (2.9137)  time: 8.6572  data: 7.9090  max mem: 20808
+Epoch: [7]  [200/976]  eta: 3:36:45  lr: 0.000494  sp_loss: 5.9072 (6.2208)  fam_loss: 3.8016 (4.0161)  manu_loss: 2.8051 (2.8961)  gk_loss: 2.7886 (2.9061)  time: 11.2608  data: 10.5128  max mem: 20808
+Epoch: [7]  [210/976]  eta: 3:30:31  lr: 0.000494  sp_loss: 6.1833 (6.2129)  fam_loss: 3.9774 (4.0110)  manu_loss: 2.8749 (2.8927)  gk_loss: 2.8958 (2.9030)  time: 12.2475  data: 11.4994  max mem: 20808
+Epoch: [7]  [220/976]  eta: 3:25:27  lr: 0.000494  sp_loss: 6.2272 (6.2051)  fam_loss: 3.9969 (4.0065)  manu_loss: 2.9238 (2.8889)  gk_loss: 2.8958 (2.9003)  time: 11.7474  data: 10.9994  max mem: 20808
+Epoch: [7]  [230/976]  eta: 3:18:44  lr: 0.000494  sp_loss: 6.2239 (6.2021)  fam_loss: 3.9969 (4.0048)  manu_loss: 2.9224 (2.8877)  gk_loss: 2.8774 (2.8995)  time: 10.6521  data: 9.9042  max mem: 20808
+Epoch: [7]  [240/976]  eta: 3:20:28  lr: 0.000494  sp_loss: 6.2548 (6.1991)  fam_loss: 4.0445 (4.0032)  manu_loss: 2.9456 (2.8866)  gk_loss: 2.9381 (2.8988)  time: 16.7532  data: 16.0049  max mem: 20808
+Epoch: [7]  [250/976]  eta: 3:18:00  lr: 0.000494  sp_loss: 6.1025 (6.1850)  fam_loss: 3.9749 (3.9935)  manu_loss: 2.8985 (2.8801)  gk_loss: 2.8958 (2.8926)  time: 20.7418  data: 19.9935  max mem: 20808
+Epoch: [7]  [260/976]  eta: 3:11:48  lr: 0.000494  sp_loss: 5.8354 (6.1716)  fam_loss: 3.7939 (3.9842)  manu_loss: 2.7517 (2.8738)  gk_loss: 2.7360 (2.8863)  time: 12.8119  data: 12.0641  max mem: 20808
+Epoch: [7]  [270/976]  eta: 3:07:20  lr: 0.000494  sp_loss: 5.9056 (6.1631)  fam_loss: 3.8375 (3.9794)  manu_loss: 2.7230 (2.8712)  gk_loss: 2.7596 (2.8837)  time: 10.3618  data: 9.6133  max mem: 20808
+Epoch: [7]  [280/976]  eta: 3:12:14  lr: 0.000494  sp_loss: 6.3812 (6.1716)  fam_loss: 4.1565 (3.9845)  manu_loss: 3.0104 (2.8749)  gk_loss: 2.9709 (2.8871)  time: 23.0923  data: 22.3447  max mem: 20808
+Epoch: [7]  [290/976]  eta: 3:06:13  lr: 0.000494  sp_loss: 6.3812 (6.1618)  fam_loss: 4.1582 (3.9776)  manu_loss: 3.0312 (2.8702)  gk_loss: 2.9709 (2.8828)  time: 21.2591  data: 20.5123  max mem: 20808
+Epoch: [7]  [300/976]  eta: 3:00:52  lr: 0.000494  sp_loss: 5.6052 (6.1473)  fam_loss: 3.7355 (3.9692)  manu_loss: 2.6818 (2.8634)  gk_loss: 2.6597 (2.8761)  time: 8.7713  data: 8.0243  max mem: 20808
+Epoch: [7]  [310/976]  eta: 2:56:05  lr: 0.000494  sp_loss: 5.9480 (6.1491)  fam_loss: 3.8068 (3.9690)  manu_loss: 2.7630 (2.8635)  gk_loss: 2.7496 (2.8767)  time: 9.7034  data: 8.9564  max mem: 20808
+Epoch: [7]  [320/976]  eta: 3:01:50  lr: 0.000494  sp_loss: 6.7780 (6.1669)  fam_loss: 4.3303 (3.9804)  manu_loss: 3.1010 (2.8705)  gk_loss: 3.1382 (2.8846)  time: 25.3162  data: 24.5687  max mem: 20808
+Epoch: [7]  [330/976]  eta: 3:05:16  lr: 0.000494  sp_loss: 6.7525 (6.1652)  fam_loss: 4.3303 (3.9798)  manu_loss: 3.1182 (2.8706)  gk_loss: 3.1273 (2.8849)  time: 38.1036  data: 37.3559  max mem: 20808
+Epoch: [7]  [340/976]  eta: 2:59:57  lr: 0.000494  sp_loss: 6.4401 (6.1733)  fam_loss: 4.1549 (3.9846)  manu_loss: 3.0299 (2.8742)  gk_loss: 3.0139 (2.8883)  time: 22.5326  data: 21.7852  max mem: 20808
+Epoch: [7]  [350/976]  eta: 2:55:36  lr: 0.000494  sp_loss: 6.5094 (6.1749)  fam_loss: 4.1934 (3.9853)  manu_loss: 3.0061 (2.8745)  gk_loss: 3.0553 (2.8888)  time: 10.5934  data: 9.8463  max mem: 20808
+Epoch: [7]  [360/976]  eta: 2:55:14  lr: 0.000494  sp_loss: 6.4361 (6.1737)  fam_loss: 4.0897 (3.9841)  manu_loss: 2.9357 (2.8738)  gk_loss: 2.9216 (2.8881)  time: 18.6360  data: 17.8883  max mem: 20808
+Epoch: [7]  [370/976]  eta: 2:51:07  lr: 0.000494  sp_loss: 6.1888 (6.1705)  fam_loss: 3.9106 (3.9814)  manu_loss: 2.8460 (2.8726)  gk_loss: 2.8459 (2.8866)  time: 18.9066  data: 18.1541  max mem: 20808
+Epoch: [7]  [380/976]  eta: 2:46:47  lr: 0.000494  sp_loss: 6.2051 (6.1672)  fam_loss: 3.9205 (3.9781)  manu_loss: 2.8615 (2.8706)  gk_loss: 2.8459 (2.8847)  time: 11.7637  data: 11.0112  max mem: 20808
+Epoch: [7]  [390/976]  eta: 2:42:21  lr: 0.000494  sp_loss: 6.2051 (6.1611)  fam_loss: 3.9205 (3.9749)  manu_loss: 2.8615 (2.8684)  gk_loss: 2.8419 (2.8829)  time: 10.7032  data: 9.9549  max mem: 20808
+Epoch: [7]  [400/976]  eta: 2:42:17  lr: 0.000494  sp_loss: 6.4532 (6.1681)  fam_loss: 4.1151 (3.9787)  manu_loss: 2.9594 (2.8714)  gk_loss: 2.9674 (2.8857)  time: 19.1026  data: 18.3544  max mem: 20808
+Epoch: [7]  [410/976]  eta: 2:40:55  lr: 0.000494  sp_loss: 6.4980 (6.1748)  fam_loss: 4.1109 (3.9823)  manu_loss: 2.9677 (2.8736)  gk_loss: 2.9674 (2.8881)  time: 25.5718  data: 24.8242  max mem: 20808
+Epoch: [7]  [420/976]  eta: 2:36:09  lr: 0.000494  sp_loss: 6.2657 (6.1724)  fam_loss: 4.0855 (3.9800)  manu_loss: 2.9213 (2.8723)  gk_loss: 2.9296 (2.8867)  time: 15.7610  data: 15.0132  max mem: 20808
+Epoch: [7]  [430/976]  eta: 2:32:31  lr: 0.000494  sp_loss: 6.5447 (6.1815)  fam_loss: 4.1855 (3.9861)  manu_loss: 3.0252 (2.8766)  gk_loss: 3.0578 (2.8912)  time: 10.6328  data: 9.8845  max mem: 20808
+Epoch: [7]  [440/976]  eta: 2:28:53  lr: 0.000494  sp_loss: 6.5747 (6.1861)  fam_loss: 4.2026 (3.9897)  manu_loss: 3.0336 (2.8785)  gk_loss: 3.0713 (2.8932)  time: 12.7662  data: 12.0182  max mem: 20808
+Epoch: [7]  [450/976]  eta: 2:24:29  lr: 0.000494  sp_loss: 6.2238 (6.1848)  fam_loss: 4.0446 (3.9890)  manu_loss: 2.8837 (2.8779)  gk_loss: 2.8885 (2.8924)  time: 10.4806  data: 9.7329  max mem: 20808
+Epoch: [7]  [460/976]  eta: 2:20:14  lr: 0.000494  sp_loss: 6.0759 (6.1764)  fam_loss: 3.9249 (3.9838)  manu_loss: 2.7888 (2.8741)  gk_loss: 2.8481 (2.8889)  time: 8.3689  data: 7.6210  max mem: 20808
+Epoch: [7]  [470/976]  eta: 2:16:42  lr: 0.000494  sp_loss: 5.6191 (6.1632)  fam_loss: 3.6632 (3.9755)  manu_loss: 2.6393 (2.8680)  gk_loss: 2.6351 (2.8829)  time: 10.0923  data: 9.3442  max mem: 20808
+Epoch: [7]  [480/976]  eta: 2:13:49  lr: 0.000494  sp_loss: 5.6527 (6.1608)  fam_loss: 3.6735 (3.9743)  manu_loss: 2.7032 (2.8671)  gk_loss: 2.6351 (2.8818)  time: 13.4594  data: 12.7111  max mem: 20808
+Epoch: [7]  [490/976]  eta: 2:12:04  lr: 0.000494  sp_loss: 6.1549 (6.1679)  fam_loss: 3.9647 (3.9785)  manu_loss: 2.8716 (2.8702)  gk_loss: 2.8804 (2.8849)  time: 18.5433  data: 17.7951  max mem: 20808
+Epoch: [7]  [500/976]  eta: 2:08:59  lr: 0.000494  sp_loss: 6.2277 (6.1665)  fam_loss: 4.0375 (3.9777)  manu_loss: 2.9143 (2.8696)  gk_loss: 2.9350 (2.8843)  time: 17.9735  data: 17.2251  max mem: 20808
+Epoch: [7]  [510/976]  eta: 2:05:48  lr: 0.000494  sp_loss: 6.4514 (6.1739)  fam_loss: 4.1388 (3.9813)  manu_loss: 3.0013 (2.8722)  gk_loss: 3.0004 (2.8872)  time: 13.5444  data: 12.7958  max mem: 20808
+Epoch: [7]  [520/976]  eta: 2:02:40  lr: 0.000494  sp_loss: 6.4992 (6.1753)  fam_loss: 4.1388 (3.9816)  manu_loss: 3.0013 (2.8727)  gk_loss: 3.0004 (2.8876)  time: 13.1605  data: 12.4125  max mem: 20808
+Epoch: [7]  [530/976]  eta: 1:59:01  lr: 0.000494  sp_loss: 6.3399 (6.1697)  fam_loss: 4.0843 (3.9779)  manu_loss: 2.9503 (2.8704)  gk_loss: 2.9643 (2.8857)  time: 11.2765  data: 10.5281  max mem: 20808
+Epoch: [7]  [540/976]  eta: 1:55:22  lr: 0.000494  sp_loss: 6.4262 (6.1691)  fam_loss: 4.0843 (3.9773)  manu_loss: 2.9266 (2.8697)  gk_loss: 2.9572 (2.8853)  time: 9.0440  data: 8.2952  max mem: 20808
+Epoch: [7]  [550/976]  eta: 1:52:17  lr: 0.000494  sp_loss: 6.4262 (6.1689)  fam_loss: 4.0295 (3.9775)  manu_loss: 2.9266 (2.8697)  gk_loss: 2.8759 (2.8858)  time: 10.6087  data: 9.8597  max mem: 20808
+Epoch: [7]  [560/976]  eta: 1:49:16  lr: 0.000494  sp_loss: 6.6823 (6.1754)  fam_loss: 4.2586 (3.9819)  manu_loss: 3.0911 (2.8730)  gk_loss: 3.0779 (2.8889)  time: 12.6113  data: 11.8627  max mem: 20808
+Epoch: [7]  [570/976]  eta: 1:45:50  lr: 0.000494  sp_loss: 6.6823 (6.1798)  fam_loss: 4.2586 (3.9838)  manu_loss: 3.0454 (2.8743)  gk_loss: 3.0536 (2.8902)  time: 10.7973  data: 10.0498  max mem: 20808
+Epoch: [7]  [580/976]  eta: 1:42:32  lr: 0.000494  sp_loss: 6.4877 (6.1824)  fam_loss: 4.1107 (3.9855)  manu_loss: 3.0251 (2.8758)  gk_loss: 2.9983 (2.8917)  time: 9.2485  data: 8.5008  max mem: 20808
+Epoch: [7]  [590/976]  eta: 1:39:40  lr: 0.000494  sp_loss: 6.6047 (6.1859)  fam_loss: 4.2343 (3.9883)  manu_loss: 3.0251 (2.8775)  gk_loss: 3.0328 (2.8935)  time: 11.2864  data: 10.5383  max mem: 20808
+Epoch: [7]  [600/976]  eta: 1:36:40  lr: 0.000494  sp_loss: 6.4755 (6.1834)  fam_loss: 4.1532 (3.9866)  manu_loss: 3.0234 (2.8764)  gk_loss: 3.0219 (2.8925)  time: 12.2358  data: 11.4880  max mem: 20808
+Epoch: [7]  [610/976]  eta: 1:33:23  lr: 0.000494  sp_loss: 6.0560 (6.1835)  fam_loss: 3.9036 (3.9862)  manu_loss: 2.8039 (2.8757)  gk_loss: 2.8045 (2.8921)  time: 9.8907  data: 9.1428  max mem: 20808
+Epoch: [7]  [620/976]  eta: 1:30:10  lr: 0.000494  sp_loss: 6.1220 (6.1867)  fam_loss: 3.9122 (3.9880)  manu_loss: 2.8618 (2.8771)  gk_loss: 2.8133 (2.8934)  time: 8.3381  data: 7.5903  max mem: 20808
+Epoch: [7]  [630/976]  eta: 1:27:42  lr: 0.000494  sp_loss: 6.5441 (6.1889)  fam_loss: 4.1611 (3.9895)  manu_loss: 2.9854 (2.8782)  gk_loss: 2.9755 (2.8945)  time: 12.1079  data: 11.3602  max mem: 20808
+Epoch: [7]  [640/976]  eta: 1:25:16  lr: 0.000494  sp_loss: 6.0065 (6.1864)  fam_loss: 3.9195 (3.9877)  manu_loss: 2.8243 (2.8768)  gk_loss: 2.8186 (2.8934)  time: 16.1560  data: 15.4081  max mem: 20808
+Epoch: [7]  [650/976]  eta: 1:22:09  lr: 0.000494  sp_loss: 5.9802 (6.1864)  fam_loss: 3.8866 (3.9873)  manu_loss: 2.7564 (2.8765)  gk_loss: 2.8079 (2.8934)  time: 12.3996  data: 11.6517  max mem: 20808
+Epoch: [7]  [660/976]  eta: 1:19:06  lr: 0.000494  sp_loss: 5.8882 (6.1781)  fam_loss: 3.8496 (3.9822)  manu_loss: 2.7564 (2.8730)  gk_loss: 2.8017 (2.8901)  time: 8.3489  data: 7.6010  max mem: 20808
+Epoch: [7]  [670/976]  eta: 1:16:31  lr: 0.000494  sp_loss: 6.4131 (6.1839)  fam_loss: 4.0964 (3.9855)  manu_loss: 2.9309 (2.8757)  gk_loss: 2.9505 (2.8926)  time: 11.1801  data: 10.4319  max mem: 20808
+Epoch: [7]  [680/976]  eta: 1:16:18  lr: 0.000494  sp_loss: 6.5494 (6.1846)  fam_loss: 4.1878 (3.9861)  manu_loss: 3.0222 (2.8760)  gk_loss: 3.0645 (2.8929)  time: 30.2401  data: 29.4917  max mem: 20808
+Epoch: [7]  [690/976]  eta: 1:13:13  lr: 0.000494  sp_loss: 5.8503 (6.1791)  fam_loss: 3.8034 (3.9829)  manu_loss: 2.7204 (2.8739)  gk_loss: 2.7303 (2.8906)  time: 27.3921  data: 26.6439  max mem: 20808
+Epoch: [7]  [700/976]  eta: 1:10:12  lr: 0.000494  sp_loss: 5.8324 (6.1770)  fam_loss: 3.7719 (3.9815)  manu_loss: 2.6644 (2.8728)  gk_loss: 2.6771 (2.8896)  time: 8.2447  data: 7.4974  max mem: 20808
+Epoch: [7]  [710/976]  eta: 1:07:27  lr: 0.000494  sp_loss: 6.5981 (6.1758)  fam_loss: 4.1584 (3.9802)  manu_loss: 3.0129 (2.8722)  gk_loss: 3.0322 (2.8890)  time: 10.0915  data: 9.3441  max mem: 20808
+Epoch: [7]  [720/976]  eta: 1:05:39  lr: 0.000494  sp_loss: 6.4009 (6.1720)  fam_loss: 4.1584 (3.9782)  manu_loss: 2.9995 (2.8707)  gk_loss: 3.0202 (2.8878)  time: 19.8697  data: 19.1214  max mem: 20808
+Epoch: [7]  [730/976]  eta: 1:03:08  lr: 0.000494  sp_loss: 6.2474 (6.1727)  fam_loss: 4.0476 (3.9791)  manu_loss: 2.9179 (2.8716)  gk_loss: 2.9458 (2.8884)  time: 21.9815  data: 21.2330  max mem: 20808
+Epoch: [7]  [740/976]  eta: 1:00:11  lr: 0.000494  sp_loss: 6.5741 (6.1802)  fam_loss: 4.1900 (3.9835)  manu_loss: 3.0039 (2.8745)  gk_loss: 3.0148 (2.8915)  time: 12.2502  data: 11.5025  max mem: 20808
+Epoch: [7]  [750/976]  eta: 0:57:23  lr: 0.000494  sp_loss: 6.6287 (6.1776)  fam_loss: 4.2326 (3.9817)  manu_loss: 3.0729 (2.8733)  gk_loss: 3.0242 (2.8902)  time: 9.2355  data: 8.4884  max mem: 20808
+Epoch: [7]  [760/976]  eta: 0:56:27  lr: 0.000494  sp_loss: 6.4113 (6.1777)  fam_loss: 4.0612 (3.9818)  manu_loss: 2.9105 (2.8734)  gk_loss: 2.9208 (2.8903)  time: 29.7456  data: 28.9985  max mem: 20808
+Epoch: [7]  [770/976]  eta: 0:53:33  lr: 0.000494  sp_loss: 6.3856 (6.1798)  fam_loss: 4.1809 (3.9831)  manu_loss: 3.0259 (2.8745)  gk_loss: 2.9985 (2.8913)  time: 29.3105  data: 28.5631  max mem: 20808
+Epoch: [7]  [780/976]  eta: 0:50:43  lr: 0.000494  sp_loss: 6.3856 (6.1815)  fam_loss: 4.1809 (3.9841)  manu_loss: 3.0701 (2.8753)  gk_loss: 3.0234 (2.8921)  time: 9.5935  data: 8.8456  max mem: 20808
+Epoch: [7]  [790/976]  eta: 0:48:21  lr: 0.000494  sp_loss: 6.2103 (6.1798)  fam_loss: 4.0293 (3.9830)  manu_loss: 2.9366 (2.8747)  gk_loss: 2.9088 (2.8913)  time: 15.4494  data: 14.7017  max mem: 20808
+Epoch: [7]  [800/976]  eta: 0:46:20  lr: 0.000494  sp_loss: 6.2103 (6.1815)  fam_loss: 4.0293 (3.9839)  manu_loss: 2.9317 (2.8751)  gk_loss: 2.8760 (2.8920)  time: 26.3254  data: 25.5773  max mem: 20808
+Epoch: [7]  [810/976]  eta: 0:43:27  lr: 0.000494  sp_loss: 5.7562 (6.1717)  fam_loss: 3.6710 (3.9775)  manu_loss: 2.6850 (2.8705)  gk_loss: 2.6712 (2.8877)  time: 19.9639  data: 19.2153  max mem: 20808
+Epoch: [7]  [820/976]  eta: 0:40:37  lr: 0.000494  sp_loss: 5.6318 (6.1746)  fam_loss: 3.5913 (3.9795)  manu_loss: 2.6381 (2.8719)  gk_loss: 2.5714 (2.8892)  time: 8.7586  data: 8.0102  max mem: 20808
+Epoch: [7]  [830/976]  eta: 0:37:56  lr: 0.000494  sp_loss: 6.4772 (6.1692)  fam_loss: 4.2398 (3.9760)  manu_loss: 3.0756 (2.8691)  gk_loss: 3.0540 (2.8866)  time: 10.9176  data: 10.1699  max mem: 20808
+Epoch: [7]  [840/976]  eta: 0:35:57  lr: 0.000494  sp_loss: 5.4717 (6.1678)  fam_loss: 3.5718 (3.9752)  manu_loss: 2.6083 (2.8686)  gk_loss: 2.5635 (2.8863)  time: 25.6795  data: 24.9314  max mem: 20808
+Epoch: [7]  [850/976]  eta: 0:33:07  lr: 0.000494  sp_loss: 6.2007 (6.1663)  fam_loss: 4.0397 (3.9741)  manu_loss: 2.9389 (2.8678)  gk_loss: 2.9181 (2.8858)  time: 23.5138  data: 22.7653  max mem: 20808
+Epoch: [7]  [860/976]  eta: 0:30:27  lr: 0.000494  sp_loss: 6.2007 (6.1667)  fam_loss: 4.0503 (3.9745)  manu_loss: 2.9410 (2.8682)  gk_loss: 2.8842 (2.8861)  time: 11.0597  data: 10.3117  max mem: 20808
+Epoch: [7]  [870/976]  eta: 0:28:32  lr: 0.000494  sp_loss: 6.1139 (6.1680)  fam_loss: 4.0086 (3.9753)  manu_loss: 2.9109 (2.8691)  gk_loss: 2.8761 (2.8868)  time: 32.2734  data: 31.5260  max mem: 20808
+Epoch: [7]  [880/976]  eta: 0:25:59  lr: 0.000494  sp_loss: 6.0752 (6.1641)  fam_loss: 3.9040 (3.9729)  manu_loss: 2.8559 (2.8673)  gk_loss: 2.8210 (2.8850)  time: 37.3048  data: 36.5572  max mem: 20808
+Epoch: [7]  [890/976]  eta: 0:23:09  lr: 0.000494  sp_loss: 6.0563 (6.1611)  fam_loss: 3.9021 (3.9710)  manu_loss: 2.7660 (2.8661)  gk_loss: 2.7906 (2.8838)  time: 16.0388  data: 15.2906  max mem: 20808
+Epoch: [7]  [900/976]  eta: 0:20:21  lr: 0.000494  sp_loss: 6.2389 (6.1611)  fam_loss: 4.1067 (3.9715)  manu_loss: 2.9472 (2.8665)  gk_loss: 2.9814 (2.8840)  time: 8.2565  data: 7.5088  max mem: 20808
+Epoch: [7]  [910/976]  eta: 0:17:52  lr: 0.000494  sp_loss: 6.5151 (6.1613)  fam_loss: 4.1793 (3.9716)  manu_loss: 2.9853 (2.8664)  gk_loss: 3.0168 (2.8840)  time: 20.2851  data: 19.5377  max mem: 20808
+Epoch: [7]  [920/976]  eta: 0:15:30  lr: 0.000494  sp_loss: 6.7586 (6.1635)  fam_loss: 4.2827 (3.9726)  manu_loss: 3.0997 (2.8673)  gk_loss: 3.0925 (2.8850)  time: 41.2907  data: 40.5374  max mem: 20808
+Epoch: [7]  [930/976]  eta: 0:12:40  lr: 0.000494  sp_loss: 6.6182 (6.1686)  fam_loss: 4.2598 (3.9757)  manu_loss: 3.0835 (2.8695)  gk_loss: 3.1156 (2.8871)  time: 29.7510  data: 28.9977  max mem: 20808
+Epoch: [7]  [940/976]  eta: 0:09:52  lr: 0.000494  sp_loss: 6.4789 (6.1669)  fam_loss: 4.1584 (3.9744)  manu_loss: 3.0019 (2.8686)  gk_loss: 3.0047 (2.8863)  time: 9.8445  data: 9.0965  max mem: 20808
+Epoch: [7]  [950/976]  eta: 0:07:09  lr: 0.000494  sp_loss: 5.5705 (6.1596)  fam_loss: 3.6079 (3.9699)  manu_loss: 2.5974 (2.8653)  gk_loss: 2.6164 (2.8833)  time: 15.4647  data: 14.7167  max mem: 20808
+Epoch: [7]  [960/976]  eta: 0:04:27  lr: 0.000494  sp_loss: 5.9995 (6.1610)  fam_loss: 3.8976 (3.9705)  manu_loss: 2.7836 (2.8658)  gk_loss: 2.7681 (2.8838)  time: 28.5902  data: 27.8421  max mem: 20808
+Epoch: [7]  [970/976]  eta: 0:01:39  lr: 0.000494  sp_loss: 6.2468 (6.1624)  fam_loss: 3.9937 (3.9709)  manu_loss: 2.9327 (2.8660)  gk_loss: 2.9017 (2.8838)  time: 20.7206  data: 19.9732  max mem: 20808
+Epoch: [7]  [975/976]  eta: 0:00:16  lr: 0.000494  sp_loss: 6.4027 (6.1650)  fam_loss: 4.1312 (3.9727)  manu_loss: 2.9973 (2.8673)  gk_loss: 2.9449 (2.8849)  time: 6.4248  data: 5.6771  max mem: 20808
+Epoch: [7] Total time: 4:28:40 (16.5167 s / it)
+Averaged stats: lr: 0.000494  sp_loss: 6.4027 (6.1650)  fam_loss: 4.1312 (3.9727)  manu_loss: 2.9973 (2.8673)  gk_loss: 2.9449 (2.8849)
+Test:  [  0/196]  eta: 2 days, 3:30:27  sploss: 2.9048 (2.9048)  famloss: 1.5863 (1.5863)  manuloss: 1.0468 (1.0468)  acc1: 43.7500 (43.7500)  acc5: 69.1406 (69.1406)  family_acc1: 62.8906 (62.8906)  manu_acc1: 76.9531 (76.9531)  time: 946.0608  data: 807.6564  max mem: 20808
+Test:  [ 10/196]  eta: 5:13:15  sploss: 3.0772 (3.0898)  famloss: 1.6873 (1.7233)  manuloss: 1.1747 (1.1746)  acc1: 42.5781 (41.3707)  acc5: 68.1641 (67.3651)  family_acc1: 62.6953 (61.8075)  manu_acc1: 74.8047 (72.9936)  time: 101.0492  data: 88.1675  max mem: 20808
+Test:  [ 20/196]  eta: 2:52:43  sploss: 3.0086 (3.0465)  famloss: 1.7133 (1.7056)  manuloss: 1.1747 (1.1656)  acc1: 42.5781 (42.1782)  acc5: 68.1641 (67.7269)  family_acc1: 62.1094 (61.9792)  manu_acc1: 71.6797 (73.1027)  time: 14.5249  data: 14.1957  max mem: 20808
+Test:  [ 30/196]  eta: 2:02:33  sploss: 3.0014 (3.0289)  famloss: 1.6771 (1.6990)  manuloss: 1.1387 (1.1605)  acc1: 42.9688 (42.5592)  acc5: 68.7500 (68.0129)  family_acc1: 61.1328 (61.8700)  manu_acc1: 73.8281 (73.2233)  time: 13.0832  data: 12.7541  max mem: 20808
+Test:  [ 40/196]  eta: 1:44:56  sploss: 3.0047 (3.0162)  famloss: 1.6658 (1.6864)  manuloss: 1.1095 (1.1452)  acc1: 42.9688 (42.6591)  acc5: 68.7500 (68.0878)  family_acc1: 62.5000 (62.2761)  manu_acc1: 74.8047 (73.5899)  time: 20.9105  data: 20.5809  max mem: 20808
+Test:  [ 50/196]  eta: 1:24:09  sploss: 3.0171 (3.0257)  famloss: 1.6934 (1.7053)  manuloss: 1.1310 (1.1537)  acc1: 42.3828 (42.6279)  acc5: 68.1641 (68.0300)  family_acc1: 62.3047 (61.8413)  manu_acc1: 72.6562 (73.2154)  time: 19.5396  data: 19.2102  max mem: 20808
+Test:  [ 60/196]  eta: 1:19:23  sploss: 3.0292 (3.0262)  famloss: 1.7947 (1.7136)  manuloss: 1.2111 (1.1676)  acc1: 43.5547 (42.6998)  acc5: 68.1641 (68.0552)  family_acc1: 60.1562 (61.7412)  manu_acc1: 70.7031 (72.7747)  time: 24.0831  data: 23.7540  max mem: 20808
+Test:  [ 70/196]  eta: 1:05:36  sploss: 2.9018 (2.9945)  famloss: 1.6613 (1.6911)  manuloss: 1.0891 (1.1496)  acc1: 45.3125 (43.2191)  acc5: 70.3125 (68.6290)  family_acc1: 62.8906 (62.1396)  manu_acc1: 73.4375 (73.2147)  time: 22.7054  data: 22.3763  max mem: 20808
+Test:  [ 80/196]  eta: 0:56:44  sploss: 2.8549 (2.9904)  famloss: 1.5888 (1.6853)  manuloss: 1.0597 (1.1437)  acc1: 44.9219 (43.2485)  acc5: 70.3125 (68.6849)  family_acc1: 63.2812 (62.1817)  manu_acc1: 74.6094 (73.3338)  time: 12.0539  data: 11.7250  max mem: 20808
+Test:  [ 90/196]  eta: 0:47:44  sploss: 3.0416 (3.0020)  famloss: 1.7656 (1.6954)  manuloss: 1.1530 (1.1473)  acc1: 42.1875 (43.0696)  acc5: 67.7734 (68.4860)  family_acc1: 59.7656 (61.8947)  manu_acc1: 72.8516 (73.2272)  time: 12.0554  data: 11.7265  max mem: 20808
+Test:  [100/196]  eta: 0:40:19  sploss: 3.0437 (3.0012)  famloss: 1.7656 (1.6968)  manuloss: 1.1800 (1.1507)  acc1: 42.3828 (43.1215)  acc5: 66.6016 (68.3864)  family_acc1: 59.5703 (61.7787)  manu_acc1: 71.8750 (73.0701)  time: 8.3841  data: 8.0552  max mem: 20808
+Test:  [110/196]  eta: 0:33:58  sploss: 2.9304 (2.9925)  famloss: 1.6903 (1.6979)  manuloss: 1.1882 (1.1567)  acc1: 44.9219 (43.4210)  acc5: 68.5547 (68.5846)  family_acc1: 61.1328 (61.8032)  manu_acc1: 71.2891 (72.8692)  time: 8.5716  data: 8.2428  max mem: 20808
+Test:  [120/196]  eta: 0:29:14  sploss: 2.9218 (2.9974)  famloss: 1.7018 (1.7086)  manuloss: 1.2144 (1.1700)  acc1: 45.3125 (43.4336)  acc5: 69.1406 (68.5385)  family_acc1: 61.5234 (61.5573)  manu_acc1: 70.1172 (72.3867)  time: 12.4049  data: 12.0761  max mem: 20808
+Test:  [130/196]  eta: 0:24:08  sploss: 2.9685 (2.9900)  famloss: 1.6907 (1.7047)  manuloss: 1.1594 (1.1669)  acc1: 44.3359 (43.5756)  acc5: 68.5547 (68.6337)  family_acc1: 61.5234 (61.6218)  manu_acc1: 71.4844 (72.4371)  time: 12.2152  data: 11.8863  max mem: 20808
+Test:  [140/196]  eta: 0:19:37  sploss: 2.8091 (2.9700)  famloss: 1.6228 (1.6921)  manuloss: 1.0889 (1.1588)  acc1: 47.0703 (43.9301)  acc5: 70.5078 (68.9799)  family_acc1: 63.6719 (61.8462)  manu_acc1: 73.6328 (72.6161)  time: 8.6005  data: 8.2715  max mem: 20808
+Test:  [150/196]  eta: 0:15:30  sploss: 2.7504 (2.9563)  famloss: 1.4973 (1.6803)  manuloss: 1.0235 (1.1485)  acc1: 47.6562 (44.1070)  acc5: 72.8516 (69.2001)  family_acc1: 64.8438 (62.1120)  manu_acc1: 75.1953 (72.8567)  time: 9.0393  data: 8.7102  max mem: 20808
+Test:  [160/196]  eta: 0:12:04  sploss: 2.8062 (2.9483)  famloss: 1.5123 (1.6708)  manuloss: 1.0122 (1.1409)  acc1: 46.2891 (44.2413)  acc5: 71.4844 (69.3299)  family_acc1: 65.0391 (62.2986)  manu_acc1: 75.7812 (73.0263)  time: 13.8090  data: 13.4801  max mem: 20808
+Test:  [170/196]  eta: 0:08:26  sploss: 2.9065 (2.9494)  famloss: 1.5659 (1.6697)  manuloss: 1.0665 (1.1408)  acc1: 44.7266 (44.2023)  acc5: 70.3125 (69.3257)  family_acc1: 63.8672 (62.3115)  manu_acc1: 74.0234 (73.0412)  time: 13.6322  data: 13.3032  max mem: 20808
+Test:  [180/196]  eta: 0:05:01  sploss: 2.8695 (2.9413)  famloss: 1.5659 (1.6612)  manuloss: 1.0081 (1.1298)  acc1: 44.1406 (44.2539)  acc5: 70.1172 (69.3953)  family_acc1: 64.2578 (62.5162)  manu_acc1: 75.5859 (73.3825)  time: 8.4359  data: 8.1070  max mem: 20808
+Test:  [190/196]  eta: 0:01:49  sploss: 2.8130 (2.9337)  famloss: 1.4971 (1.6535)  manuloss: 0.9495 (1.1204)  acc1: 45.5078 (44.3503)  acc5: 70.3125 (69.5169)  family_acc1: 66.0156 (62.6922)  manu_acc1: 79.1016 (73.6502)  time: 7.4968  data: 7.1680  max mem: 20808
+Test:  [195/196]  eta: 0:00:17  sploss: 2.8048 (2.9308)  famloss: 1.4970 (1.6498)  manuloss: 0.9208 (1.1148)  acc1: 45.5078 (44.3930)  acc5: 71.2891 (69.5610)  family_acc1: 66.0156 (62.7770)  manu_acc1: 79.4922 (73.7960)  time: 8.8928  data: 8.5657  max mem: 20808
+Test: Total time: 0:58:28 (17.9018 s / it)
+* Acc@1 44.393 Acc@5 69.561 family@1 62.777 manu@1 73.796 sploss 2.931 fmloss 1.650 mfloss 1.115
+Accuracy of the network on the 100000 test images: 44.4%
+Max accuracy: 44.39%
+Epoch: [8]  [  0/976]  eta: 23:58:54  lr: 0.000494  sp_loss: 4.3114 (4.3114)  fam_loss: 2.8418 (2.8418)  manu_loss: 2.0317 (2.0317)  gk_loss: 2.0696 (2.0696)  time: 88.4580  data: 87.6994  max mem: 20808
+Epoch: [8]  [ 10/976]  eta: 4:13:18  lr: 0.000494  sp_loss: 6.5064 (5.8516)  fam_loss: 4.1088 (3.8032)  manu_loss: 3.0394 (2.7641)  gk_loss: 2.9401 (2.7497)  time: 15.7335  data: 14.9844  max mem: 20808
+Epoch: [8]  [ 20/976]  eta: 3:27:28  lr: 0.000494  sp_loss: 6.3553 (5.8768)  fam_loss: 4.1088 (3.8505)  manu_loss: 2.9751 (2.7826)  gk_loss: 2.9401 (2.7650)  time: 9.2493  data: 8.5016  max mem: 20808
+Epoch: [8]  [ 30/976]  eta: 3:12:06  lr: 0.000494  sp_loss: 6.1130 (5.9224)  fam_loss: 3.9237 (3.8662)  manu_loss: 2.8700 (2.7953)  gk_loss: 2.8466 (2.7711)  time: 10.2332  data: 9.4859  max mem: 20808
+Epoch: [8]  [ 40/976]  eta: 3:42:55  lr: 0.000494  sp_loss: 6.2522 (6.0164)  fam_loss: 4.0700 (3.9200)  manu_loss: 2.9664 (2.8365)  gk_loss: 2.9474 (2.8147)  time: 15.6224  data: 14.8746  max mem: 20808
+Epoch: [8]  [ 50/976]  eta: 3:34:18  lr: 0.000494  sp_loss: 6.2522 (5.9318)  fam_loss: 4.0461 (3.8623)  manu_loss: 2.9664 (2.7929)  gk_loss: 2.9474 (2.7728)  time: 16.5222  data: 15.7741  max mem: 20808
+Epoch: [8]  [ 60/976]  eta: 3:18:39  lr: 0.000494  sp_loss: 6.0332 (5.9529)  fam_loss: 4.0085 (3.8761)  manu_loss: 2.8358 (2.7999)  gk_loss: 2.8535 (2.7807)  time: 10.3951  data: 9.6471  max mem: 20808
+Epoch: [8]  [ 70/976]  eta: 3:06:17  lr: 0.000494  sp_loss: 6.3493 (5.9815)  fam_loss: 4.1072 (3.8966)  manu_loss: 2.9342 (2.8159)  gk_loss: 2.9388 (2.7956)  time: 8.3864  data: 7.6385  max mem: 20808
+Epoch: [8]  [ 80/976]  eta: 3:11:40  lr: 0.000494  sp_loss: 6.3631 (6.0102)  fam_loss: 4.1576 (3.9135)  manu_loss: 2.9795 (2.8278)  gk_loss: 2.9344 (2.8054)  time: 12.2952  data: 11.5481  max mem: 20808
+Epoch: [8]  [ 90/976]  eta: 3:07:25  lr: 0.000494  sp_loss: 6.3449 (6.0129)  fam_loss: 4.0457 (3.9136)  manu_loss: 2.9586 (2.8280)  gk_loss: 2.9005 (2.8050)  time: 13.9552  data: 13.2080  max mem: 20808
+Epoch: [8]  [100/976]  eta: 2:59:58  lr: 0.000494  sp_loss: 5.9094 (5.9817)  fam_loss: 3.8936 (3.8900)  manu_loss: 2.8480 (2.8119)  gk_loss: 2.7760 (2.7876)  time: 10.2654  data: 9.5183  max mem: 20808
+Epoch: [8]  [110/976]  eta: 2:52:43  lr: 0.000494  sp_loss: 5.9176 (5.9802)  fam_loss: 3.9121 (3.8910)  manu_loss: 2.8480 (2.8143)  gk_loss: 2.7891 (2.7885)  time: 8.6638  data: 7.9166  max mem: 20808
+Epoch: [8]  [120/976]  eta: 2:53:28  lr: 0.000494  sp_loss: 6.2147 (5.9814)  fam_loss: 3.9843 (3.8898)  manu_loss: 2.9142 (2.8132)  gk_loss: 2.8591 (2.7891)  time: 11.3112  data: 10.5629  max mem: 20808
+Epoch: [8]  [130/976]  eta: 2:48:41  lr: 0.000494  sp_loss: 6.3300 (5.9848)  fam_loss: 4.0583 (3.8900)  manu_loss: 2.9142 (2.8147)  gk_loss: 2.9146 (2.7892)  time: 11.9489  data: 11.2006  max mem: 20808
+Epoch: [8]  [140/976]  eta: 2:42:56  lr: 0.000494  sp_loss: 6.4694 (6.0055)  fam_loss: 4.1589 (3.9044)  manu_loss: 2.9967 (2.8250)  gk_loss: 2.9656 (2.7997)  time: 8.8816  data: 8.1337  max mem: 20808
+Epoch: [8]  [150/976]  eta: 2:37:55  lr: 0.000494  sp_loss: 6.5428 (6.0129)  fam_loss: 4.1818 (3.9096)  manu_loss: 3.0429 (2.8290)  gk_loss: 2.9912 (2.8031)  time: 8.2435  data: 7.4955  max mem: 20808
+Epoch: [8]  [160/976]  eta: 2:40:07  lr: 0.000494  sp_loss: 6.0623 (6.0095)  fam_loss: 3.9806 (3.9077)  manu_loss: 2.8095 (2.8266)  gk_loss: 2.8035 (2.8011)  time: 12.3376  data: 11.5901  max mem: 20808
+Epoch: [8]  [170/976]  eta: 2:36:26  lr: 0.000494  sp_loss: 6.2985 (6.0206)  fam_loss: 4.0175 (3.9138)  manu_loss: 2.9322 (2.8303)  gk_loss: 2.8701 (2.8054)  time: 12.9607  data: 12.2132  max mem: 20808
+Epoch: [8]  [180/976]  eta: 2:32:03  lr: 0.000494  sp_loss: 6.4075 (6.0202)  fam_loss: 4.0922 (3.9144)  manu_loss: 2.9538 (2.8298)  gk_loss: 2.8839 (2.8051)  time: 8.9462  data: 8.1985  max mem: 20808
+Epoch: [8]  [190/976]  eta: 2:27:58  lr: 0.000494  sp_loss: 6.0108 (6.0021)  fam_loss: 3.9487 (3.9024)  manu_loss: 2.8426 (2.8218)  gk_loss: 2.8106 (2.7978)  time: 8.3082  data: 7.5605  max mem: 20808
+Epoch: [8]  [200/976]  eta: 2:31:39  lr: 0.000494  sp_loss: 6.4343 (6.0326)  fam_loss: 4.1940 (3.9214)  manu_loss: 3.0212 (2.8357)  gk_loss: 2.9687 (2.8123)  time: 14.1184  data: 13.3705  max mem: 20808
+Epoch: [8]  [210/976]  eta: 2:27:34  lr: 0.000494  sp_loss: 6.6020 (6.0567)  fam_loss: 4.3013 (3.9364)  manu_loss: 3.0662 (2.8461)  gk_loss: 3.0698 (2.8225)  time: 14.0807  data: 13.3331  max mem: 20808
+Epoch: [8]  [220/976]  eta: 2:23:42  lr: 0.000494  sp_loss: 6.2066 (6.0490)  fam_loss: 4.0527 (3.9314)  manu_loss: 2.9247 (2.8422)  gk_loss: 2.8906 (2.8180)  time: 8.1866  data: 7.4393  max mem: 20808
+Epoch: [8]  [230/976]  eta: 2:20:20  lr: 0.000494  sp_loss: 6.1923 (6.0646)  fam_loss: 4.0507 (3.9412)  manu_loss: 2.8830 (2.8487)  gk_loss: 2.8991 (2.8260)  time: 8.4111  data: 7.6639  max mem: 20808
+Epoch: [8]  [240/976]  eta: 2:31:04  lr: 0.000494  sp_loss: 6.3491 (6.0655)  fam_loss: 4.0507 (3.9405)  manu_loss: 2.8747 (2.8492)  gk_loss: 2.9037 (2.8263)  time: 22.3756  data: 21.6281  max mem: 20808
+Epoch: [8]  [250/976]  eta: 2:27:11  lr: 0.000494  sp_loss: 6.0175 (6.0544)  fam_loss: 3.8937 (3.9322)  manu_loss: 2.8280 (2.8438)  gk_loss: 2.7704 (2.8205)  time: 22.2930  data: 21.5456  max mem: 20808
+Epoch: [8]  [260/976]  eta: 2:23:19  lr: 0.000494  sp_loss: 5.8905 (6.0491)  fam_loss: 3.8937 (3.9290)  manu_loss: 2.8279 (2.8412)  gk_loss: 2.7704 (2.8183)  time: 8.3334  data: 7.5863  max mem: 20808
+Epoch: [8]  [270/976]  eta: 2:19:56  lr: 0.000494  sp_loss: 6.2631 (6.0550)  fam_loss: 4.0427 (3.9330)  manu_loss: 2.9648 (2.8448)  gk_loss: 2.9214 (2.8211)  time: 8.4986  data: 7.7512  max mem: 20808
+Epoch: [8]  [280/976]  eta: 2:20:12  lr: 0.000494  sp_loss: 6.2437 (6.0425)  fam_loss: 3.9536 (3.9251)  manu_loss: 2.8676 (2.8390)  gk_loss: 2.8270 (2.8158)  time: 13.0784  data: 12.3315  max mem: 20808
+Epoch: [8]  [290/976]  eta: 2:17:08  lr: 0.000494  sp_loss: 6.3126 (6.0591)  fam_loss: 4.0633 (3.9347)  manu_loss: 2.9411 (2.8466)  gk_loss: 2.9326 (2.8231)  time: 13.3704  data: 12.6231  max mem: 20808
+Epoch: [8]  [300/976]  eta: 2:14:34  lr: 0.000494  sp_loss: 6.4627 (6.0632)  fam_loss: 4.2154 (3.9374)  manu_loss: 3.0356 (2.8493)  gk_loss: 3.0118 (2.8250)  time: 9.9459  data: 9.1981  max mem: 20808
+Epoch: [8]  [310/976]  eta: 2:11:16  lr: 0.000494  sp_loss: 6.5424 (6.0741)  fam_loss: 4.1883 (3.9434)  manu_loss: 2.9933 (2.8534)  gk_loss: 2.9833 (2.8294)  time: 9.3820  data: 8.6286  max mem: 20808
+Epoch: [8]  [320/976]  eta: 2:10:34  lr: 0.000494  sp_loss: 6.3213 (6.0746)  fam_loss: 4.0794 (3.9441)  manu_loss: 2.9691 (2.8536)  gk_loss: 2.9299 (2.8292)  time: 11.9186  data: 11.1651  max mem: 20808
+Epoch: [8]  [330/976]  eta: 2:09:27  lr: 0.000494  sp_loss: 6.1875 (6.0726)  fam_loss: 4.0425 (3.9426)  manu_loss: 2.9330 (2.8524)  gk_loss: 2.8815 (2.8282)  time: 15.0945  data: 14.3466  max mem: 20808
+Epoch: [8]  [340/976]  eta: 2:07:36  lr: 0.000494  sp_loss: 5.8336 (6.0618)  fam_loss: 3.7080 (3.9356)  manu_loss: 2.6945 (2.8475)  gk_loss: 2.6892 (2.8239)  time: 13.5598  data: 12.8120  max mem: 20808
+Epoch: [8]  [350/976]  eta: 2:11:20  lr: 0.000494  sp_loss: 5.6637 (6.0546)  fam_loss: 3.6562 (3.9310)  manu_loss: 2.6945 (2.8442)  gk_loss: 2.6206 (2.8207)  time: 21.9187  data: 21.1710  max mem: 20808
+Epoch: [8]  [360/976]  eta: 2:11:25  lr: 0.000494  sp_loss: 6.0514 (6.0553)  fam_loss: 3.8367 (3.9308)  manu_loss: 2.7792 (2.8443)  gk_loss: 2.7291 (2.8207)  time: 25.8081  data: 25.0607  max mem: 20808
+Epoch: [8]  [370/976]  eta: 2:08:36  lr: 0.000494  sp_loss: 6.1983 (6.0580)  fam_loss: 4.0669 (3.9326)  manu_loss: 2.9278 (2.8454)  gk_loss: 2.8859 (2.8219)  time: 15.2914  data: 14.5443  max mem: 20808
+Epoch: [8]  [380/976]  eta: 2:05:47  lr: 0.000494  sp_loss: 6.3964 (6.0706)  fam_loss: 4.1435 (3.9400)  manu_loss: 2.9797 (2.8508)  gk_loss: 2.9619 (2.8277)  time: 10.1974  data: 9.4497  max mem: 20808
+Epoch: [8]  [390/976]  eta: 2:03:13  lr: 0.000494  sp_loss: 6.6325 (6.0815)  fam_loss: 4.2217 (3.9454)  manu_loss: 3.0277 (2.8543)  gk_loss: 2.9686 (2.8311)  time: 10.4580  data: 9.7109  max mem: 20808
+Epoch: [8]  [400/976]  eta: 2:02:36  lr: 0.000494  sp_loss: 6.5001 (6.0820)  fam_loss: 4.1685 (3.9451)  manu_loss: 3.0122 (2.8537)  gk_loss: 2.9586 (2.8303)  time: 14.8129  data: 14.0664  max mem: 20808
+Epoch: [8]  [410/976]  eta: 2:00:29  lr: 0.000494  sp_loss: 6.4767 (6.0876)  fam_loss: 4.1025 (3.9487)  manu_loss: 2.9546 (2.8562)  gk_loss: 2.9575 (2.8326)  time: 15.7990  data: 15.0519  max mem: 20808
+Epoch: [8]  [420/976]  eta: 2:00:21  lr: 0.000494  sp_loss: 6.4601 (6.0840)  fam_loss: 4.1025 (3.9455)  manu_loss: 2.9546 (2.8540)  gk_loss: 2.9419 (2.8311)  time: 17.3444  data: 16.5965  max mem: 20808
+Epoch: [8]  [430/976]  eta: 1:57:38  lr: 0.000494  sp_loss: 6.4601 (6.0938)  fam_loss: 4.1363 (3.9520)  manu_loss: 3.0088 (2.8589)  gk_loss: 2.9638 (2.8358)  time: 16.1285  data: 15.3811  max mem: 20808
+Epoch: [8]  [440/976]  eta: 2:02:00  lr: 0.000494  sp_loss: 6.3102 (6.0891)  fam_loss: 4.1128 (3.9493)  manu_loss: 3.0088 (2.8568)  gk_loss: 2.9541 (2.8336)  time: 27.7402  data: 26.9937  max mem: 20808
+Epoch: [8]  [450/976]  eta: 2:02:33  lr: 0.000494  sp_loss: 6.2089 (6.0898)  fam_loss: 3.9306 (3.9492)  manu_loss: 2.8596 (2.8567)  gk_loss: 2.8124 (2.8332)  time: 36.6427  data: 35.8963  max mem: 20808
+Epoch: [8]  [460/976]  eta: 1:59:12  lr: 0.000494  sp_loss: 6.3617 (6.0896)  fam_loss: 4.1245 (3.9492)  manu_loss: 2.9110 (2.8567)  gk_loss: 2.9112 (2.8332)  time: 18.3648  data: 17.6182  max mem: 20808
+Epoch: [8]  [470/976]  eta: 1:56:08  lr: 0.000494  sp_loss: 6.4044 (6.0942)  fam_loss: 4.2036 (3.9513)  manu_loss: 3.0503 (2.8581)  gk_loss: 2.9826 (2.8350)  time: 9.0833  data: 8.3364  max mem: 20808
+Epoch: [8]  [480/976]  eta: 1:56:17  lr: 0.000494  sp_loss: 6.3156 (6.0931)  fam_loss: 4.0976 (3.9502)  manu_loss: 3.0022 (2.8575)  gk_loss: 2.9510 (2.8343)  time: 18.8236  data: 18.0769  max mem: 20808
+Epoch: [8]  [490/976]  eta: 1:55:30  lr: 0.000494  sp_loss: 6.3156 (6.0925)  fam_loss: 4.0120 (3.9503)  manu_loss: 2.9391 (2.8574)  gk_loss: 2.8898 (2.8346)  time: 25.7690  data: 25.0223  max mem: 20808
+Epoch: [8]  [500/976]  eta: 1:53:54  lr: 0.000494  sp_loss: 6.3715 (6.0867)  fam_loss: 4.0120 (3.9457)  manu_loss: 2.9391 (2.8535)  gk_loss: 2.8898 (2.8313)  time: 21.3172  data: 20.5713  max mem: 20808
+Epoch: [8]  [510/976]  eta: 1:51:01  lr: 0.000494  sp_loss: 5.4727 (6.0753)  fam_loss: 3.5539 (3.9385)  manu_loss: 2.5706 (2.8485)  gk_loss: 2.5384 (2.8263)  time: 15.1214  data: 14.3750  max mem: 20808
+Epoch: [8]  [520/976]  eta: 1:53:38  lr: 0.000494  sp_loss: 5.3870 (6.0684)  fam_loss: 3.5539 (3.9342)  manu_loss: 2.6159 (2.8457)  gk_loss: 2.5384 (2.8236)  time: 29.8925  data: 29.1452  max mem: 20808
+Epoch: [8]  [530/976]  eta: 1:51:32  lr: 0.000494  sp_loss: 6.0566 (6.0748)  fam_loss: 3.9502 (3.9382)  manu_loss: 2.8868 (2.8485)  gk_loss: 2.8450 (2.8262)  time: 33.1557  data: 32.4091  max mem: 20808
+Epoch: [8]  [540/976]  eta: 1:49:44  lr: 0.000494  sp_loss: 6.2741 (6.0763)  fam_loss: 4.0406 (3.9388)  manu_loss: 2.9230 (2.8491)  gk_loss: 2.8647 (2.8268)  time: 18.9700  data: 18.2241  max mem: 20808
+Epoch: [8]  [550/976]  eta: 1:46:21  lr: 0.000494  sp_loss: 6.3001 (6.0816)  fam_loss: 4.0716 (3.9416)  manu_loss: 2.9230 (2.8509)  gk_loss: 2.9238 (2.8289)  time: 14.3533  data: 13.6072  max mem: 20808
+Epoch: [8]  [560/976]  eta: 1:44:33  lr: 0.000494  sp_loss: 6.2872 (6.0770)  fam_loss: 4.0716 (3.9391)  manu_loss: 2.8953 (2.8487)  gk_loss: 2.9238 (2.8267)  time: 14.5170  data: 13.7711  max mem: 20808
+Epoch: [8]  [570/976]  eta: 1:41:52  lr: 0.000494  sp_loss: 5.8992 (6.0739)  fam_loss: 3.9130 (3.9367)  manu_loss: 2.7981 (2.8469)  gk_loss: 2.7705 (2.8251)  time: 17.1322  data: 16.3860  max mem: 20808
+Epoch: [8]  [580/976]  eta: 1:40:06  lr: 0.000494  sp_loss: 6.1680 (6.0746)  fam_loss: 3.9736 (3.9372)  manu_loss: 2.8453 (2.8471)  gk_loss: 2.8474 (2.8256)  time: 17.5671  data: 16.8205  max mem: 20808
+Epoch: [8]  [590/976]  eta: 1:37:15  lr: 0.000494  sp_loss: 5.9001 (6.0651)  fam_loss: 3.8850 (3.9315)  manu_loss: 2.7726 (2.8432)  gk_loss: 2.7468 (2.8217)  time: 16.9108  data: 16.1645  max mem: 20808
+Epoch: [8]  [600/976]  eta: 1:35:05  lr: 0.000494  sp_loss: 5.5908 (6.0624)  fam_loss: 3.6644 (3.9297)  manu_loss: 2.6481 (2.8421)  gk_loss: 2.6418 (2.8207)  time: 15.3859  data: 14.6390  max mem: 20808
+Epoch: [8]  [610/976]  eta: 1:45:18  lr: 0.000494  sp_loss: 5.9817 (6.0626)  fam_loss: 3.9488 (3.9297)  manu_loss: 2.8587 (2.8422)  gk_loss: 2.8119 (2.8209)  time: 80.5999  data: 79.8527  max mem: 20808
+Epoch: [8]  [620/976]  eta: 1:41:44  lr: 0.000494  sp_loss: 6.2203 (6.0680)  fam_loss: 3.9941 (3.9328)  manu_loss: 2.8898 (2.8443)  gk_loss: 2.8939 (2.8231)  time: 76.4685  data: 75.7216  max mem: 20808
+Epoch: [8]  [630/976]  eta: 1:38:34  lr: 0.000494  sp_loss: 6.5890 (6.0764)  fam_loss: 4.2245 (3.9379)  manu_loss: 3.0276 (2.8475)  gk_loss: 3.0280 (2.8266)  time: 11.9545  data: 11.2074  max mem: 20808
+Epoch: [8]  [640/976]  eta: 1:35:40  lr: 0.000494  sp_loss: 6.4204 (6.0754)  fam_loss: 4.1624 (3.9375)  manu_loss: 2.9893 (2.8475)  gk_loss: 2.9449 (2.8265)  time: 15.1046  data: 14.3572  max mem: 20808
+Epoch: [8]  [650/976]  eta: 1:32:09  lr: 0.000494  sp_loss: 6.2021 (6.0751)  fam_loss: 3.9390 (3.9371)  manu_loss: 2.8566 (2.8473)  gk_loss: 2.8185 (2.8265)  time: 12.7892  data: 12.0365  max mem: 20808
+Epoch: [8]  [660/976]  eta: 1:29:05  lr: 0.000494  sp_loss: 6.3745 (6.0798)  fam_loss: 4.1587 (3.9399)  manu_loss: 3.0158 (2.8492)  gk_loss: 2.9651 (2.8282)  time: 11.5461  data: 10.7941  max mem: 20808
+Epoch: [8]  [670/976]  eta: 1:26:55  lr: 0.000494  sp_loss: 5.9220 (6.0665)  fam_loss: 3.9003 (3.9316)  manu_loss: 2.8401 (2.8432)  gk_loss: 2.7601 (2.8224)  time: 19.7341  data: 18.9875  max mem: 20808
+Epoch: [8]  [680/976]  eta: 1:24:55  lr: 0.000494  sp_loss: 5.2060 (6.0594)  fam_loss: 3.4416 (3.9274)  manu_loss: 2.5249 (2.8405)  gk_loss: 2.4777 (2.8194)  time: 27.1048  data: 26.3582  max mem: 20808
+Epoch: [8]  [690/976]  eta: 1:25:13  lr: 0.000494  sp_loss: 5.5395 (6.0565)  fam_loss: 3.6861 (3.9257)  manu_loss: 2.6417 (2.8393)  gk_loss: 2.5848 (2.8182)  time: 45.8260  data: 45.0795  max mem: 20808
+Epoch: [8]  [700/976]  eta: 1:23:17  lr: 0.000494  sp_loss: 5.9814 (6.0548)  fam_loss: 3.8857 (3.9245)  manu_loss: 2.8118 (2.8384)  gk_loss: 2.7794 (2.8178)  time: 48.4343  data: 47.6872  max mem: 20808
+Epoch: [8]  [710/976]  eta: 1:19:44  lr: 0.000494  sp_loss: 6.4448 (6.0575)  fam_loss: 4.1518 (3.9259)  manu_loss: 2.9746 (2.8391)  gk_loss: 2.9486 (2.8186)  time: 21.6991  data: 20.9523  max mem: 20808
+Epoch: [8]  [720/976]  eta: 1:16:24  lr: 0.000494  sp_loss: 6.5076 (6.0596)  fam_loss: 4.1853 (3.9274)  manu_loss: 2.9746 (2.8400)  gk_loss: 2.9732 (2.8196)  time: 10.9611  data: 10.2145  max mem: 20808
+Epoch: [8]  [730/976]  eta: 1:12:56  lr: 0.000494  sp_loss: 6.6311 (6.0645)  fam_loss: 4.2431 (3.9304)  manu_loss: 2.9860 (2.8423)  gk_loss: 3.0205 (2.8219)  time: 10.8875  data: 10.1407  max mem: 20808
+Epoch: [8]  [740/976]  eta: 1:09:53  lr: 0.000494  sp_loss: 6.3324 (6.0628)  fam_loss: 4.1151 (3.9295)  manu_loss: 2.9580 (2.8414)  gk_loss: 2.9981 (2.8210)  time: 12.6675  data: 11.9207  max mem: 20808
+Epoch: [8]  [750/976]  eta: 1:06:31  lr: 0.000494  sp_loss: 5.8195 (6.0611)  fam_loss: 3.8654 (3.9278)  manu_loss: 2.7935 (2.8402)  gk_loss: 2.7379 (2.8201)  time: 12.9179  data: 12.1712  max mem: 20808
+Epoch: [8]  [760/976]  eta: 1:03:16  lr: 0.000494  sp_loss: 6.3541 (6.0624)  fam_loss: 4.0957 (3.9285)  manu_loss: 2.9445 (2.8404)  gk_loss: 2.9559 (2.8205)  time: 10.4467  data: 9.7000  max mem: 20808
+Epoch: [8]  [770/976]  eta: 0:59:59  lr: 0.000494  sp_loss: 6.2695 (6.0604)  fam_loss: 4.0209 (3.9273)  manu_loss: 2.9108 (2.8395)  gk_loss: 2.8708 (2.8194)  time: 10.3858  data: 9.6396  max mem: 20808
+Epoch: [8]  [780/976]  eta: 0:56:51  lr: 0.000494  sp_loss: 5.6063 (6.0561)  fam_loss: 3.6130 (3.9243)  manu_loss: 2.6174 (2.8374)  gk_loss: 2.5683 (2.8174)  time: 10.8887  data: 10.1426  max mem: 20808
+Epoch: [8]  [790/976]  eta: 0:53:38  lr: 0.000494  sp_loss: 6.0647 (6.0596)  fam_loss: 3.9596 (3.9269)  manu_loss: 2.8380 (2.8391)  gk_loss: 2.7932 (2.8193)  time: 10.7301  data: 9.9834  max mem: 20808
+Epoch: [8]  [800/976]  eta: 0:51:16  lr: 0.000494  sp_loss: 6.5336 (6.0626)  fam_loss: 4.2369 (3.9289)  manu_loss: 3.0796 (2.8405)  gk_loss: 3.0338 (2.8205)  time: 20.5289  data: 19.7823  max mem: 20808
+Epoch: [8]  [810/976]  eta: 0:48:13  lr: 0.000494  sp_loss: 6.1028 (6.0580)  fam_loss: 4.0198 (3.9263)  manu_loss: 2.9312 (2.8386)  gk_loss: 2.8515 (2.8186)  time: 22.5491  data: 21.8028  max mem: 20808
+Epoch: [8]  [820/976]  eta: 0:45:15  lr: 0.000494  sp_loss: 6.3613 (6.0627)  fam_loss: 4.1215 (3.9290)  manu_loss: 3.0006 (2.8407)  gk_loss: 2.9366 (2.8205)  time: 14.3015  data: 13.5548  max mem: 20808
+Epoch: [8]  [830/976]  eta: 0:42:08  lr: 0.000494  sp_loss: 6.5060 (6.0618)  fam_loss: 4.1705 (3.9283)  manu_loss: 2.9725 (2.8401)  gk_loss: 2.9687 (2.8200)  time: 12.6417  data: 11.8945  max mem: 20808
+Epoch: [8]  [840/976]  eta: 0:40:33  lr: 0.000494  sp_loss: 5.9666 (6.0606)  fam_loss: 3.7873 (3.9279)  manu_loss: 2.7222 (2.8396)  gk_loss: 2.7073 (2.8194)  time: 37.8994  data: 37.1525  max mem: 20808
+Epoch: [8]  [850/976]  eta: 0:37:22  lr: 0.000494  sp_loss: 6.1330 (6.0619)  fam_loss: 3.8814 (3.9282)  manu_loss: 2.7813 (2.8396)  gk_loss: 2.7702 (2.8195)  time: 37.6459  data: 36.8998  max mem: 20808
+Epoch: [8]  [860/976]  eta: 0:34:24  lr: 0.000494  sp_loss: 6.3822 (6.0643)  fam_loss: 4.0536 (3.9295)  manu_loss: 2.9513 (2.8404)  gk_loss: 2.8950 (2.8201)  time: 13.7481  data: 13.0025  max mem: 20808
+Epoch: [8]  [870/976]  eta: 0:31:19  lr: 0.000494  sp_loss: 6.1323 (6.0597)  fam_loss: 4.0477 (3.9266)  manu_loss: 2.8714 (2.8383)  gk_loss: 2.8251 (2.8179)  time: 14.8764  data: 14.1302  max mem: 20808
+Epoch: [8]  [880/976]  eta: 0:28:22  lr: 0.000494  sp_loss: 5.8163 (6.0572)  fam_loss: 3.6832 (3.9249)  manu_loss: 2.6770 (2.8370)  gk_loss: 2.6322 (2.8169)  time: 15.0970  data: 14.3497  max mem: 20808
+Epoch: [8]  [890/976]  eta: 0:25:19  lr: 0.000494  sp_loss: 5.8947 (6.0546)  fam_loss: 3.7408 (3.9235)  manu_loss: 2.7027 (2.8359)  gk_loss: 2.6854 (2.8159)  time: 14.9953  data: 14.2480  max mem: 20808
+Epoch: [8]  [900/976]  eta: 0:22:21  lr: 0.000494  sp_loss: 6.3448 (6.0579)  fam_loss: 4.1528 (3.9256)  manu_loss: 3.0290 (2.8376)  gk_loss: 2.9961 (2.8176)  time: 13.9204  data: 13.1732  max mem: 20808
+Epoch: [8]  [910/976]  eta: 0:19:18  lr: 0.000494  sp_loss: 6.4514 (6.0592)  fam_loss: 4.1235 (3.9265)  manu_loss: 3.0095 (2.8383)  gk_loss: 2.9182 (2.8183)  time: 12.2436  data: 11.4965  max mem: 20808
+Epoch: [8]  [920/976]  eta: 0:16:49  lr: 0.000494  sp_loss: 6.1702 (6.0550)  fam_loss: 3.9727 (3.9237)  manu_loss: 2.8457 (2.8364)  gk_loss: 2.8173 (2.8164)  time: 34.6346  data: 33.8877  max mem: 20808
+Epoch: [8]  [930/976]  eta: 0:13:48  lr: 0.000494  sp_loss: 6.0758 (6.0564)  fam_loss: 3.9712 (3.9249)  manu_loss: 2.8457 (2.8373)  gk_loss: 2.8173 (2.8172)  time: 39.4512  data: 38.7042  max mem: 20808
+Epoch: [8]  [940/976]  eta: 0:10:44  lr: 0.000494  sp_loss: 5.9135 (6.0513)  fam_loss: 3.7560 (3.9214)  manu_loss: 2.7630 (2.8350)  gk_loss: 2.7092 (2.8147)  time: 13.1210  data: 12.3745  max mem: 20808
+Epoch: [8]  [950/976]  eta: 0:07:43  lr: 0.000494  sp_loss: 5.6425 (6.0468)  fam_loss: 3.6263 (3.9184)  manu_loss: 2.6320 (2.8328)  gk_loss: 2.5897 (2.8127)  time: 8.1872  data: 7.4407  max mem: 20808
+Epoch: [8]  [960/976]  eta: 0:04:44  lr: 0.000494  sp_loss: 5.8860 (6.0475)  fam_loss: 3.8207 (3.9189)  manu_loss: 2.7745 (2.8330)  gk_loss: 2.7354 (2.8130)  time: 12.0511  data: 11.3040  max mem: 20808
+Epoch: [8]  [970/976]  eta: 0:01:45  lr: 0.000494  sp_loss: 5.9459 (6.0444)  fam_loss: 3.9462 (3.9170)  manu_loss: 2.8140 (2.8315)  gk_loss: 2.8254 (2.8115)  time: 10.8149  data: 10.0679  max mem: 20808
+Epoch: [8]  [975/976]  eta: 0:00:17  lr: 0.000494  sp_loss: 6.0865 (6.0442)  fam_loss: 3.9462 (3.9168)  manu_loss: 2.8140 (2.8314)  gk_loss: 2.8254 (2.8114)  time: 6.8844  data: 6.1382  max mem: 20808
+Epoch: [8] Total time: 4:45:58 (17.5807 s / it)
+Averaged stats: lr: 0.000494  sp_loss: 6.0865 (6.0442)  fam_loss: 3.9462 (3.9168)  manu_loss: 2.8140 (2.8314)  gk_loss: 2.8254 (2.8114)
+Test:  [  0/196]  eta: 10:46:03  sploss: 2.7227 (2.7227)  famloss: 1.5181 (1.5181)  manuloss: 1.0047 (1.0047)  acc1: 48.2422 (48.2422)  acc5: 72.0703 (72.0703)  family_acc1: 62.8906 (62.8906)  manu_acc1: 73.2422 (73.2422)  time: 197.7748  data: 197.4463  max mem: 20808
+Test:  [ 10/196]  eta: 1:52:09  sploss: 2.8474 (2.8505)  famloss: 1.6057 (1.6095)  manuloss: 1.0080 (1.0828)  acc1: 44.5312 (44.5135)  acc5: 69.3359 (69.5135)  family_acc1: 63.6719 (63.4055)  manu_acc1: 73.4375 (73.1889)  time: 36.1819  data: 35.8535  max mem: 20808
+Test:  [ 20/196]  eta: 2:52:58  sploss: 2.8022 (2.8135)  famloss: 1.5990 (1.5831)  manuloss: 1.0424 (1.0714)  acc1: 45.5078 (45.2009)  acc5: 69.9219 (70.0800)  family_acc1: 63.4766 (63.5231)  manu_acc1: 74.8047 (74.0978)  time: 52.0257  data: 51.6969  max mem: 20808
+Test:  [ 30/196]  eta: 2:13:16  sploss: 2.7571 (2.7942)  famloss: 1.5627 (1.5790)  manuloss: 1.0498 (1.0698)  acc1: 46.2891 (45.5330)  acc5: 70.7031 (70.3818)  family_acc1: 62.3047 (63.1930)  manu_acc1: 74.8047 (73.9793)  time: 54.7691  data: 54.4402  max mem: 20808
+Test:  [ 40/196]  eta: 1:56:50  sploss: 2.7467 (2.7838)  famloss: 1.5573 (1.5650)  manuloss: 1.0288 (1.0574)  acc1: 46.2891 (45.6174)  acc5: 71.0938 (70.5078)  family_acc1: 63.4766 (63.5671)  manu_acc1: 74.8047 (74.2378)  time: 30.2080  data: 29.8796  max mem: 20808
+Test:  [ 50/196]  eta: 1:35:32  sploss: 2.8098 (2.7920)  famloss: 1.5681 (1.5766)  manuloss: 1.0591 (1.0612)  acc1: 45.5078 (45.5078)  acc5: 70.5078 (70.4121)  family_acc1: 63.2812 (63.4191)  manu_acc1: 73.8281 (74.0579)  time: 25.4462  data: 25.1178  max mem: 20808
+Test:  [ 60/196]  eta: 1:22:40  sploss: 2.8309 (2.7932)  famloss: 1.6517 (1.5813)  manuloss: 1.0859 (1.0708)  acc1: 46.0938 (45.8248)  acc5: 69.7266 (70.4310)  family_acc1: 61.9141 (63.4541)  manu_acc1: 72.8516 (73.7993)  time: 19.1279  data: 18.7996  max mem: 20808
+Test:  [ 70/196]  eta: 1:14:17  sploss: 2.6511 (2.7618)  famloss: 1.4918 (1.5565)  manuloss: 0.9647 (1.0519)  acc1: 48.6328 (46.3771)  acc5: 72.6562 (70.9425)  family_acc1: 65.2344 (63.9745)  manu_acc1: 75.5859 (74.2298)  time: 25.4847  data: 25.1558  max mem: 20808
+Test:  [ 80/196]  eta: 1:09:59  sploss: 2.6053 (2.7557)  famloss: 1.4472 (1.5521)  manuloss: 0.9647 (1.0493)  acc1: 48.6328 (46.4337)  acc5: 72.6562 (71.0696)  family_acc1: 65.6250 (64.1372)  manu_acc1: 75.5859 (74.2959)  time: 35.3872  data: 35.0584  max mem: 20808
+Test:  [ 90/196]  eta: 0:59:34  sploss: 2.8058 (2.7668)  famloss: 1.5862 (1.5618)  manuloss: 1.0473 (1.0522)  acc1: 45.3125 (46.1517)  acc5: 69.9219 (70.8684)  family_acc1: 63.2812 (63.8650)  manu_acc1: 73.0469 (74.1951)  time: 27.8516  data: 27.5233  max mem: 20808
+Test:  [100/196]  eta: 0:50:16  sploss: 2.8058 (2.7630)  famloss: 1.5878 (1.5634)  manuloss: 1.0713 (1.0550)  acc1: 44.7266 (46.1634)  acc5: 69.5312 (70.8810)  family_acc1: 62.3047 (63.7473)  manu_acc1: 73.0469 (74.1163)  time: 12.0352  data: 11.7071  max mem: 20808
+Test:  [110/196]  eta: 0:42:13  sploss: 2.6938 (2.7572)  famloss: 1.5652 (1.5647)  manuloss: 1.0713 (1.0595)  acc1: 47.4609 (46.3471)  acc5: 71.6797 (71.0234)  family_acc1: 63.2812 (63.7792)  manu_acc1: 73.6328 (73.9636)  time: 10.0162  data: 9.6880  max mem: 20808
+Test:  [120/196]  eta: 0:36:22  sploss: 2.6908 (2.7614)  famloss: 1.5969 (1.5762)  manuloss: 1.1055 (1.0721)  acc1: 47.4609 (46.4182)  acc5: 72.0703 (70.9565)  family_acc1: 63.6719 (63.5088)  manu_acc1: 72.8516 (73.5973)  time: 15.0268  data: 14.6984  max mem: 20808
+Test:  [130/196]  eta: 0:37:44  sploss: 2.6497 (2.7498)  famloss: 1.5575 (1.5720)  manuloss: 1.0699 (1.0688)  acc1: 47.2656 (46.5902)  acc5: 71.6797 (71.1102)  family_acc1: 63.0859 (63.6063)  manu_acc1: 72.8516 (73.6790)  time: 61.2287  data: 60.9004  max mem: 20808
+Test:  [140/196]  eta: 0:31:29  sploss: 2.5691 (2.7301)  famloss: 1.4513 (1.5594)  manuloss: 0.9702 (1.0611)  acc1: 50.1953 (46.9373)  acc5: 74.2188 (71.4539)  family_acc1: 65.8203 (63.8810)  manu_acc1: 76.3672 (73.8918)  time: 64.1916  data: 63.8632  max mem: 20808
+Test:  [150/196]  eta: 0:25:47  sploss: 2.5035 (2.7165)  famloss: 1.3849 (1.5483)  manuloss: 0.9257 (1.0515)  acc1: 50.3906 (47.1104)  acc5: 74.8047 (71.6939)  family_acc1: 67.5781 (64.1000)  manu_acc1: 77.1484 (74.1450)  time: 29.2742  data: 28.9455  max mem: 20808
+Test:  [160/196]  eta: 0:19:37  sploss: 2.5495 (2.7084)  famloss: 1.3849 (1.5399)  manuloss: 0.9168 (1.0449)  acc1: 49.0234 (47.2207)  acc5: 74.2188 (71.8228)  family_acc1: 66.9922 (64.2784)  manu_acc1: 77.1484 (74.2867)  time: 25.4299  data: 25.1012  max mem: 20808
+Test:  [170/196]  eta: 0:13:50  sploss: 2.6526 (2.7091)  famloss: 1.4543 (1.5396)  manuloss: 0.9967 (1.0453)  acc1: 47.6562 (47.2074)  acc5: 73.0469 (71.8110)  family_acc1: 65.8203 (64.2521)  manu_acc1: 75.1953 (74.2553)  time: 19.1025  data: 18.7743  max mem: 20808
+Test:  [180/196]  eta: 0:08:39  sploss: 2.6526 (2.7029)  famloss: 1.4734 (1.5339)  manuloss: 0.9432 (1.0360)  acc1: 47.6562 (47.2786)  acc5: 72.2656 (71.8728)  family_acc1: 64.8438 (64.3441)  manu_acc1: 77.3438 (74.5392)  time: 30.7904  data: 30.4622  max mem: 20808
+Test:  [190/196]  eta: 0:03:08  sploss: 2.5718 (2.6959)  famloss: 1.4050 (1.5275)  manuloss: 0.8595 (1.0266)  acc1: 48.0469 (47.3157)  acc5: 73.4375 (71.9742)  family_acc1: 66.6016 (64.4889)  manu_acc1: 79.4922 (74.8139)  time: 27.0051  data: 26.6767  max mem: 20808
+Test:  [195/196]  eta: 0:00:30  sploss: 2.5592 (2.6923)  famloss: 1.4019 (1.5244)  manuloss: 0.8411 (1.0213)  acc1: 49.0234 (47.3570)  acc5: 73.6328 (72.0150)  family_acc1: 66.7969 (64.5520)  manu_acc1: 79.8828 (74.9240)  time: 19.9157  data: 19.5980  max mem: 20808
+Test: Total time: 1:40:17 (30.7021 s / it)
+* Acc@1 47.357 Acc@5 72.015 family@1 64.552 manu@1 74.924 sploss 2.692 fmloss 1.524 mfloss 1.021
+Accuracy of the network on the 100000 test images: 47.4%
+Max accuracy: 47.36%
+Epoch: [9]  [  0/976]  eta: 1 day, 15:54:34  lr: 0.000492  sp_loss: 4.4777 (4.4777)  fam_loss: 2.9832 (2.9832)  manu_loss: 2.0952 (2.0952)  gk_loss: 2.1556 (2.1556)  time: 147.2077  data: 146.4575  max mem: 20808
+Epoch: [9]  [ 10/976]  eta: 6:25:14  lr: 0.000492  sp_loss: 5.8472 (5.7342)  fam_loss: 3.8656 (3.7664)  manu_loss: 2.8793 (2.7306)  gk_loss: 2.7528 (2.6770)  time: 23.9280  data: 23.1808  max mem: 20808
+Epoch: [9]  [ 20/976]  eta: 4:56:20  lr: 0.000492  sp_loss: 5.8472 (5.6474)  fam_loss: 3.8656 (3.7062)  manu_loss: 2.8793 (2.6895)  gk_loss: 2.7528 (2.6313)  time: 12.1685  data: 11.4222  max mem: 20808
+Epoch: [9]  [ 30/976]  eta: 4:56:40  lr: 0.000492  sp_loss: 5.7881 (5.6613)  fam_loss: 3.8261 (3.7232)  manu_loss: 2.7024 (2.7005)  gk_loss: 2.6824 (2.6449)  time: 16.0051  data: 15.2521  max mem: 20808
+Epoch: [9]  [ 40/976]  eta: 8:33:35  lr: 0.000492  sp_loss: 5.7881 (5.6837)  fam_loss: 3.8261 (3.7350)  manu_loss: 2.7820 (2.7110)  gk_loss: 2.6824 (2.6555)  time: 47.9625  data: 47.2093  max mem: 20808
+Epoch: [9]  [ 50/976]  eta: 7:22:52  lr: 0.000492  sp_loss: 6.0308 (5.7142)  fam_loss: 3.9227 (3.7532)  manu_loss: 2.8403 (2.7220)  gk_loss: 2.7698 (2.6665)  time: 44.0089  data: 43.2626  max mem: 20808
+Epoch: [9]  [ 60/976]  eta: 6:42:04  lr: 0.000492  sp_loss: 6.1112 (5.8113)  fam_loss: 4.0409 (3.8185)  manu_loss: 2.9287 (2.7690)  gk_loss: 2.8462 (2.7138)  time: 12.8366  data: 12.0906  max mem: 20808
+Epoch: [9]  [ 70/976]  eta: 6:56:54  lr: 0.000492  sp_loss: 6.2457 (5.8365)  fam_loss: 4.0409 (3.8263)  manu_loss: 2.9287 (2.7749)  gk_loss: 2.8462 (2.7176)  time: 24.8416  data: 24.0961  max mem: 20808
+Epoch: [9]  [ 80/976]  eta: 6:56:59  lr: 0.000492  sp_loss: 6.3928 (5.8824)  fam_loss: 4.0942 (3.8541)  manu_loss: 2.9384 (2.7914)  gk_loss: 2.8827 (2.7337)  time: 32.7629  data: 32.0174  max mem: 20808
+Epoch: [9]  [ 90/976]  eta: 8:21:01  lr: 0.000492  sp_loss: 6.3836 (5.8929)  fam_loss: 4.1016 (3.8566)  manu_loss: 2.9043 (2.7939)  gk_loss: 2.8627 (2.7360)  time: 56.3648  data: 55.6186  max mem: 20808
+Epoch: [9]  [100/976]  eta: 7:57:50  lr: 0.000492  sp_loss: 5.9213 (5.8894)  fam_loss: 3.8909 (3.8545)  manu_loss: 2.8097 (2.7936)  gk_loss: 2.7160 (2.7347)  time: 52.1895  data: 51.4433  max mem: 20808
+Epoch: [9]  [110/976]  eta: 7:29:33  lr: 0.000492  sp_loss: 5.5356 (5.8505)  fam_loss: 3.6508 (3.8310)  manu_loss: 2.6432 (2.7761)  gk_loss: 2.5667 (2.7171)  time: 18.4874  data: 17.7408  max mem: 20808
+Epoch: [9]  [120/976]  eta: 7:23:26  lr: 0.000492  sp_loss: 6.0201 (5.8828)  fam_loss: 3.9158 (3.8508)  manu_loss: 2.8373 (2.7897)  gk_loss: 2.7674 (2.7316)  time: 22.7665  data: 22.0198  max mem: 20808
+Epoch: [9]  [130/976]  eta: 6:53:47  lr: 0.000492  sp_loss: 6.0201 (5.8629)  fam_loss: 4.0098 (3.8367)  manu_loss: 2.8745 (2.7779)  gk_loss: 2.8278 (2.7206)  time: 19.3505  data: 18.6039  max mem: 20808
+Epoch: [9]  [140/976]  eta: 6:30:09  lr: 0.000492  sp_loss: 6.1914 (5.9004)  fam_loss: 4.0557 (3.8593)  manu_loss: 2.9004 (2.7949)  gk_loss: 2.8559 (2.7377)  time: 9.3617  data: 8.6150  max mem: 20808
+Epoch: [9]  [150/976]  eta: 6:17:36  lr: 0.000492  sp_loss: 6.4315 (5.8911)  fam_loss: 4.1100 (3.8516)  manu_loss: 3.0097 (2.7890)  gk_loss: 2.9015 (2.7341)  time: 14.8692  data: 14.1222  max mem: 20808
+Epoch: [9]  [160/976]  eta: 6:41:51  lr: 0.000492  sp_loss: 5.8017 (5.8884)  fam_loss: 3.8029 (3.8506)  manu_loss: 2.7632 (2.7885)  gk_loss: 2.6980 (2.7328)  time: 40.4592  data: 39.7128  max mem: 20808
+Epoch: [9]  [170/976]  eta: 6:28:09  lr: 0.000492  sp_loss: 6.1641 (5.8975)  fam_loss: 3.9944 (3.8568)  manu_loss: 2.8535 (2.7929)  gk_loss: 2.8141 (2.7373)  time: 39.9665  data: 39.2207  max mem: 20808
+Epoch: [9]  [180/976]  eta: 6:15:34  lr: 0.000492  sp_loss: 6.4583 (5.9149)  fam_loss: 4.2021 (3.8690)  manu_loss: 3.0242 (2.8028)  gk_loss: 2.9819 (2.7465)  time: 18.3388  data: 17.5929  max mem: 20808
+Epoch: [9]  [190/976]  eta: 6:10:30  lr: 0.000492  sp_loss: 6.5105 (5.9250)  fam_loss: 4.2169 (3.8753)  manu_loss: 3.0785 (2.8071)  gk_loss: 3.0349 (2.7508)  time: 23.0436  data: 22.2977  max mem: 20808
+Epoch: [9]  [200/976]  eta: 6:08:43  lr: 0.000492  sp_loss: 6.3970 (5.9289)  fam_loss: 4.1299 (3.8768)  manu_loss: 2.9803 (2.8076)  gk_loss: 2.9306 (2.7519)  time: 30.3146  data: 29.5691  max mem: 20808
+Epoch: [9]  [210/976]  eta: 5:53:45  lr: 0.000492  sp_loss: 6.3970 (5.9373)  fam_loss: 4.1484 (3.8816)  manu_loss: 2.9808 (2.8098)  gk_loss: 2.9306 (2.7554)  time: 22.2428  data: 21.4971  max mem: 20808
+Epoch: [9]  [220/976]  eta: 5:39:43  lr: 0.000492  sp_loss: 6.3702 (5.9379)  fam_loss: 4.1484 (3.8833)  manu_loss: 2.9247 (2.8121)  gk_loss: 2.9071 (2.7573)  time: 11.4120  data: 10.6652  max mem: 20808
+Epoch: [9]  [230/976]  eta: 5:26:15  lr: 0.000492  sp_loss: 6.0681 (5.9359)  fam_loss: 4.0055 (3.8826)  manu_loss: 2.9247 (2.8124)  gk_loss: 2.8145 (2.7553)  time: 10.7314  data: 9.9851  max mem: 20808
+Epoch: [9]  [240/976]  eta: 5:17:11  lr: 0.000492  sp_loss: 6.3011 (5.9533)  fam_loss: 4.0684 (3.8910)  manu_loss: 2.9616 (2.8174)  gk_loss: 2.8948 (2.7621)  time: 13.6555  data: 12.9094  max mem: 20808
+Epoch: [9]  [250/976]  eta: 5:09:17  lr: 0.000492  sp_loss: 6.0998 (5.9346)  fam_loss: 3.9074 (3.8785)  manu_loss: 2.8179 (2.8085)  gk_loss: 2.7339 (2.7530)  time: 17.7179  data: 16.9710  max mem: 20808
+Epoch: [9]  [260/976]  eta: 5:04:32  lr: 0.000492  sp_loss: 5.6844 (5.9324)  fam_loss: 3.7107 (3.8769)  manu_loss: 2.7231 (2.8078)  gk_loss: 2.6135 (2.7525)  time: 21.4493  data: 20.7026  max mem: 20808
+Epoch: [9]  [270/976]  eta: 4:52:46  lr: 0.000492  sp_loss: 5.6114 (5.9200)  fam_loss: 3.6656 (3.8690)  manu_loss: 2.7237 (2.8026)  gk_loss: 2.5792 (2.7463)  time: 16.3541  data: 15.6078  max mem: 20808
+Epoch: [9]  [280/976]  eta: 4:45:17  lr: 0.000492  sp_loss: 5.6830 (5.9091)  fam_loss: 3.6919 (3.8618)  manu_loss: 2.7027 (2.7972)  gk_loss: 2.6196 (2.7414)  time: 12.5151  data: 11.7682  max mem: 20808
+Epoch: [9]  [290/976]  eta: 4:55:58  lr: 0.000492  sp_loss: 5.6892 (5.9060)  fam_loss: 3.7200 (3.8594)  manu_loss: 2.7132 (2.7951)  gk_loss: 2.6309 (2.7388)  time: 39.5098  data: 38.7631  max mem: 20808
+Epoch: [9]  [300/976]  eta: 4:45:05  lr: 0.000492  sp_loss: 5.5424 (5.8987)  fam_loss: 3.7020 (3.8539)  manu_loss: 2.6435 (2.7911)  gk_loss: 2.5720 (2.7350)  time: 35.2814  data: 34.5351  max mem: 20808
+Epoch: [9]  [310/976]  eta: 4:34:51  lr: 0.000492  sp_loss: 5.4934 (5.8963)  fam_loss: 3.5963 (3.8520)  manu_loss: 2.5927 (2.7905)  gk_loss: 2.5511 (2.7339)  time: 8.3902  data: 7.6439  max mem: 20808
+Epoch: [9]  [320/976]  eta: 4:39:08  lr: 0.000492  sp_loss: 6.1738 (5.9058)  fam_loss: 3.9880 (3.8584)  manu_loss: 2.8570 (2.7949)  gk_loss: 2.8104 (2.7389)  time: 28.9306  data: 28.1844  max mem: 20808
+Epoch: [9]  [330/976]  eta: 4:29:19  lr: 0.000492  sp_loss: 6.1738 (5.9107)  fam_loss: 3.9880 (3.8614)  manu_loss: 2.8570 (2.7967)  gk_loss: 2.8104 (2.7410)  time: 28.9600  data: 28.2138  max mem: 20808
+Epoch: [9]  [340/976]  eta: 4:19:56  lr: 0.000492  sp_loss: 5.9775 (5.9057)  fam_loss: 3.9272 (3.8584)  manu_loss: 2.8030 (2.7944)  gk_loss: 2.7806 (2.7398)  time: 8.3594  data: 7.6130  max mem: 20808
+Epoch: [9]  [350/976]  eta: 4:11:11  lr: 0.000492  sp_loss: 5.7941 (5.9000)  fam_loss: 3.8369 (3.8547)  manu_loss: 2.7629 (2.7916)  gk_loss: 2.6601 (2.7370)  time: 8.5168  data: 7.7705  max mem: 20808
+Epoch: [9]  [360/976]  eta: 4:05:22  lr: 0.000492  sp_loss: 5.9062 (5.8987)  fam_loss: 3.8650 (3.8535)  manu_loss: 2.7740 (2.7908)  gk_loss: 2.7080 (2.7358)  time: 13.2679  data: 12.5221  max mem: 20808
+Epoch: [9]  [370/976]  eta: 3:57:52  lr: 0.000492  sp_loss: 6.1908 (5.9095)  fam_loss: 3.9669 (3.8596)  manu_loss: 2.9192 (2.7949)  gk_loss: 2.7778 (2.7405)  time: 14.3825  data: 13.6365  max mem: 20808
+Epoch: [9]  [380/976]  eta: 3:50:02  lr: 0.000492  sp_loss: 6.2747 (5.9157)  fam_loss: 4.1451 (3.8635)  manu_loss: 2.9842 (2.7976)  gk_loss: 2.9569 (2.7433)  time: 9.7813  data: 9.0349  max mem: 20808
+Epoch: [9]  [390/976]  eta: 3:42:47  lr: 0.000492  sp_loss: 6.1448 (5.9173)  fam_loss: 4.0402 (3.8637)  manu_loss: 2.8745 (2.7974)  gk_loss: 2.8177 (2.7436)  time: 9.0457  data: 8.2995  max mem: 20808
+Epoch: [9]  [400/976]  eta: 3:37:18  lr: 0.000492  sp_loss: 5.9595 (5.9160)  fam_loss: 3.8117 (3.8625)  manu_loss: 2.8028 (2.7970)  gk_loss: 2.6712 (2.7427)  time: 12.6786  data: 11.9321  max mem: 20808
+Epoch: [9]  [410/976]  eta: 3:30:14  lr: 0.000492  sp_loss: 5.6685 (5.9104)  fam_loss: 3.7234 (3.8587)  manu_loss: 2.6873 (2.7944)  gk_loss: 2.6121 (2.7403)  time: 12.0423  data: 11.2954  max mem: 20808
+Epoch: [9]  [420/976]  eta: 3:23:25  lr: 0.000492  sp_loss: 5.9562 (5.9107)  fam_loss: 3.8327 (3.8581)  manu_loss: 2.7954 (2.7946)  gk_loss: 2.7309 (2.7404)  time: 8.2420  data: 7.4951  max mem: 20808
+Epoch: [9]  [430/976]  eta: 3:17:03  lr: 0.000492  sp_loss: 6.1209 (5.9132)  fam_loss: 4.0016 (3.8596)  manu_loss: 2.9241 (2.7958)  gk_loss: 2.8432 (2.7416)  time: 8.6561  data: 7.9091  max mem: 20808
+Epoch: [9]  [440/976]  eta: 3:13:33  lr: 0.000492  sp_loss: 6.0682 (5.9051)  fam_loss: 3.9641 (3.8540)  manu_loss: 2.9185 (2.7920)  gk_loss: 2.8173 (2.7376)  time: 15.6813  data: 14.9344  max mem: 20808
+Epoch: [9]  [450/976]  eta: 3:31:56  lr: 0.000492  sp_loss: 5.4326 (5.9056)  fam_loss: 3.5722 (3.8544)  manu_loss: 2.5669 (2.7920)  gk_loss: 2.4812 (2.7373)  time: 78.5143  data: 77.7680  max mem: 20808
+Epoch: [9]  [460/976]  eta: 3:25:05  lr: 0.000492  sp_loss: 6.3351 (5.9116)  fam_loss: 4.1212 (3.8590)  manu_loss: 2.9886 (2.7952)  gk_loss: 2.9060 (2.7409)  time: 71.9016  data: 71.1552  max mem: 20808
+Epoch: [9]  [470/976]  eta: 3:18:20  lr: 0.000492  sp_loss: 5.8185 (5.9037)  fam_loss: 3.8280 (3.8541)  manu_loss: 2.7789 (2.7913)  gk_loss: 2.6926 (2.7375)  time: 8.6870  data: 7.9399  max mem: 20808
+Epoch: [9]  [480/976]  eta: 3:12:54  lr: 0.000492  sp_loss: 5.8863 (5.9074)  fam_loss: 3.8425 (3.8558)  manu_loss: 2.8021 (2.7927)  gk_loss: 2.6964 (2.7390)  time: 11.5674  data: 10.8202  max mem: 20808
+Epoch: [9]  [490/976]  eta: 3:06:34  lr: 0.000492  sp_loss: 6.0339 (5.9107)  fam_loss: 3.9201 (3.8569)  manu_loss: 2.8393 (2.7932)  gk_loss: 2.7639 (2.7400)  time: 11.6281  data: 10.8813  max mem: 20808
+Epoch: [9]  [500/976]  eta: 3:00:36  lr: 0.000492  sp_loss: 6.4999 (5.9195)  fam_loss: 4.1849 (3.8624)  manu_loss: 3.0217 (2.7975)  gk_loss: 2.9897 (2.7443)  time: 9.0293  data: 8.2825  max mem: 20808
+Epoch: [9]  [510/976]  eta: 2:54:39  lr: 0.000492  sp_loss: 6.4999 (5.9145)  fam_loss: 4.2597 (3.8590)  manu_loss: 3.0422 (2.7950)  gk_loss: 3.0227 (2.7418)  time: 9.0829  data: 8.3364  max mem: 20808
+Epoch: [9]  [520/976]  eta: 2:49:49  lr: 0.000492  sp_loss: 5.5051 (5.9133)  fam_loss: 3.5311 (3.8580)  manu_loss: 2.6059 (2.7944)  gk_loss: 2.4975 (2.7413)  time: 11.7971  data: 11.0507  max mem: 20808
+Epoch: [9]  [530/976]  eta: 2:44:15  lr: 0.000492  sp_loss: 6.1297 (5.9124)  fam_loss: 3.9843 (3.8572)  manu_loss: 2.8795 (2.7933)  gk_loss: 2.8212 (2.7403)  time: 12.1275  data: 11.3810  max mem: 20808
+Epoch: [9]  [540/976]  eta: 2:39:02  lr: 0.000492  sp_loss: 6.0246 (5.9179)  fam_loss: 3.9843 (3.8610)  manu_loss: 2.8546 (2.7957)  gk_loss: 2.8125 (2.7430)  time: 9.9429  data: 9.1965  max mem: 20808
+Epoch: [9]  [550/976]  eta: 2:33:42  lr: 0.000492  sp_loss: 5.8918 (5.9134)  fam_loss: 3.8686 (3.8578)  manu_loss: 2.8098 (2.7936)  gk_loss: 2.7474 (2.7409)  time: 9.7470  data: 9.0003  max mem: 20808
+Epoch: [9]  [560/976]  eta: 2:30:21  lr: 0.000492  sp_loss: 5.5958 (5.9112)  fam_loss: 3.5999 (3.8567)  manu_loss: 2.6394 (2.7928)  gk_loss: 2.5492 (2.7398)  time: 16.2589  data: 15.5119  max mem: 20808
+Epoch: [9]  [570/976]  eta: 2:25:34  lr: 0.000492  sp_loss: 5.9884 (5.9147)  fam_loss: 3.8984 (3.8584)  manu_loss: 2.8280 (2.7940)  gk_loss: 2.7584 (2.7409)  time: 17.7652  data: 17.0188  max mem: 20808
+Epoch: [9]  [580/976]  eta: 2:21:01  lr: 0.000492  sp_loss: 6.2730 (5.9198)  fam_loss: 3.9889 (3.8612)  manu_loss: 2.8697 (2.7957)  gk_loss: 2.8194 (2.7429)  time: 12.4297  data: 11.6838  max mem: 20808
+Epoch: [9]  [590/976]  eta: 2:16:29  lr: 0.000492  sp_loss: 6.3190 (5.9214)  fam_loss: 4.0321 (3.8621)  manu_loss: 2.9552 (2.7966)  gk_loss: 2.8509 (2.7441)  time: 12.7581  data: 12.0057  max mem: 20808
+Epoch: [9]  [600/976]  eta: 2:12:19  lr: 0.000492  sp_loss: 6.3277 (5.9258)  fam_loss: 4.0432 (3.8643)  manu_loss: 2.8384 (2.7981)  gk_loss: 2.8043 (2.7455)  time: 13.8081  data: 13.0558  max mem: 20808
+Epoch: [9]  [610/976]  eta: 2:07:30  lr: 0.000492  sp_loss: 6.4022 (5.9343)  fam_loss: 4.1744 (3.8691)  manu_loss: 3.0258 (2.8017)  gk_loss: 2.9603 (2.7489)  time: 11.6415  data: 10.8954  max mem: 20808
+Epoch: [9]  [620/976]  eta: 2:03:06  lr: 0.000492  sp_loss: 6.4022 (5.9381)  fam_loss: 4.1789 (3.8712)  manu_loss: 3.0273 (2.8031)  gk_loss: 2.9603 (2.7503)  time: 9.7095  data: 8.9628  max mem: 20808
+Epoch: [9]  [630/976]  eta: 1:58:30  lr: 0.000492  sp_loss: 5.9939 (5.9390)  fam_loss: 3.8975 (3.8714)  manu_loss: 2.8382 (2.8029)  gk_loss: 2.7852 (2.7500)  time: 9.7992  data: 9.0527  max mem: 20808
+Epoch: [9]  [640/976]  eta: 1:54:48  lr: 0.000492  sp_loss: 5.9939 (5.9367)  fam_loss: 3.8975 (3.8698)  manu_loss: 2.8382 (2.8020)  gk_loss: 2.7852 (2.7489)  time: 12.8230  data: 12.0763  max mem: 20808
+Epoch: [9]  [650/976]  eta: 1:50:31  lr: 0.000492  sp_loss: 6.1680 (5.9391)  fam_loss: 4.0521 (3.8714)  manu_loss: 2.8585 (2.8029)  gk_loss: 2.8468 (2.7500)  time: 13.7061  data: 12.9588  max mem: 20808
+Epoch: [9]  [660/976]  eta: 1:50:14  lr: 0.000492  sp_loss: 5.8663 (5.9329)  fam_loss: 3.8659 (3.8676)  manu_loss: 2.7649 (2.7998)  gk_loss: 2.7210 (2.7471)  time: 34.7280  data: 33.9813  max mem: 20808
+Epoch: [9]  [670/976]  eta: 1:45:56  lr: 0.000492  sp_loss: 5.7463 (5.9369)  fam_loss: 3.7126 (3.8698)  manu_loss: 2.7204 (2.8013)  gk_loss: 2.6497 (2.7486)  time: 34.8453  data: 34.0995  max mem: 20808
+Epoch: [9]  [680/976]  eta: 1:42:06  lr: 0.000492  sp_loss: 6.1094 (5.9374)  fam_loss: 3.9617 (3.8696)  manu_loss: 2.8496 (2.8010)  gk_loss: 2.7779 (2.7484)  time: 12.9401  data: 12.1944  max mem: 20808
+Epoch: [9]  [690/976]  eta: 1:37:57  lr: 0.000492  sp_loss: 6.1094 (5.9415)  fam_loss: 3.9617 (3.8724)  manu_loss: 2.8496 (2.8029)  gk_loss: 2.7779 (2.7504)  time: 13.1120  data: 12.3658  max mem: 20808
+Epoch: [9]  [700/976]  eta: 1:34:08  lr: 0.000492  sp_loss: 6.5742 (5.9376)  fam_loss: 4.1898 (3.8699)  manu_loss: 3.0165 (2.8011)  gk_loss: 2.9655 (2.7491)  time: 12.6483  data: 11.9013  max mem: 20808
+Epoch: [9]  [710/976]  eta: 1:30:08  lr: 0.000492  sp_loss: 6.2693 (5.9418)  fam_loss: 4.0779 (3.8723)  manu_loss: 2.9403 (2.8029)  gk_loss: 2.8727 (2.7506)  time: 12.8246  data: 12.0777  max mem: 20808
+Epoch: [9]  [720/976]  eta: 1:26:20  lr: 0.000492  sp_loss: 6.3982 (5.9437)  fam_loss: 4.0827 (3.8732)  manu_loss: 2.9487 (2.8034)  gk_loss: 2.9146 (2.7510)  time: 12.1717  data: 11.4259  max mem: 20808
+Epoch: [9]  [730/976]  eta: 1:22:44  lr: 0.000492  sp_loss: 6.4406 (5.9476)  fam_loss: 4.1425 (3.8758)  manu_loss: 2.9792 (2.8050)  gk_loss: 2.9216 (2.7528)  time: 14.7711  data: 14.0254  max mem: 20808
+Epoch: [9]  [740/976]  eta: 1:21:00  lr: 0.000492  sp_loss: 6.4406 (5.9494)  fam_loss: 4.2082 (3.8772)  manu_loss: 3.0105 (2.8058)  gk_loss: 2.9483 (2.7537)  time: 33.4991  data: 32.7527  max mem: 20808
+Epoch: [9]  [750/976]  eta: 1:18:48  lr: 0.000492  sp_loss: 6.3169 (5.9538)  fam_loss: 4.1247 (3.8797)  manu_loss: 2.9699 (2.8077)  gk_loss: 2.8955 (2.7554)  time: 47.9646  data: 47.2186  max mem: 20808
+Epoch: [9]  [760/976]  eta: 1:15:15  lr: 0.000492  sp_loss: 6.2493 (5.9593)  fam_loss: 4.1018 (3.8828)  manu_loss: 2.9361 (2.8101)  gk_loss: 2.8955 (2.7580)  time: 32.4356  data: 31.6892  max mem: 20808
+Epoch: [9]  [770/976]  eta: 1:11:28  lr: 0.000492  sp_loss: 6.1807 (5.9583)  fam_loss: 4.0988 (3.8821)  manu_loss: 2.9135 (2.8094)  gk_loss: 2.8859 (2.7575)  time: 16.9625  data: 16.2156  max mem: 20808
+Epoch: [9]  [780/976]  eta: 1:07:54  lr: 0.000492  sp_loss: 6.3778 (5.9634)  fam_loss: 4.0988 (3.8851)  manu_loss: 2.9135 (2.8115)  gk_loss: 2.8859 (2.7598)  time: 16.3973  data: 15.6500  max mem: 20808
+Epoch: [9]  [790/976]  eta: 1:03:59  lr: 0.000492  sp_loss: 5.9403 (5.9567)  fam_loss: 3.9116 (3.8811)  manu_loss: 2.7913 (2.8083)  gk_loss: 2.7308 (2.7568)  time: 13.9170  data: 13.1702  max mem: 20808
+Epoch: [9]  [800/976]  eta: 1:00:20  lr: 0.000492  sp_loss: 5.5718 (5.9543)  fam_loss: 3.6759 (3.8794)  manu_loss: 2.6597 (2.8074)  gk_loss: 2.5771 (2.7557)  time: 12.0733  data: 11.3274  max mem: 20808
+Epoch: [9]  [810/976]  eta: 0:56:48  lr: 0.000492  sp_loss: 6.0393 (5.9530)  fam_loss: 3.8968 (3.8783)  manu_loss: 2.8480 (2.8066)  gk_loss: 2.7765 (2.7551)  time: 16.1102  data: 15.3635  max mem: 20808
+Epoch: [9]  [820/976]  eta: 0:53:20  lr: 0.000492  sp_loss: 6.4665 (5.9570)  fam_loss: 4.1107 (3.8804)  manu_loss: 2.9869 (2.8081)  gk_loss: 2.9250 (2.7567)  time: 18.2810  data: 17.5345  max mem: 20808
+Epoch: [9]  [830/976]  eta: 0:49:56  lr: 0.000492  sp_loss: 6.4344 (5.9562)  fam_loss: 4.1107 (3.8796)  manu_loss: 2.9869 (2.8076)  gk_loss: 2.9137 (2.7562)  time: 20.1577  data: 19.4115  max mem: 20808
+Epoch: [9]  [840/976]  eta: 0:46:47  lr: 0.000492  sp_loss: 5.4339 (5.9496)  fam_loss: 3.5451 (3.8753)  manu_loss: 2.5223 (2.8046)  gk_loss: 2.4871 (2.7530)  time: 25.9321  data: 25.1860  max mem: 20808
+Epoch: [9]  [850/976]  eta: 0:43:11  lr: 0.000492  sp_loss: 5.4224 (5.9501)  fam_loss: 3.5451 (3.8754)  manu_loss: 2.6185 (2.8044)  gk_loss: 2.4963 (2.7530)  time: 22.3710  data: 21.6249  max mem: 20808
+Epoch: [9]  [860/976]  eta: 0:39:46  lr: 0.000492  sp_loss: 6.3381 (5.9511)  fam_loss: 4.0964 (3.8758)  manu_loss: 2.9304 (2.8047)  gk_loss: 2.8718 (2.7534)  time: 17.6129  data: 16.8661  max mem: 20808
+Epoch: [9]  [870/976]  eta: 0:36:16  lr: 0.000492  sp_loss: 6.0999 (5.9509)  fam_loss: 3.9439 (3.8755)  manu_loss: 2.8666 (2.8046)  gk_loss: 2.7692 (2.7532)  time: 18.8961  data: 18.1492  max mem: 20808
+Epoch: [9]  [880/976]  eta: 0:32:45  lr: 0.000492  sp_loss: 5.9986 (5.9492)  fam_loss: 3.8557 (3.8745)  manu_loss: 2.7163 (2.8036)  gk_loss: 2.6932 (2.7524)  time: 16.2842  data: 15.5372  max mem: 20808
+Epoch: [9]  [890/976]  eta: 0:29:14  lr: 0.000492  sp_loss: 5.7418 (5.9474)  fam_loss: 3.7262 (3.8731)  manu_loss: 2.7371 (2.8030)  gk_loss: 2.6586 (2.7515)  time: 14.9410  data: 14.1943  max mem: 20808
+Epoch: [9]  [900/976]  eta: 0:25:51  lr: 0.000492  sp_loss: 5.7418 (5.9466)  fam_loss: 3.6997 (3.8722)  manu_loss: 2.7371 (2.8024)  gk_loss: 2.6426 (2.7509)  time: 17.9154  data: 17.1693  max mem: 20808
+Epoch: [9]  [910/976]  eta: 0:22:19  lr: 0.000492  sp_loss: 5.3247 (5.9364)  fam_loss: 3.4419 (3.8657)  manu_loss: 2.4635 (2.7976)  gk_loss: 2.4031 (2.7463)  time: 15.5820  data: 14.8359  max mem: 20808
+Epoch: [9]  [920/976]  eta: 0:18:52  lr: 0.000492  sp_loss: 5.0670 (5.9352)  fam_loss: 3.3687 (3.8649)  manu_loss: 2.4630 (2.7970)  gk_loss: 2.3707 (2.7457)  time: 11.4685  data: 10.7215  max mem: 20808
+Epoch: [9]  [930/976]  eta: 0:15:24  lr: 0.000492  sp_loss: 6.0481 (5.9345)  fam_loss: 3.9664 (3.8643)  manu_loss: 2.8809 (2.7966)  gk_loss: 2.7962 (2.7453)  time: 11.4684  data: 10.7155  max mem: 20808
+Epoch: [9]  [940/976]  eta: 0:12:10  lr: 0.000492  sp_loss: 6.0314 (5.9315)  fam_loss: 3.9064 (3.8624)  manu_loss: 2.8375 (2.7955)  gk_loss: 2.7826 (2.7439)  time: 23.3368  data: 22.5849  max mem: 20808
+Epoch: [9]  [950/976]  eta: 0:08:44  lr: 0.000492  sp_loss: 6.0314 (5.9323)  fam_loss: 3.9849 (3.8630)  manu_loss: 2.8800 (2.7959)  gk_loss: 2.8277 (2.7445)  time: 23.4263  data: 22.6805  max mem: 20808
+Epoch: [9]  [960/976]  eta: 0:05:23  lr: 0.000492  sp_loss: 6.0693 (5.9305)  fam_loss: 3.9708 (3.8617)  manu_loss: 2.8703 (2.7949)  gk_loss: 2.8277 (2.7436)  time: 17.3343  data: 16.5873  max mem: 20808
+Epoch: [9]  [970/976]  eta: 0:02:00  lr: 0.000492  sp_loss: 5.9564 (5.9311)  fam_loss: 3.8770 (3.8623)  manu_loss: 2.8015 (2.7953)  gk_loss: 2.7518 (2.7439)  time: 15.8774  data: 15.1305  max mem: 20808
+Epoch: [9]  [975/976]  eta: 0:00:19  lr: 0.000492  sp_loss: 6.1400 (5.9318)  fam_loss: 3.9436 (3.8626)  manu_loss: 2.8703 (2.7954)  gk_loss: 2.7779 (2.7441)  time: 9.5768  data: 8.8305  max mem: 20808
+Epoch: [9] Total time: 5:25:18 (19.9988 s / it)
+Averaged stats: lr: 0.000492  sp_loss: 6.1400 (5.9318)  fam_loss: 3.9436 (3.8626)  manu_loss: 2.8703 (2.7954)  gk_loss: 2.7779 (2.7441)
+Test:  [  0/196]  eta: 13:48:04  sploss: 2.6139 (2.6139)  famloss: 1.4808 (1.4808)  manuloss: 0.9580 (0.9580)  acc1: 50.3906 (50.3906)  acc5: 74.4141 (74.4141)  family_acc1: 65.4297 (65.4297)  manu_acc1: 78.1250 (78.1250)  time: 253.4921  data: 253.1623  max mem: 20808
+Test:  [ 10/196]  eta: 2:29:23  sploss: 2.8012 (2.8153)  famloss: 1.5201 (1.5927)  manuloss: 1.0455 (1.0634)  acc1: 46.0938 (46.3068)  acc5: 70.5078 (70.4013)  family_acc1: 65.4297 (64.0270)  manu_acc1: 76.3672 (75.2486)  time: 48.1905  data: 47.8617  max mem: 20808
+Test:  [ 20/196]  eta: 1:31:29  sploss: 2.7559 (2.7751)  famloss: 1.5201 (1.5711)  manuloss: 1.0455 (1.0599)  acc1: 46.0938 (46.9866)  acc5: 71.4844 (71.0100)  family_acc1: 64.6484 (64.3973)  manu_acc1: 75.3906 (75.2232)  time: 20.0761  data: 19.7475  max mem: 20808
+Test:  [ 30/196]  eta: 1:07:46  sploss: 2.7444 (2.7610)  famloss: 1.5543 (1.5722)  manuloss: 1.0434 (1.0583)  acc1: 47.8516 (47.3160)  acc5: 71.4844 (71.2009)  family_acc1: 64.6484 (64.1759)  manu_acc1: 75.3906 (75.1386)  time: 11.4641  data: 11.1358  max mem: 20808
+Test:  [ 40/196]  eta: 1:01:32  sploss: 2.7296 (2.7496)  famloss: 1.5338 (1.5570)  manuloss: 1.0178 (1.0433)  acc1: 47.6562 (47.2418)  acc5: 71.4844 (71.4463)  family_acc1: 64.8438 (64.6341)  manu_acc1: 75.9766 (75.5859)  time: 15.7732  data: 15.4447  max mem: 20808
+Test:  [ 50/196]  eta: 0:58:05  sploss: 2.7296 (2.7547)  famloss: 1.5353 (1.5744)  manuloss: 1.0485 (1.0527)  acc1: 47.2656 (47.2158)  acc5: 72.0703 (71.4537)  family_acc1: 64.2578 (64.2616)  manu_acc1: 74.6094 (75.2566)  time: 22.9147  data: 22.5863  max mem: 20808
+Test:  [ 60/196]  eta: 0:50:45  sploss: 2.7689 (2.7552)  famloss: 1.6425 (1.5775)  manuloss: 1.0887 (1.0610)  acc1: 48.0469 (47.4385)  acc5: 71.8750 (71.5484)  family_acc1: 63.4766 (64.3379)  manu_acc1: 73.6328 (74.9776)  time: 19.7753  data: 19.4471  max mem: 20808
+Test:  [ 70/196]  eta: 0:43:23  sploss: 2.6253 (2.7245)  famloss: 1.4941 (1.5535)  manuloss: 0.9706 (1.0434)  acc1: 49.2188 (47.9176)  acc5: 73.6328 (72.1226)  family_acc1: 66.6016 (64.7337)  manu_acc1: 76.7578 (75.3164)  time: 12.4795  data: 12.1513  max mem: 20808
+Test:  [ 80/196]  eta: 0:38:36  sploss: 2.5647 (2.7172)  famloss: 1.4226 (1.5460)  manuloss: 0.9413 (1.0363)  acc1: 49.2188 (47.9986)  acc5: 74.0234 (72.2174)  family_acc1: 66.4062 (64.8582)  manu_acc1: 76.9531 (75.4340)  time: 12.5836  data: 12.2554  max mem: 20808
+Test:  [ 90/196]  eta: 0:33:03  sploss: 2.7467 (2.7292)  famloss: 1.6057 (1.5575)  manuloss: 1.0286 (1.0415)  acc1: 46.6797 (47.7636)  acc5: 71.0938 (72.0338)  family_acc1: 63.2812 (64.5669)  manu_acc1: 75.0000 (75.2704)  time: 11.7687  data: 11.4404  max mem: 20808
+Test:  [100/196]  eta: 0:28:43  sploss: 2.7726 (2.7259)  famloss: 1.6262 (1.5596)  manuloss: 1.0853 (1.0444)  acc1: 46.8750 (47.7742)  acc5: 71.0938 (72.0955)  family_acc1: 63.0859 (64.4628)  manu_acc1: 74.0234 (75.1972)  time: 9.7566  data: 9.4277  max mem: 20808
+Test:  [110/196]  eta: 0:24:45  sploss: 2.6530 (2.7206)  famloss: 1.5680 (1.5608)  manuloss: 1.0777 (1.0498)  acc1: 50.0000 (47.9571)  acc5: 72.6562 (72.2111)  family_acc1: 64.0625 (64.4232)  manu_acc1: 74.0234 (75.0405)  time: 10.7392  data: 10.4103  max mem: 20808
+Test:  [120/196]  eta: 0:21:35  sploss: 2.6416 (2.7247)  famloss: 1.5716 (1.5699)  manuloss: 1.0855 (1.0620)  acc1: 50.1953 (47.9968)  acc5: 72.6562 (72.1849)  family_acc1: 64.2578 (64.2384)  manu_acc1: 72.6562 (74.6481)  time: 12.5246  data: 12.1963  max mem: 20808
+Test:  [130/196]  eta: 0:18:02  sploss: 2.6259 (2.7152)  famloss: 1.5669 (1.5674)  manuloss: 1.0753 (1.0597)  acc1: 49.4141 (48.1900)  acc5: 73.6328 (72.2835)  family_acc1: 63.8672 (64.3174)  manu_acc1: 74.8047 (74.7376)  time: 11.5707  data: 11.2425  max mem: 20808
+Test:  [140/196]  eta: 0:14:47  sploss: 2.5239 (2.6948)  famloss: 1.4540 (1.5540)  manuloss: 0.9903 (1.0525)  acc1: 52.5391 (48.5552)  acc5: 75.0000 (72.6008)  family_acc1: 65.2344 (64.5529)  manu_acc1: 76.3672 (74.8920)  time: 8.5147  data: 8.1865  max mem: 20808
+Test:  [150/196]  eta: 0:11:54  sploss: 2.4448 (2.6806)  famloss: 1.3693 (1.5427)  manuloss: 0.9265 (1.0423)  acc1: 51.9531 (48.6871)  acc5: 76.5625 (72.8554)  family_acc1: 68.5547 (64.8114)  manu_acc1: 78.1250 (75.1332)  time: 9.8648  data: 9.5364  max mem: 20808
+Test:  [160/196]  eta: 0:09:21  sploss: 2.5072 (2.6727)  famloss: 1.3818 (1.5345)  manuloss: 0.9091 (1.0355)  acc1: 50.5859 (48.7735)  acc5: 75.1953 (72.9996)  family_acc1: 67.1875 (64.9481)  manu_acc1: 78.1250 (75.3009)  time: 13.8676  data: 13.5393  max mem: 20808
+Test:  [170/196]  eta: 0:06:47  sploss: 2.6208 (2.6742)  famloss: 1.4406 (1.5334)  manuloss: 0.9802 (1.0350)  acc1: 48.4375 (48.7573)  acc5: 74.4141 (72.9795)  family_acc1: 66.7969 (64.9625)  manu_acc1: 76.3672 (75.2753)  time: 16.5710  data: 16.2429  max mem: 20808
+Test:  [180/196]  eta: 0:04:10  sploss: 2.6209 (2.6683)  famloss: 1.4553 (1.5278)  manuloss: 0.9536 (1.0267)  acc1: 48.4375 (48.7796)  acc5: 73.8281 (73.0533)  family_acc1: 65.8203 (65.0650)  manu_acc1: 77.5391 (75.4856)  time: 16.0044  data: 15.6762  max mem: 20808
+Test:  [190/196]  eta: 0:01:32  sploss: 2.5471 (2.6609)  famloss: 1.4202 (1.5224)  manuloss: 0.8716 (1.0183)  acc1: 49.8047 (48.8731)  acc5: 75.0000 (73.1951)  family_acc1: 66.2109 (65.1730)  manu_acc1: 79.1016 (75.7230)  time: 14.0056  data: 13.6771  max mem: 20808
+Test:  [195/196]  eta: 0:00:15  sploss: 2.5285 (2.6571)  famloss: 1.3854 (1.5191)  manuloss: 0.8546 (1.0132)  acc1: 50.1953 (48.9290)  acc5: 74.8047 (73.2180)  family_acc1: 66.7969 (65.2360)  manu_acc1: 79.2969 (75.8380)  time: 14.2720  data: 13.9546  max mem: 20808
+Test: Total time: 0:49:40 (15.2042 s / it)
+* Acc@1 48.929 Acc@5 73.218 family@1 65.236 manu@1 75.838 sploss 2.657 fmloss 1.519 mfloss 1.013
+Accuracy of the network on the 100000 test images: 48.9%
+Max accuracy: 48.93%
+Epoch: [10]  [  0/976]  eta: 1 day, 8:10:03  lr: 0.000490  sp_loss: 6.8284 (6.8284)  fam_loss: 4.4080 (4.4080)  manu_loss: 3.2307 (3.2307)  gk_loss: 3.1694 (3.1694)  time: 118.6516  data: 117.9017  max mem: 20808
+Epoch: [10]  [ 10/976]  eta: 5:07:14  lr: 0.000490  sp_loss: 6.2946 (6.2439)  fam_loss: 4.0712 (4.0533)  manu_loss: 2.9398 (2.9504)  gk_loss: 2.8347 (2.8586)  time: 19.0836  data: 18.3365  max mem: 20808
+Epoch: [10]  [ 20/976]  eta: 4:00:43  lr: 0.000490  sp_loss: 5.8489 (5.8937)  fam_loss: 3.8543 (3.8352)  manu_loss: 2.7976 (2.7972)  gk_loss: 2.6917 (2.7030)  time: 9.9310  data: 9.1837  max mem: 20808
+Epoch: [10]  [ 30/976]  eta: 3:28:41  lr: 0.000490  sp_loss: 5.5941 (5.8306)  fam_loss: 3.7354 (3.8131)  manu_loss: 2.7074 (2.7725)  gk_loss: 2.6041 (2.6876)  time: 10.0207  data: 9.2734  max mem: 20808
+Epoch: [10]  [ 40/976]  eta: 4:05:08  lr: 0.000490  sp_loss: 5.8625 (5.8463)  fam_loss: 3.8506 (3.8259)  manu_loss: 2.7690 (2.7761)  gk_loss: 2.6669 (2.6916)  time: 16.3509  data: 15.6048  max mem: 20808
+Epoch: [10]  [ 50/976]  eta: 3:54:44  lr: 0.000490  sp_loss: 6.0503 (5.8775)  fam_loss: 3.9837 (3.8490)  manu_loss: 2.8872 (2.7911)  gk_loss: 2.7577 (2.7014)  time: 18.2695  data: 17.5240  max mem: 20808
+Epoch: [10]  [ 60/976]  eta: 3:45:43  lr: 0.000490  sp_loss: 5.9592 (5.8167)  fam_loss: 3.9268 (3.8144)  manu_loss: 2.8503 (2.7639)  gk_loss: 2.7323 (2.6766)  time: 12.8824  data: 12.1362  max mem: 20808
+Epoch: [10]  [ 70/976]  eta: 3:32:34  lr: 0.000490  sp_loss: 5.8308 (5.8266)  fam_loss: 3.8103 (3.8210)  manu_loss: 2.7416 (2.7684)  gk_loss: 2.6699 (2.6825)  time: 11.1892  data: 10.4425  max mem: 20808
+Epoch: [10]  [ 80/976]  eta: 3:56:30  lr: 0.000490  sp_loss: 5.7029 (5.8142)  fam_loss: 3.7535 (3.8119)  manu_loss: 2.7268 (2.7608)  gk_loss: 2.6279 (2.6762)  time: 19.0474  data: 18.3011  max mem: 20808
+Epoch: [10]  [ 90/976]  eta: 3:42:08  lr: 0.000490  sp_loss: 6.0376 (5.8482)  fam_loss: 3.9545 (3.8330)  manu_loss: 2.8406 (2.7751)  gk_loss: 2.7932 (2.6917)  time: 18.4724  data: 17.7263  max mem: 20808
+Epoch: [10]  [100/976]  eta: 3:42:31  lr: 0.000490  sp_loss: 5.9045 (5.8103)  fam_loss: 3.8781 (3.8083)  manu_loss: 2.8228 (2.7584)  gk_loss: 2.6840 (2.6731)  time: 12.8243  data: 12.0783  max mem: 20808
+Epoch: [10]  [110/976]  eta: 3:34:29  lr: 0.000490  sp_loss: 5.9181 (5.8404)  fam_loss: 3.9148 (3.8258)  manu_loss: 2.8785 (2.7713)  gk_loss: 2.7762 (2.6862)  time: 14.0283  data: 13.2821  max mem: 20808
+Epoch: [10]  [120/976]  eta: 3:39:19  lr: 0.000490  sp_loss: 6.1675 (5.8256)  fam_loss: 4.0369 (3.8174)  manu_loss: 2.9144 (2.7654)  gk_loss: 2.8176 (2.6814)  time: 16.0400  data: 15.2937  max mem: 20808
+Epoch: [10]  [130/976]  eta: 3:55:08  lr: 0.000490  sp_loss: 5.9718 (5.8272)  fam_loss: 3.9786 (3.8177)  manu_loss: 2.8715 (2.7670)  gk_loss: 2.7331 (2.6804)  time: 26.7528  data: 26.0073  max mem: 20808
+Epoch: [10]  [140/976]  eta: 3:46:19  lr: 0.000490  sp_loss: 5.8570 (5.8040)  fam_loss: 3.7667 (3.8010)  manu_loss: 2.7547 (2.7565)  gk_loss: 2.6329 (2.6687)  time: 21.5058  data: 20.7601  max mem: 20808
+Epoch: [10]  [150/976]  eta: 3:37:09  lr: 0.000490  sp_loss: 5.7108 (5.8022)  fam_loss: 3.7628 (3.8003)  manu_loss: 2.7230 (2.7555)  gk_loss: 2.5909 (2.6678)  time: 9.8653  data: 9.1190  max mem: 20808
+Epoch: [10]  [160/976]  eta: 3:34:04  lr: 0.000490  sp_loss: 5.6486 (5.7772)  fam_loss: 3.6353 (3.7831)  manu_loss: 2.6684 (2.7442)  gk_loss: 2.5737 (2.6568)  time: 12.1995  data: 11.4533  max mem: 20808
+Epoch: [10]  [170/976]  eta: 3:26:58  lr: 0.000490  sp_loss: 6.1848 (5.8020)  fam_loss: 3.9859 (3.7985)  manu_loss: 2.8554 (2.7553)  gk_loss: 2.8024 (2.6679)  time: 12.6398  data: 11.8937  max mem: 20808
+Epoch: [10]  [180/976]  eta: 3:22:02  lr: 0.000490  sp_loss: 6.1918 (5.7950)  fam_loss: 4.0111 (3.7917)  manu_loss: 2.8979 (2.7511)  gk_loss: 2.8227 (2.6632)  time: 11.1161  data: 10.3706  max mem: 20808
+Epoch: [10]  [190/976]  eta: 3:21:46  lr: 0.000490  sp_loss: 5.8071 (5.8031)  fam_loss: 3.8061 (3.7971)  manu_loss: 2.7740 (2.7557)  gk_loss: 2.6618 (2.6670)  time: 15.3597  data: 14.6143  max mem: 20808
+Epoch: [10]  [200/976]  eta: 3:23:43  lr: 0.000490  sp_loss: 5.7442 (5.7961)  fam_loss: 3.8061 (3.7950)  manu_loss: 2.7740 (2.7547)  gk_loss: 2.6618 (2.6655)  time: 20.4818  data: 19.7359  max mem: 20808
+Epoch: [10]  [210/976]  eta: 3:16:54  lr: 0.000490  sp_loss: 5.7442 (5.7936)  fam_loss: 3.8723 (3.7930)  manu_loss: 2.7500 (2.7533)  gk_loss: 2.6999 (2.6651)  time: 15.6221  data: 14.8757  max mem: 20808
+Epoch: [10]  [220/976]  eta: 3:11:01  lr: 0.000490  sp_loss: 6.2241 (5.7964)  fam_loss: 4.0348 (3.7943)  manu_loss: 2.8827 (2.7537)  gk_loss: 2.8647 (2.6668)  time: 9.2135  data: 8.4668  max mem: 20808
+Epoch: [10]  [230/976]  eta: 3:04:49  lr: 0.000490  sp_loss: 6.0046 (5.7897)  fam_loss: 3.9905 (3.7892)  manu_loss: 2.8804 (2.7492)  gk_loss: 2.7887 (2.6635)  time: 8.9853  data: 8.2381  max mem: 20808
+Epoch: [10]  [240/976]  eta: 3:04:10  lr: 0.000490  sp_loss: 5.7028 (5.7907)  fam_loss: 3.7390 (3.7906)  manu_loss: 2.6993 (2.7496)  gk_loss: 2.5997 (2.6644)  time: 13.4032  data: 12.6551  max mem: 20808
+Epoch: [10]  [250/976]  eta: 2:59:41  lr: 0.000490  sp_loss: 5.7674 (5.7907)  fam_loss: 3.7747 (3.7897)  manu_loss: 2.7614 (2.7486)  gk_loss: 2.6590 (2.6635)  time: 14.6752  data: 13.9278  max mem: 20808
+Epoch: [10]  [260/976]  eta: 2:58:39  lr: 0.000490  sp_loss: 5.8075 (5.7875)  fam_loss: 3.7897 (3.7869)  manu_loss: 2.7643 (2.7464)  gk_loss: 2.6708 (2.6623)  time: 14.4495  data: 13.7033  max mem: 20808
+Epoch: [10]  [270/976]  eta: 2:53:16  lr: 0.000490  sp_loss: 6.0657 (5.7920)  fam_loss: 3.8524 (3.7904)  manu_loss: 2.8565 (2.7482)  gk_loss: 2.7630 (2.6647)  time: 13.1644  data: 12.4179  max mem: 20808
+Epoch: [10]  [280/976]  eta: 2:51:14  lr: 0.000490  sp_loss: 6.0657 (5.7955)  fam_loss: 3.8524 (3.7923)  manu_loss: 2.8565 (2.7498)  gk_loss: 2.7630 (2.6665)  time: 12.0235  data: 11.2766  max mem: 20808
+Epoch: [10]  [290/976]  eta: 2:48:31  lr: 0.000490  sp_loss: 6.1485 (5.7980)  fam_loss: 4.0529 (3.7932)  manu_loss: 2.9462 (2.7501)  gk_loss: 2.8248 (2.6672)  time: 14.9129  data: 14.1658  max mem: 20808
+Epoch: [10]  [300/976]  eta: 2:53:48  lr: 0.000490  sp_loss: 6.0202 (5.8048)  fam_loss: 3.9527 (3.7977)  manu_loss: 2.8886 (2.7534)  gk_loss: 2.7710 (2.6709)  time: 24.7799  data: 24.0327  max mem: 20808
+Epoch: [10]  [310/976]  eta: 2:57:13  lr: 0.000490  sp_loss: 6.4331 (5.8286)  fam_loss: 4.1502 (3.8126)  manu_loss: 3.0340 (2.7646)  gk_loss: 2.9190 (2.6820)  time: 33.8240  data: 33.0775  max mem: 20808
+Epoch: [10]  [320/976]  eta: 3:02:40  lr: 0.000490  sp_loss: 6.4448 (5.8331)  fam_loss: 4.2305 (3.8159)  manu_loss: 3.0496 (2.7671)  gk_loss: 2.9304 (2.6849)  time: 35.9892  data: 35.2421  max mem: 20808
+Epoch: [10]  [330/976]  eta: 2:57:08  lr: 0.000490  sp_loss: 5.7543 (5.8394)  fam_loss: 3.8362 (3.8208)  manu_loss: 2.7703 (2.7694)  gk_loss: 2.6921 (2.6887)  time: 24.0208  data: 23.2731  max mem: 20808
+Epoch: [10]  [340/976]  eta: 2:52:31  lr: 0.000490  sp_loss: 6.0286 (5.8388)  fam_loss: 4.0117 (3.8215)  manu_loss: 2.8702 (2.7692)  gk_loss: 2.8190 (2.6891)  time: 9.3233  data: 8.5761  max mem: 20808
+Epoch: [10]  [350/976]  eta: 2:47:27  lr: 0.000490  sp_loss: 5.2765 (5.8307)  fam_loss: 3.5547 (3.8162)  manu_loss: 2.5493 (2.7655)  gk_loss: 2.4459 (2.6847)  time: 9.3878  data: 8.6412  max mem: 20808
+Epoch: [10]  [360/976]  eta: 2:44:17  lr: 0.000490  sp_loss: 5.4350 (5.8260)  fam_loss: 3.5685 (3.8134)  manu_loss: 2.5493 (2.7638)  gk_loss: 2.5017 (2.6831)  time: 11.3643  data: 10.6116  max mem: 20808
+Epoch: [10]  [370/976]  eta: 2:39:37  lr: 0.000490  sp_loss: 5.9665 (5.8335)  fam_loss: 3.9073 (3.8185)  manu_loss: 2.8249 (2.7677)  gk_loss: 2.7475 (2.6867)  time: 11.5003  data: 10.7476  max mem: 20808
+Epoch: [10]  [380/976]  eta: 2:35:49  lr: 0.000490  sp_loss: 6.2371 (5.8384)  fam_loss: 4.0837 (3.8215)  manu_loss: 2.9503 (2.7700)  gk_loss: 2.8429 (2.6898)  time: 9.9747  data: 9.2278  max mem: 20808
+Epoch: [10]  [390/976]  eta: 2:31:27  lr: 0.000490  sp_loss: 6.3308 (5.8454)  fam_loss: 4.1252 (3.8262)  manu_loss: 2.9857 (2.7727)  gk_loss: 2.9204 (2.6931)  time: 10.0034  data: 9.2563  max mem: 20808
+Namespace(batch_size=512, epochs=100, bce_loss=False, unscale_lr=False, model='cast_small', input_size=224, drop=0.0, drop_path=0.1, model_ema=True, model_ema_decay=0.99996, model_ema_force_cpu=False, num_superpixels=196, opt='adamw', opt_eps=1e-08, opt_betas=None, clip_grad=None, momentum=0.9, weight_decay=0.05, sched='cosine', lr=0.0005, lr_noise=None, lr_noise_pct=0.67, lr_noise_std=1.0, warmup_lr=1e-06, min_lr=1e-05, decay_epochs=30, warmup_epochs=5, cooldown_epochs=10, patience_epochs=10, decay_rate=0.1, color_jitter=0.3, aa='rand-m9-mstd0.5-inc1', smoothing=0.1, train_interpolation='bicubic', repeated_aug=True, train_mode=True, ThreeAugment=False, src=False, reprob=0.25, remode='pixel', recount=1, resplit=False, mixup=0.8, cutmix=1.0, cutmix_minmax=None, mixup_prob=1.0, mixup_switch_prob=0.5, mixup_mode='batch', teacher_model='regnety_160', teacher_path='', distillation_type='none', distillation_alpha=0.5, distillation_tau=1.0, cosub=False, finetune='', attn_only=False, data_path='/nfs/turbo/coe-stellayu/shared_data/iNat2021/', data_set='INAT21-MINI-HIER-SUPERPIXEL', issource=True, path_yn=False, inat_category='name', output_dir='/nfs/turbo/coe-stellayu/seulki/CAST/snapshots/inat21_mini_hcast', device='cuda', seed=0, resume='/nfs/turbo/coe-stellayu/seulki/CAST/snapshots/inat21_mini_hcast/checkpoint.pth', start_epoch=0, eval=False, eval_crop_ratio=0.875, dist_eval=False, num_workers=8, pin_mem=True, distributed=False, world_size=1, dist_url='env://', globalkl=True, globalbce=False, gk_weight=0.5, filename='inat21_mini_hcast.csv', breeds_sort='entity13', imb_type='exp', img_max=None, sourcefile='_train_source.txt', random_seed=1, local_rank=-1)
+seed 0
+args.nb_classes [10000, 1103, 273]
+Creating model: cast_small
+CAST(
+  (patch_embed): ConvStem(
+    (proj): Sequential(
+      (0): Conv2d(3, 48, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU(inplace=True)
+      (3): Conv2d(48, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (4): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU(inplace=True)
+      (6): Conv2d(96, 192, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (7): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (8): ReLU(inplace=True)
+      (9): Conv2d(192, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (10): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (11): ReLU(inplace=True)
+      (12): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+    )
+    (norm): Identity()
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (blocks): Sequential(
+    (0): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (1): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (2): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (3): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (4): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (5): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (6): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (7): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (8): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (9): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (10): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+  (pre_logits): Identity()
+  (head): Linear(in_features=384, out_features=10000, bias=True)
+  (family_head): Linear(in_features=384, out_features=1103, bias=True)
+  (manufacturer_head): Linear(in_features=384, out_features=273, bias=True)
+  (blocks1): Sequential(
+    (0): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (1): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (2): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool1): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+  (blocks2): Sequential(
+    (3): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (4): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (5): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool2): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+  (blocks3): Sequential(
+    (6): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (7): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (8): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool3): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+  (blocks4): Sequential(
+    (9): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+    (10): Block(
+      (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=384, out_features=1152, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=384, out_features=384, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): DropPath()
+      (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+      (mlp): Mlp(
+        (fc1): Linear(in_features=384, out_features=1536, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=1536, out_features=384, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (pool4): Pooling(
+    (pool_block): GraphPooling(
+      (centroid_fc): Block(
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+      )
+      (fc1): Sequential(
+        (0): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=384, out_features=1536, bias=True)
+        (2): GELU(approximate='none')
+        (3): Dropout(p=0.1, inplace=False)
+      )
+      (fc2): Sequential(
+        (0): LayerNorm((1536,), eps=1e-05, elementwise_affine=True)
+        (1): Linear(in_features=1536, out_features=384, bias=True)
+      )
+    )
+  )
+)
+number of params: 30556704
+start epoch:  10
+Start training for 100 epochs
+Epoch: [10]  [  0/976]  eta: 4 days, 12:53:16  lr: 0.000488  sp_loss: 6.5561 (6.5561)  fam_loss: 4.3972 (4.3972)  manu_loss: 3.1538 (3.1538)  gk_loss: 3.0571 (3.0571)  time: 401.6359  data: 127.0362  max mem: 20630
+Epoch: [10]  [ 10/976]  eta: 20:10:40  lr: 0.000488  sp_loss: 6.3142 (6.1311)  fam_loss: 4.1416 (4.0761)  manu_loss: 2.9831 (2.9501)  gk_loss: 2.8738 (2.8310)  time: 75.1976  data: 49.5646  max mem: 20808
+Epoch: [10]  [ 20/976]  eta: 19:18:14  lr: 0.000488  sp_loss: 6.0851 (6.0326)  fam_loss: 4.0603 (3.9974)  manu_loss: 2.9559 (2.9010)  gk_loss: 2.8143 (2.7729)  time: 56.2463  data: 55.5052  max mem: 20808
+Epoch: [10]  [ 30/976]  eta: 13:41:20  lr: 0.000488  sp_loss: 6.0851 (6.0253)  fam_loss: 3.9949 (3.9894)  manu_loss: 2.9321 (2.8930)  gk_loss: 2.7433 (2.7607)  time: 39.3866  data: 38.6457  max mem: 20808
+Epoch: [10]  [ 40/976]  eta: 11:16:58  lr: 0.000488  sp_loss: 5.8871 (5.9225)  fam_loss: 3.8600 (3.9129)  manu_loss: 2.7486 (2.8395)  gk_loss: 2.6316 (2.7047)  time: 12.6330  data: 11.8970  max mem: 20808
+Epoch: [10]  [ 50/976]  eta: 9:27:38  lr: 0.000488  sp_loss: 5.8370 (5.9052)  fam_loss: 3.8034 (3.9005)  manu_loss: 2.7383 (2.8347)  gk_loss: 2.6069 (2.6956)  time: 13.0432  data: 12.3074  max mem: 20808
+Epoch: [10]  [ 60/976]  eta: 8:18:28  lr: 0.000488  sp_loss: 5.8370 (5.8473)  fam_loss: 3.8421 (3.8617)  manu_loss: 2.7975 (2.8087)  gk_loss: 2.6366 (2.6693)  time: 10.6267  data: 9.8906  max mem: 20808
+Epoch: [10]  [ 70/976]  eta: 7:50:26  lr: 0.000488  sp_loss: 5.7457 (5.7925)  fam_loss: 3.7832 (3.8255)  manu_loss: 2.7455 (2.7789)  gk_loss: 2.6332 (2.6415)  time: 16.8133  data: 16.0772  max mem: 20808
+Epoch: [10]  [ 80/976]  eta: 14:19:26  lr: 0.000488  sp_loss: 5.5858 (5.7702)  fam_loss: 3.6592 (3.8115)  manu_loss: 2.7059 (2.7679)  gk_loss: 2.4921 (2.6282)  time: 133.4986  data: 132.7636  max mem: 20808
+Epoch: [10]  [ 90/976]  eta: 16:56:14  lr: 0.000488  sp_loss: 5.6398 (5.7558)  fam_loss: 3.7450 (3.8027)  manu_loss: 2.7327 (2.7618)  gk_loss: 2.5799 (2.6221)  time: 202.5312  data: 201.7961  max mem: 20808
+Epoch: [10]  [100/976]  eta: 15:17:33  lr: 0.000488  sp_loss: 5.9430 (5.7715)  fam_loss: 3.9145 (3.8135)  manu_loss: 2.8777 (2.7684)  gk_loss: 2.6958 (2.6301)  time: 84.2897  data: 83.5540  max mem: 20808
+Epoch: [10]  [110/976]  eta: 13:58:01  lr: 0.000488  sp_loss: 5.9430 (5.7693)  fam_loss: 3.9145 (3.8100)  manu_loss: 2.8777 (2.7672)  gk_loss: 2.6958 (2.6287)  time: 9.1084  data: 8.3725  max mem: 20808
+Epoch: [10]  [120/976]  eta: 13:32:31  lr: 0.000488  sp_loss: 5.8327 (5.7700)  fam_loss: 3.8645 (3.8101)  manu_loss: 2.7419 (2.7651)  gk_loss: 2.6137 (2.6282)  time: 27.1856  data: 26.4497  max mem: 20808
+Epoch: [10]  [130/976]  eta: 12:36:21  lr: 0.000488  sp_loss: 5.8450 (5.7575)  fam_loss: 3.8193 (3.7992)  manu_loss: 2.7445 (2.7571)  gk_loss: 2.6168 (2.6212)  time: 29.1178  data: 28.3820  max mem: 20808
+Epoch: [10]  [140/976]  eta: 11:43:54  lr: 0.000488  sp_loss: 5.5859 (5.7424)  fam_loss: 3.7008 (3.7872)  manu_loss: 2.7154 (2.7481)  gk_loss: 2.5685 (2.6137)  time: 11.6023  data: 10.8665  max mem: 20808
+Epoch: [10]  [150/976]  eta: 11:35:57  lr: 0.000488  sp_loss: 5.5290 (5.7261)  fam_loss: 3.5733 (3.7775)  manu_loss: 2.6401 (2.7403)  gk_loss: 2.4703 (2.6051)  time: 30.3256  data: 29.5903  max mem: 20808
+Epoch: [10]  [160/976]  eta: 11:00:38  lr: 0.000488  sp_loss: 5.8123 (5.7310)  fam_loss: 3.8393 (3.7810)  manu_loss: 2.7459 (2.7431)  gk_loss: 2.6074 (2.6072)  time: 34.8743  data: 34.1391  max mem: 20808
+Epoch: [10]  [170/976]  eta: 10:49:45  lr: 0.000488  sp_loss: 5.8123 (5.7240)  fam_loss: 3.7675 (3.7737)  manu_loss: 2.7379 (2.7379)  gk_loss: 2.6074 (2.6015)  time: 31.8675  data: 31.1324  max mem: 20808
+Epoch: [10]  [180/976]  eta: 10:26:51  lr: 0.000488  sp_loss: 5.5567 (5.7034)  fam_loss: 3.6487 (3.7577)  manu_loss: 2.6328 (2.7258)  gk_loss: 2.5109 (2.5906)  time: 36.5805  data: 35.8452  max mem: 20808
+Epoch: [10]  [190/976]  eta: 9:52:23  lr: 0.000488  sp_loss: 5.4926 (5.7004)  fam_loss: 3.5765 (3.7540)  manu_loss: 2.5917 (2.7231)  gk_loss: 2.4668 (2.5882)  time: 18.3076  data: 17.5720  max mem: 20808
+Epoch: [10]  [200/976]  eta: 11:45:42  lr: 0.000488  sp_loss: 5.3689 (5.6827)  fam_loss: 3.5030 (3.7408)  manu_loss: 2.5917 (2.7133)  gk_loss: 2.4410 (2.5798)  time: 120.7609  data: 120.0255  max mem: 20808
+Epoch: [10]  [210/976]  eta: 11:17:39  lr: 0.000488  sp_loss: 5.6770 (5.6738)  fam_loss: 3.7165 (3.7355)  manu_loss: 2.6518 (2.7095)  gk_loss: 2.5820 (2.5763)  time: 128.1438  data: 127.4083  max mem: 20808
+Epoch: [10]  [220/976]  eta: 10:51:19  lr: 0.000488  sp_loss: 5.7378 (5.6667)  fam_loss: 3.7987 (3.7311)  manu_loss: 2.7703 (2.7055)  gk_loss: 2.5911 (2.5738)  time: 22.8186  data: 22.0829  max mem: 20808
+Epoch: [10]  [230/976]  eta: 10:19:23  lr: 0.000488  sp_loss: 5.7378 (5.6638)  fam_loss: 3.7987 (3.7286)  manu_loss: 2.7741 (2.7032)  gk_loss: 2.6110 (2.5724)  time: 15.3848  data: 14.6490  max mem: 20808
+Epoch: [10]  [240/976]  eta: 9:52:59  lr: 0.000488  sp_loss: 5.8015 (5.6612)  fam_loss: 3.7453 (3.7267)  manu_loss: 2.7617 (2.7021)  gk_loss: 2.6110 (2.5719)  time: 11.3135  data: 10.5770  max mem: 20808
+Epoch: [10]  [250/976]  eta: 9:26:34  lr: 0.000488  sp_loss: 5.5781 (5.6467)  fam_loss: 3.6722 (3.7163)  manu_loss: 2.6878 (2.6951)  gk_loss: 2.5592 (2.5652)  time: 12.2653  data: 11.5288  max mem: 20808
+Epoch: [10]  [260/976]  eta: 9:01:17  lr: 0.000488  sp_loss: 5.2916 (5.6340)  fam_loss: 3.5255 (3.7068)  manu_loss: 2.5818 (2.6884)  gk_loss: 2.4146 (2.5588)  time: 9.4277  data: 8.6919  max mem: 20808
+Epoch: [10]  [270/976]  eta: 8:37:54  lr: 0.000488  sp_loss: 5.3473 (5.6261)  fam_loss: 3.5142 (3.7013)  manu_loss: 2.5134 (2.6846)  gk_loss: 2.4055 (2.5559)  time: 8.7382  data: 8.0016  max mem: 20808
+Epoch: [10]  [280/976]  eta: 8:24:59  lr: 0.000488  sp_loss: 5.9260 (5.6346)  fam_loss: 3.8907 (3.7069)  manu_loss: 2.8530 (2.6886)  gk_loss: 2.6678 (2.5597)  time: 19.7118  data: 18.9756  max mem: 20808
+Epoch: [10]  [290/976]  eta: 8:04:26  lr: 0.000488  sp_loss: 5.9260 (5.6239)  fam_loss: 3.9096 (3.6991)  manu_loss: 2.8635 (2.6829)  gk_loss: 2.6885 (2.5546)  time: 20.1007  data: 19.3656  max mem: 20808
+Epoch: [10]  [300/976]  eta: 7:44:37  lr: 0.000488  sp_loss: 5.1252 (5.6102)  fam_loss: 3.4425 (3.6901)  manu_loss: 2.4745 (2.6757)  gk_loss: 2.3213 (2.5478)  time: 9.0053  data: 8.2702  max mem: 20808
+Epoch: [10]  [310/976]  eta: 7:26:17  lr: 0.000488  sp_loss: 5.4772 (5.6116)  fam_loss: 3.5533 (3.6901)  manu_loss: 2.5664 (2.6758)  gk_loss: 2.4633 (2.5484)  time: 8.7203  data: 7.9851  max mem: 20808
+Epoch: [10]  [320/976]  eta: 7:11:26  lr: 0.000488  sp_loss: 6.2098 (5.6298)  fam_loss: 4.0395 (3.7020)  manu_loss: 2.9450 (2.6837)  gk_loss: 2.7638 (2.5569)  time: 12.6952  data: 11.9596  max mem: 20808
+Epoch: [10]  [330/976]  eta: 6:57:09  lr: 0.000488  sp_loss: 6.2459 (5.6285)  fam_loss: 4.0888 (3.7014)  manu_loss: 2.9450 (2.6837)  gk_loss: 2.8280 (2.5572)  time: 16.0161  data: 15.2800  max mem: 20808
+Epoch: [10]  [340/976]  eta: 7:11:50  lr: 0.000488  sp_loss: 5.9591 (5.6369)  fam_loss: 3.9209 (3.7066)  manu_loss: 2.8910 (2.6875)  gk_loss: 2.7370 (2.5610)  time: 61.2598  data: 60.5243  max mem: 20808
+Epoch: [10]  [350/976]  eta: 6:57:10  lr: 0.000488  sp_loss: 6.0336 (5.6391)  fam_loss: 3.9664 (3.7078)  manu_loss: 2.8526 (2.6882)  gk_loss: 2.7340 (2.5620)  time: 60.5084  data: 59.7732  max mem: 20808
+Epoch: [10]  [360/976]  eta: 6:44:25  lr: 0.000488  sp_loss: 5.9391 (5.6382)  fam_loss: 3.8545 (3.7067)  manu_loss: 2.8082 (2.6875)  gk_loss: 2.6326 (2.5613)  time: 16.4128  data: 15.6763  max mem: 20808
+Epoch: [10]  [370/976]  eta: 6:32:05  lr: 0.000488  sp_loss: 5.6174 (5.6342)  fam_loss: 3.6135 (3.7037)  manu_loss: 2.6732 (2.6860)  gk_loss: 2.5069 (2.5595)  time: 18.3979  data: 17.6567  max mem: 20808
+Epoch: [10]  [380/976]  eta: 6:18:02  lr: 0.000488  sp_loss: 5.6689 (5.6308)  fam_loss: 3.7020 (3.7003)  manu_loss: 2.7178 (2.6838)  gk_loss: 2.5364 (2.5575)  time: 13.9883  data: 13.2476  max mem: 20808
+Epoch: [10]  [390/976]  eta: 6:04:53  lr: 0.000488  sp_loss: 5.6689 (5.6244)  fam_loss: 3.7020 (3.6961)  manu_loss: 2.7178 (2.6808)  gk_loss: 2.5364 (2.5551)  time: 10.2746  data: 9.5383  max mem: 20808
+Epoch: [10]  [400/976]  eta: 5:53:07  lr: 0.000488  sp_loss: 5.9471 (5.6322)  fam_loss: 3.8847 (3.7007)  manu_loss: 2.8107 (2.6843)  gk_loss: 2.6679 (2.5585)  time: 12.5149  data: 11.7787  max mem: 20808
+Epoch: [10]  [410/976]  eta: 5:41:52  lr: 0.000488  sp_loss: 5.9471 (5.6396)  fam_loss: 3.8789 (3.7048)  manu_loss: 2.8106 (2.6870)  gk_loss: 2.6679 (2.5615)  time: 14.3429  data: 13.6072  max mem: 20808
+Epoch: [10]  [420/976]  eta: 5:30:33  lr: 0.000488  sp_loss: 5.7877 (5.6370)  fam_loss: 3.7895 (3.7023)  manu_loss: 2.7766 (2.6857)  gk_loss: 2.6140 (2.5599)  time: 13.3707  data: 12.6348  max mem: 20808
+Epoch: [10]  [430/976]  eta: 5:19:05  lr: 0.000488  sp_loss: 6.0871 (5.6469)  fam_loss: 3.9302 (3.7085)  manu_loss: 2.8552 (2.6901)  gk_loss: 2.7636 (2.5648)  time: 10.8941  data: 10.1577  max mem: 20808
+Epoch: [10]  [440/976]  eta: 5:12:27  lr: 0.000488  sp_loss: 6.0947 (5.6523)  fam_loss: 3.9754 (3.7127)  manu_loss: 2.8642 (2.6926)  gk_loss: 2.7738 (2.5674)  time: 20.3445  data: 19.6084  max mem: 20808
+Epoch: [10]  [450/976]  eta: 5:02:25  lr: 0.000488  sp_loss: 5.7378 (5.6519)  fam_loss: 3.8004 (3.7125)  manu_loss: 2.7412 (2.6923)  gk_loss: 2.6209 (2.5672)  time: 22.2513  data: 21.5156  max mem: 20808
+Epoch: [10]  [460/976]  eta: 4:52:06  lr: 0.000488  sp_loss: 5.6145 (5.6438)  fam_loss: 3.6932 (3.7071)  manu_loss: 2.6365 (2.6883)  gk_loss: 2.5683 (2.5635)  time: 11.6883  data: 10.9523  max mem: 20808
+Epoch: [10]  [470/976]  eta: 4:42:59  lr: 0.000488  sp_loss: 5.0949 (5.6307)  fam_loss: 3.3612 (3.6984)  manu_loss: 2.4553 (2.6818)  gk_loss: 2.2767 (2.5573)  time: 12.3669  data: 11.6303  max mem: 20808
+Epoch: [10]  [480/976]  eta: 4:34:25  lr: 0.000488  sp_loss: 5.0949 (5.6287)  fam_loss: 3.3612 (3.6972)  manu_loss: 2.4646 (2.6809)  gk_loss: 2.2767 (2.5564)  time: 15.4529  data: 14.7165  max mem: 20808
+Epoch: [10]  [490/976]  eta: 4:26:12  lr: 0.000488  sp_loss: 5.6654 (5.6363)  fam_loss: 3.7521 (3.7018)  manu_loss: 2.6945 (2.6842)  gk_loss: 2.5748 (2.5598)  time: 16.5530  data: 15.8169  max mem: 20808
+Epoch: [10]  [500/976]  eta: 4:16:59  lr: 0.000488  sp_loss: 5.7560 (5.6356)  fam_loss: 3.7985 (3.7013)  manu_loss: 2.7493 (2.6838)  gk_loss: 2.6381 (2.5596)  time: 13.0669  data: 12.3303  max mem: 20808
+Epoch: [10]  [510/976]  eta: 4:08:29  lr: 0.000488  sp_loss: 5.9174 (5.6432)  fam_loss: 3.8871 (3.7053)  manu_loss: 2.8117 (2.6866)  gk_loss: 2.6667 (2.5627)  time: 10.6333  data: 9.8970  max mem: 20808
+Epoch: [10]  [520/976]  eta: 4:04:46  lr: 0.000488  sp_loss: 5.9653 (5.6447)  fam_loss: 3.8775 (3.7056)  manu_loss: 2.8117 (2.6869)  gk_loss: 2.6667 (2.5630)  time: 27.5554  data: 26.8199  max mem: 20808
+Epoch: [10]  [530/976]  eta: 3:57:42  lr: 0.000488  sp_loss: 5.8500 (5.6386)  fam_loss: 3.8075 (3.7013)  manu_loss: 2.7614 (2.6841)  gk_loss: 2.6332 (2.5608)  time: 31.5654  data: 30.8298  max mem: 20808
+Epoch: [10]  [540/976]  eta: 3:50:00  lr: 0.000488  sp_loss: 5.9318 (5.6388)  fam_loss: 3.8075 (3.7008)  manu_loss: 2.7309 (2.6835)  gk_loss: 2.6519 (2.5606)  time: 17.1676  data: 16.4316  max mem: 20808
+Epoch: [10]  [550/976]  eta: 3:42:05  lr: 0.000488  sp_loss: 5.9318 (5.6390)  fam_loss: 3.7829 (3.7013)  manu_loss: 2.7251 (2.6838)  gk_loss: 2.5709 (2.5614)  time: 12.7587  data: 12.0225  max mem: 20808
+Epoch: [10]  [560/976]  eta: 3:35:36  lr: 0.000488  sp_loss: 6.2345 (5.6456)  fam_loss: 3.9910 (3.7058)  manu_loss: 2.9356 (2.6873)  gk_loss: 2.7852 (2.5647)  time: 16.1271  data: 15.3910  max mem: 20808
+Epoch: [10]  [570/976]  eta: 3:28:08  lr: 0.000488  sp_loss: 6.2345 (5.6499)  fam_loss: 3.9910 (3.7080)  manu_loss: 2.9089 (2.6888)  gk_loss: 2.7640 (2.5662)  time: 16.4201  data: 15.6847  max mem: 20808
+Epoch: [10]  [580/976]  eta: 3:20:35  lr: 0.000488  sp_loss: 5.9698 (5.6526)  fam_loss: 3.8984 (3.7095)  manu_loss: 2.8462 (2.6900)  gk_loss: 2.7028 (2.5675)  time: 10.6411  data: 9.9051  max mem: 20808
+Epoch: [10]  [590/976]  eta: 3:13:50  lr: 0.000488  sp_loss: 6.0832 (5.6567)  fam_loss: 3.9295 (3.7123)  manu_loss: 2.8743 (2.6919)  gk_loss: 2.7309 (2.5695)  time: 12.1532  data: 11.4169  max mem: 20808
+Epoch: [10]  [600/976]  eta: 3:07:08  lr: 0.000488  sp_loss: 6.0087 (5.6544)  fam_loss: 3.8949 (3.7103)  manu_loss: 2.8517 (2.6905)  gk_loss: 2.7309 (2.5683)  time: 14.4242  data: 13.6884  max mem: 20808
+Epoch: [10]  [610/976]  eta: 3:01:27  lr: 0.000488  sp_loss: 5.5806 (5.6551)  fam_loss: 3.6402 (3.7104)  manu_loss: 2.6397 (2.6901)  gk_loss: 2.5090 (2.5684)  time: 18.4097  data: 17.6739  max mem: 20808
+Epoch: [10]  [620/976]  eta: 2:54:36  lr: 0.000488  sp_loss: 5.6850 (5.6586)  fam_loss: 3.6656 (3.7122)  manu_loss: 2.7136 (2.6915)  gk_loss: 2.5325 (2.5698)  time: 16.4046  data: 15.6689  max mem: 20808
+Epoch: [10]  [630/976]  eta: 2:48:09  lr: 0.000488  sp_loss: 6.0284 (5.6613)  fam_loss: 3.9090 (3.7137)  manu_loss: 2.8238 (2.6926)  gk_loss: 2.6877 (2.5711)  time: 11.2224  data: 10.4865  max mem: 20808
+Epoch: [10]  [640/976]  eta: 2:43:30  lr: 0.000488  sp_loss: 5.5507 (5.6592)  fam_loss: 3.6751 (3.7119)  manu_loss: 2.6616 (2.6911)  gk_loss: 2.5419 (2.5701)  time: 22.0552  data: 21.3191  max mem: 20808
+Epoch: [10]  [650/976]  eta: 2:37:11  lr: 0.000488  sp_loss: 5.5085 (5.6594)  fam_loss: 3.6005 (3.7115)  manu_loss: 2.5839 (2.6908)  gk_loss: 2.4949 (2.5702)  time: 21.7025  data: 20.9664  max mem: 20808
+Epoch: [10]  [660/976]  eta: 2:30:51  lr: 0.000488  sp_loss: 5.4685 (5.6513)  fam_loss: 3.5388 (3.7060)  manu_loss: 2.5836 (2.6870)  gk_loss: 2.4678 (2.5667)  time: 10.8070  data: 10.0707  max mem: 20808
+Epoch: [10]  [670/976]  eta: 2:24:39  lr: 0.000488  sp_loss: 5.9007 (5.6577)  fam_loss: 3.8272 (3.7096)  manu_loss: 2.7754 (2.6899)  gk_loss: 2.6388 (2.5697)  time: 9.9202  data: 9.1840  max mem: 20808
+Epoch: [10]  [680/976]  eta: 2:18:50  lr: 0.000488  sp_loss: 6.0614 (5.6585)  fam_loss: 3.9483 (3.7103)  manu_loss: 2.8854 (2.6902)  gk_loss: 2.7755 (2.5701)  time: 11.6320  data: 10.8965  max mem: 20808
+Epoch: [10]  [690/976]  eta: 2:13:12  lr: 0.000488  sp_loss: 5.3591 (5.6534)  fam_loss: 3.4785 (3.7067)  manu_loss: 2.5058 (2.6878)  gk_loss: 2.4031 (2.5676)  time: 13.9000  data: 13.1644  max mem: 20808
+Epoch: [10]  [700/976]  eta: 2:11:11  lr: 0.000488  sp_loss: 5.3394 (5.6512)  fam_loss: 3.4514 (3.7050)  manu_loss: 2.4447 (2.6866)  gk_loss: 2.3445 (2.5664)  time: 41.3600  data: 40.6246  max mem: 20808
+Epoch: [10]  [710/976]  eta: 2:05:17  lr: 0.000488  sp_loss: 6.1165 (5.6498)  fam_loss: 3.9303 (3.7037)  manu_loss: 2.8604 (2.6858)  gk_loss: 2.7500 (2.5658)  time: 39.1413  data: 38.4060  max mem: 20808
+Epoch: [10]  [720/976]  eta: 1:59:42  lr: 0.000488  sp_loss: 5.9589 (5.6462)  fam_loss: 3.9303 (3.7016)  manu_loss: 2.8117 (2.6842)  gk_loss: 2.7280 (2.5646)  time: 11.8602  data: 11.1243  max mem: 20808
+Epoch: [10]  [730/976]  eta: 1:55:18  lr: 0.000488  sp_loss: 5.7323 (5.6472)  fam_loss: 3.7864 (3.7028)  manu_loss: 2.7333 (2.6852)  gk_loss: 2.6509 (2.5654)  time: 23.2247  data: 22.4884  max mem: 20808
+Epoch: [10]  [740/976]  eta: 1:50:33  lr: 0.000488  sp_loss: 6.0637 (5.6549)  fam_loss: 3.9603 (3.7075)  manu_loss: 2.8551 (2.6884)  gk_loss: 2.7225 (2.5687)  time: 29.9312  data: 29.1955  max mem: 20808
+Epoch: [10]  [750/976]  eta: 1:44:58  lr: 0.000488  sp_loss: 6.1418 (5.6522)  fam_loss: 3.9836 (3.7056)  manu_loss: 2.8966 (2.6872)  gk_loss: 2.7254 (2.5674)  time: 18.7000  data: 17.9649  max mem: 20808
+Epoch: [10]  [760/976]  eta: 1:39:41  lr: 0.000488  sp_loss: 5.9044 (5.6526)  fam_loss: 3.7928 (3.7058)  manu_loss: 2.7472 (2.6873)  gk_loss: 2.6024 (2.5677)  time: 12.2861  data: 11.5511  max mem: 20808
+Epoch: [10]  [770/976]  eta: 1:34:50  lr: 0.000488  sp_loss: 5.9620 (5.6552)  fam_loss: 3.9388 (3.7073)  manu_loss: 2.8923 (2.6884)  gk_loss: 2.7335 (2.5689)  time: 18.3214  data: 17.5860  max mem: 20808
+Epoch: [10]  [780/976]  eta: 1:29:39  lr: 0.000488  sp_loss: 5.9620 (5.6570)  fam_loss: 3.9388 (3.7084)  manu_loss: 2.9110 (2.6894)  gk_loss: 2.7351 (2.5698)  time: 18.1344  data: 17.3984  max mem: 20808
+Epoch: [10]  [790/976]  eta: 1:25:39  lr: 0.000488  sp_loss: 5.7445 (5.6559)  fam_loss: 3.7907 (3.7075)  manu_loss: 2.7624 (2.6889)  gk_loss: 2.6321 (2.5694)  time: 27.8655  data: 27.1297  max mem: 20808
+Epoch: [10]  [800/976]  eta: 1:24:09  lr: 0.000488  sp_loss: 5.7445 (5.6580)  fam_loss: 3.7592 (3.7086)  manu_loss: 2.7551 (2.6895)  gk_loss: 2.6134 (2.5703)  time: 77.1991  data: 76.4634  max mem: 20808
+Epoch: [10]  [810/976]  eta: 1:19:50  lr: 0.000488  sp_loss: 5.2853 (5.6480)  fam_loss: 3.4196 (3.7017)  manu_loss: 2.4829 (2.6845)  gk_loss: 2.3767 (2.5656)  time: 77.4112  data: 76.6748  max mem: 20808
+Epoch: [10]  [820/976]  eta: 1:14:27  lr: 0.000488  sp_loss: 5.1303 (5.6511)  fam_loss: 3.2981 (3.7037)  manu_loss: 2.4148 (2.6860)  gk_loss: 2.2417 (2.5673)  time: 26.5428  data: 25.8065  max mem: 20808
+Epoch: [10]  [830/976]  eta: 1:09:08  lr: 0.000488  sp_loss: 6.1316 (5.6460)  fam_loss: 3.9929 (3.7001)  manu_loss: 2.9334 (2.6832)  gk_loss: 2.7983 (2.5648)  time: 10.3929  data: 9.6570  max mem: 20808
+Epoch: [10]  [840/976]  eta: 1:03:56  lr: 0.000488  sp_loss: 4.9937 (5.6449)  fam_loss: 3.2996 (3.6993)  manu_loss: 2.3965 (2.6826)  gk_loss: 2.2504 (2.5645)  time: 10.6917  data: 9.9554  max mem: 20808
+Epoch: [10]  [850/976]  eta: 0:58:55  lr: 0.000488  sp_loss: 5.7551 (5.6436)  fam_loss: 3.7765 (3.6983)  manu_loss: 2.7521 (2.6819)  gk_loss: 2.6223 (2.5642)  time: 13.4524  data: 12.7159  max mem: 20808
+Epoch: [10]  [860/976]  eta: 0:53:53  lr: 0.000488  sp_loss: 5.8093 (5.6445)  fam_loss: 3.8504 (3.6988)  manu_loss: 2.8210 (2.6824)  gk_loss: 2.6527 (2.5647)  time: 13.8300  data: 13.0935  max mem: 20808
+Epoch: [10]  [870/976]  eta: 0:49:16  lr: 0.000488  sp_loss: 5.6613 (5.6461)  fam_loss: 3.7255 (3.6996)  manu_loss: 2.6741 (2.6833)  gk_loss: 2.5771 (2.5655)  time: 20.6463  data: 19.9103  max mem: 20808
+Epoch: [10]  [880/976]  eta: 0:45:35  lr: 0.000488  sp_loss: 5.6240 (5.6425)  fam_loss: 3.6844 (3.6972)  manu_loss: 2.6680 (2.6815)  gk_loss: 2.5022 (2.5638)  time: 55.2657  data: 54.5298  max mem: 20808
+Epoch: [10]  [890/976]  eta: 0:40:35  lr: 0.000488  sp_loss: 5.5832 (5.6396)  fam_loss: 3.6384 (3.6953)  manu_loss: 2.5851 (2.6801)  gk_loss: 2.4919 (2.5626)  time: 46.8698  data: 46.1338  max mem: 20808
+Epoch: [10]  [900/976]  eta: 0:35:35  lr: 0.000488  sp_loss: 5.8081 (5.6400)  fam_loss: 3.8331 (3.6957)  manu_loss: 2.7767 (2.6804)  gk_loss: 2.6992 (2.5629)  time: 10.3092  data: 9.5734  max mem: 20808
+Epoch: [10]  [910/976]  eta: 0:30:39  lr: 0.000488  sp_loss: 6.0250 (5.6401)  fam_loss: 3.9602 (3.6958)  manu_loss: 2.8073 (2.6803)  gk_loss: 2.7260 (2.5629)  time: 8.2891  data: 7.5533  max mem: 20808
+Epoch: [10]  [920/976]  eta: 0:25:51  lr: 0.000488  sp_loss: 6.2301 (5.6428)  fam_loss: 4.0529 (3.6972)  manu_loss: 2.9193 (2.6813)  gk_loss: 2.7968 (2.5641)  time: 10.1919  data: 9.4505  max mem: 20808
+Epoch: [10]  [930/976]  eta: 0:21:06  lr: 0.000488  sp_loss: 6.1706 (5.6483)  fam_loss: 4.0004 (3.7006)  manu_loss: 2.9257 (2.6837)  gk_loss: 2.8368 (2.5666)  time: 12.0512  data: 11.3102  max mem: 20808
+Epoch: [10]  [940/976]  eta: 0:16:23  lr: 0.000488  sp_loss: 6.0202 (5.6469)  fam_loss: 3.9295 (3.6994)  manu_loss: 2.8601 (2.6829)  gk_loss: 2.7247 (2.5659)  time: 10.1213  data: 9.3858  max mem: 20808
+Epoch: [10]  [950/976]  eta: 0:11:45  lr: 0.000488  sp_loss: 5.0741 (5.6397)  fam_loss: 3.3080 (3.6944)  manu_loss: 2.3991 (2.6792)  gk_loss: 2.3043 (2.5626)  time: 8.5027  data: 7.7667  max mem: 20808
+Epoch: [10]  [960/976]  eta: 0:07:11  lr: 0.000488  sp_loss: 5.5150 (5.6414)  fam_loss: 3.6185 (3.6951)  manu_loss: 2.5941 (2.6798)  gk_loss: 2.4622 (2.5633)  time: 10.3422  data: 9.6061  max mem: 20808
+Epoch: [10]  [970/976]  eta: 0:02:40  lr: 0.000488  sp_loss: 5.8222 (5.6433)  fam_loss: 3.7809 (3.6959)  manu_loss: 2.7956 (2.6804)  gk_loss: 2.6494 (2.5637)  time: 9.5459  data: 8.8106  max mem: 20808
+Epoch: [10]  [975/976]  eta: 0:00:26  lr: 0.000488  sp_loss: 5.9331 (5.6462)  fam_loss: 3.8991 (3.6977)  manu_loss: 2.8219 (2.6817)  gk_loss: 2.6615 (2.5650)  time: 5.8138  data: 5.0784  max mem: 20808
+Epoch: [10] Total time: 7:13:22 (26.6421 s / it)
+Averaged stats: lr: 0.000488  sp_loss: 5.9331 (5.6462)  fam_loss: 3.8991 (3.6977)  manu_loss: 2.8219 (2.6817)  gk_loss: 2.6615 (2.5650)
+Test:  [  0/196]  eta: 4:55:07  sploss: 2.6798 (2.6798)  famloss: 1.4679 (1.4679)  manuloss: 0.9622 (0.9622)  acc1: 47.6562 (47.6562)  acc5: 72.6562 (72.6562)  family_acc1: 66.4062 (66.4062)  manu_acc1: 78.7109 (78.7109)  time: 90.3454  data: 88.1999  max mem: 20808
+Test:  [ 10/196]  eta: 0:48:13  sploss: 2.7732 (2.8094)  famloss: 1.5363 (1.5921)  manuloss: 1.0563 (1.0930)  acc1: 45.5078 (44.8686)  acc5: 71.2891 (71.1293)  family_acc1: 65.2344 (64.6662)  manu_acc1: 76.3672 (75.0178)  time: 15.5575  data: 15.0637  max mem: 20808
+Test:  [ 20/196]  eta: 0:35:27  sploss: 2.7610 (2.7758)  famloss: 1.5578 (1.5687)  manuloss: 1.0563 (1.0776)  acc1: 45.5078 (45.9821)  acc5: 71.2891 (71.3077)  family_acc1: 64.8438 (64.9275)  manu_acc1: 74.4141 (75.4185)  time: 8.1756  data: 7.8468  max mem: 20808
+Test:  [ 30/196]  eta: 0:30:00  sploss: 2.7259 (2.7586)  famloss: 1.5383 (1.5623)  manuloss: 1.0535 (1.0719)  acc1: 47.2656 (46.4781)  acc5: 71.2891 (71.5159)  family_acc1: 64.6484 (64.8374)  manu_acc1: 75.1953 (75.5670)  time: 8.2586  data: 7.9299  max mem: 20808
+Test:  [ 40/196]  eta: 0:31:28  sploss: 2.7259 (2.7405)  famloss: 1.5241 (1.5465)  manuloss: 1.0167 (1.0580)  acc1: 47.2656 (46.5749)  acc5: 72.2656 (71.8512)  family_acc1: 65.2344 (65.2820)  manu_acc1: 76.7578 (76.0194)  time: 12.1211  data: 11.7925  max mem: 20808
+Test:  [ 50/196]  eta: 0:27:36  sploss: 2.7539 (2.7521)  famloss: 1.5523 (1.5652)  manuloss: 1.0703 (1.0677)  acc1: 46.0938 (46.4729)  acc5: 72.2656 (71.6682)  family_acc1: 65.0391 (64.9242)  manu_acc1: 75.5859 (75.6817)  time: 12.1250  data: 11.7964  max mem: 20808
+Test:  [ 60/196]  eta: 0:24:33  sploss: 2.7751 (2.7532)  famloss: 1.6496 (1.5728)  manuloss: 1.1151 (1.0806)  acc1: 46.8750 (46.7053)  acc5: 71.0938 (71.6092)  family_acc1: 63.0859 (64.8053)  manu_acc1: 74.2188 (75.3618)  time: 8.2390  data: 7.9103  max mem: 20808
+Test:  [ 70/196]  eta: 0:21:58  sploss: 2.6025 (2.7199)  famloss: 1.4680 (1.5480)  manuloss: 0.9763 (1.0618)  acc1: 49.6094 (47.2244)  acc5: 73.4375 (72.1831)  family_acc1: 66.2109 (65.2949)  manu_acc1: 75.5859 (75.7647)  time: 8.2211  data: 7.8925  max mem: 20808
+Test:  [ 80/196]  eta: 0:21:33  sploss: 2.5825 (2.7142)  famloss: 1.4434 (1.5420)  manuloss: 0.9697 (1.0557)  acc1: 48.6328 (47.3042)  acc5: 74.4141 (72.2825)  family_acc1: 67.1875 (65.4032)  manu_acc1: 77.3438 (75.8512)  time: 12.1020  data: 11.7733  max mem: 20808
+Test:  [ 90/196]  eta: 0:19:24  sploss: 2.7641 (2.7275)  famloss: 1.5989 (1.5538)  manuloss: 1.0611 (1.0610)  acc1: 47.0703 (47.1583)  acc5: 71.6797 (72.0574)  family_acc1: 63.8672 (65.0863)  manu_acc1: 75.3906 (75.7061)  time: 12.8141  data: 12.4854  max mem: 20808
+Test:  [100/196]  eta: 0:17:09  sploss: 2.7850 (2.7280)  famloss: 1.5989 (1.5569)  manuloss: 1.0886 (1.0648)  acc1: 46.6797 (47.1477)  acc5: 71.4844 (72.0142)  family_acc1: 62.8906 (64.9733)  manu_acc1: 74.4141 (75.5627)  time: 8.9781  data: 8.6493  max mem: 20808
+Test:  [110/196]  eta: 0:15:02  sploss: 2.6467 (2.7192)  famloss: 1.5578 (1.5578)  manuloss: 1.1007 (1.0698)  acc1: 49.0234 (47.4099)  acc5: 72.6562 (72.1601)  family_acc1: 65.0391 (65.0355)  manu_acc1: 74.8047 (75.4645)  time: 8.2959  data: 7.9671  max mem: 20808
+Test:  [120/196]  eta: 0:14:08  sploss: 2.6362 (2.7222)  famloss: 1.5630 (1.5682)  manuloss: 1.1247 (1.0822)  acc1: 49.2188 (47.4948)  acc5: 72.8516 (72.0703)  family_acc1: 65.4297 (64.8341)  manu_acc1: 74.0234 (75.0323)  time: 13.4475  data: 13.1188  max mem: 20808
+Test:  [130/196]  eta: 0:12:03  sploss: 2.6453 (2.7128)  famloss: 1.5518 (1.5643)  manuloss: 1.0693 (1.0777)  acc1: 49.2188 (47.6771)  acc5: 72.4609 (72.1821)  family_acc1: 65.0391 (64.9377)  manu_acc1: 75.0000 (75.1506)  time: 13.5207  data: 13.1921  max mem: 20808
+Test:  [140/196]  eta: 0:10:03  sploss: 2.4865 (2.6918)  famloss: 1.4450 (1.5504)  manuloss: 0.9778 (1.0690)  acc1: 51.3672 (48.0150)  acc5: 74.6094 (72.5399)  family_acc1: 67.9688 (65.2538)  manu_acc1: 76.9531 (75.3421)  time: 8.3898  data: 8.0612  max mem: 20808
+Test:  [150/196]  eta: 0:08:08  sploss: 2.4694 (2.6785)  famloss: 1.3683 (1.5382)  manuloss: 0.9268 (1.0582)  acc1: 51.5625 (48.1917)  acc5: 75.5859 (72.7261)  family_acc1: 69.9219 (65.5526)  manu_acc1: 78.9062 (75.6325)  time: 8.4240  data: 8.0954  max mem: 20808
+Test:  [160/196]  eta: 0:06:36  sploss: 2.5158 (2.6699)  famloss: 1.3726 (1.5285)  manuloss: 0.9181 (1.0505)  acc1: 50.1953 (48.3016)  acc5: 75.1953 (72.8576)  family_acc1: 68.5547 (65.7014)  manu_acc1: 78.9062 (75.8371)  time: 12.6987  data: 12.3701  max mem: 20808
+Test:  [170/196]  eta: 0:04:43  sploss: 2.5953 (2.6706)  famloss: 1.4319 (1.5272)  manuloss: 0.9891 (1.0503)  acc1: 48.8281 (48.2525)  acc5: 73.8281 (72.8550)  family_acc1: 66.9922 (65.7004)  manu_acc1: 77.5391 (75.7938)  time: 13.0415  data: 12.7126  max mem: 20808
+Test:  [180/196]  eta: 0:02:53  sploss: 2.5875 (2.6627)  famloss: 1.4312 (1.5189)  manuloss: 0.9713 (1.0406)  acc1: 48.0469 (48.3037)  acc5: 73.8281 (72.9746)  family_acc1: 67.9688 (65.9023)  manu_acc1: 78.3203 (76.0845)  time: 9.3638  data: 9.0349  max mem: 20808
+Test:  [190/196]  eta: 0:01:03  sploss: 2.5473 (2.6554)  famloss: 1.3797 (1.5120)  manuloss: 0.8710 (1.0318)  acc1: 49.6094 (48.4303)  acc5: 75.0000 (73.0949)  family_acc1: 68.9453 (66.0524)  manu_acc1: 81.0547 (76.3437)  time: 8.2733  data: 7.9446  max mem: 20808
+Test:  [195/196]  eta: 0:00:10  sploss: 2.5442 (2.6528)  famloss: 1.3797 (1.5088)  manuloss: 0.8550 (1.0276)  acc1: 50.5859 (48.4640)  acc5: 75.0000 (73.1220)  family_acc1: 68.9453 (66.1240)  manu_acc1: 81.0547 (76.4580)  time: 9.5073  data: 9.1804  max mem: 20808
+Test: Total time: 0:34:17 (10.4991 s / it)
+* Acc@1 48.464 Acc@5 73.122 family@1 66.124 manu@1 76.458 sploss 2.653 fmloss 1.509 mfloss 1.028
+Accuracy of the network on the 100000 test images: 48.5%
+Max accuracy: 48.46%
