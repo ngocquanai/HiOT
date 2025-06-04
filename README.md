@@ -7,6 +7,17 @@ Our method ensures that all levels of hierarchical classification, from fine-gra
 <img src="images/prior_vs_ours.png" width="700">
 
 
+## 🔗 Results and Checkpoints
+
+| Dataset      | FPA | Model Checkpoint | 
+|--------------|-------------------------------|------------------| 
+| iNat21-Mini | 65.00%               | [Download](https://drive.google.com/file/d/1LuppLHSL9g-BdBkM5yh6wMEX48iF2FX5/view?usp=share_link) |  
+| Entity-30    | 84.86%                       | [Download](https://drive.google.com/file/d/1R0I7KCtnRFqIaBkaY_SFqbKVx0DrbSeV/view?usp=share_link) |  
+| Entity-13 | 85.61%      | [Download](https://drive.google.com/file/d/16gunLvLkHuVIXtvJtSU2JlfJTHSbCn_-/view?usp=sharing) |  
+| Non-Living-26 | 82.53%      | [Download](https://drive.google.com/file/d/1UKPUSm-rkRgExYeeeRlT7YcUcRvdwQOP/view?usp=sharing) |  
+| Living-17 | 85.11%      | [Download](https://drive.google.com/file/d/17ouiirBmBxD5wxOuWBi-SulVIzv8oHBL/view?usp=sharing) |  
+
+
 
 ## 🛠️ Installation
 - Python: 3.10
@@ -110,9 +121,10 @@ torchrun --nproc_per_node=4 deit/main_suppix_hier.py \
   --epochs 100 \
   --num-superpixels 196 --num_workers 12 \
   --data-set BREEDS-HIER-SUPERPIXEL \
-  --breeds_sort living17 \
+  --breeds_sort entity13 \
   --data-path ILSVRC2012/imagenet \
-  --output_dir ./output/living17_hcast \
+  --output_dir ./output/entity13_hcast \
+  --lr 0.001 --warmup-lr 0.0001 \
   --globalkl --gk_weight 0.5 \
   --distributed
 ```
@@ -124,12 +136,13 @@ torchrun --nproc_per_node=4 deit/main_hier.py \
   --num_workers 12 \
   --epochs 100 \
   --data-set BREEDS-HIER \
-  --breeds_sort living17 \
+  --breeds_sort entity13 \
   --data-path ILSVRC2012/imagenet \
-  --output_dir ./output/living17_hvit \
+  --output_dir ./output/entity13_hvit \
   --distributed
 ```
 ### [iNat21-Mini](https://github.com/visipedia/inat_comp/tree/master/2021) (for 4 GPUs)
+* Use `NAT18-HIER-SUPERPIXEL` as the `data-set` argument for [iNat-2018](https://github.com/visipedia/inat_comp/tree/master/2018).
 #### H-CAST
 ```
 torchrun --nproc_per_node=4 deit/main_suppix_hier.py \
@@ -161,34 +174,23 @@ torchrun --nproc_per_node=4 deit/main_hier.py \
 ---
 
 ## 📊  Evaluation
+
 ```
 python deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
   --num-superpixels 196 --num_workers 8 \
-  --data-set BIRD-HIER-SUPERPIXEL \
-  --data-path /data/CUB_200_2011/images_split \
-  --output_dir ./output/bird_hcast \
-  --resume ./output/bird_hcast/best_checkpoint.pth \
+  --data-set INAT21-MINI-HIER-SUPERPIXEL  \
+  --data-path iNat2021 \
+  --output_dir ./output/inat21_mini_hcast \
+  --resume ./output/inat21_mini_hcast/best_checkpoint.pth \
   --eval 
 ```
 
 ## 🔗 Code Base
 This repository is heavily based on **[CAST](https://github.com/twke18/CAST.git)**.  
 
----
 
-## 🚀 Upcoming Updates
-We are actively working on improving this repository! More updates will be released soon. **Stay tuned!** 🔥
-
-
-## ✅ TODO (Upcoming Updates)
-- [ ] Add support for more datasets
-- [ ] Add evaluation script
-- [ ] Add our checkpoints
-
-
----
 
 ## 📢 Citation
 If you find this repository helpful, please consider citing our work:

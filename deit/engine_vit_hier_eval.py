@@ -24,7 +24,7 @@ def evaluate_detail(data_loader, model, device, filename, n_classes=3, dataset='
     header = 'Test:'
 
     if 'INAT18' in dataset:
-        inat_trees = json.load(open('inat_3tree.json'))
+        inat_trees = json.load(open('data/inat18_3tree.json'))
 
     elif 'INAT21' in dataset:
         inat_trees = json.load(open('data/inat21_3tree.json'))

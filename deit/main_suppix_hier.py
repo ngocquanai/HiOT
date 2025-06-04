@@ -161,7 +161,7 @@ def get_args_parser():
     parser.add_argument('--data-path', default='/datasets01/imagenet_full_size/061417/', type=str,
                         help='dataset path')
     parser.add_argument('--data-set', default='BIRD-HIER-SUPERPIXEL', choices=['AIR-HIER-SUPERPIXEL', 'BIRD-HIER-SUPERPIXEL', 'BREEDS-HIER-SUPERPIXEL',
-                                                                'INAT21-MINI-HIER-SUPERPIXEL'],
+                                                                'INAT18-HIER-SUPERPIXEL', 'INAT21-MINI-HIER-SUPERPIXEL'],
                         type=str, help='Image Net dataset path')
     parser.add_argument('--path-yn', action='store_true')
     parser.add_argument('--inat-category', default='name',
@@ -378,15 +378,15 @@ def main(args):
     optimizer = create_optimizer(args, model_without_ddp)
     loss_scaler = NativeScaler()
 
-    #lr_scheduler, _ = create_scheduler(args, optimizer)
-    lr_scheduler = CosineLRScheduler(
-        optimizer,
-        t_initial=300,  
-        lr_min=args.min_lr,
-        warmup_t=args.warmup_epochs,
-        warmup_lr_init=args.warmup_lr,
-        t_in_epochs=True
-    )
+    lr_scheduler, _ = create_scheduler(args, optimizer)
+    # lr_scheduler = CosineLRScheduler(
+    #     optimizer,
+    #     t_initial=300,  
+    #     lr_min=args.min_lr,
+    #     warmup_t=args.warmup_epochs,
+    #     warmup_lr_init=args.warmup_lr,
+    #     t_in_epochs=True
+    # )
 
     criterion = LabelSmoothingCrossEntropy() 
 
@@ -446,7 +446,7 @@ def main(args):
         lr_scheduler.step(args.start_epoch)
     if args.eval:
         if 'accuracy' in checkpoint:
-            print('Checkpoint Accuracy:', checkpoint['accuracy'], 'at Epoch ', checkpoint['epoch'])
+            print('Checkpoint Accuracy:', checkpoint['accuracy'])
         test_stats = evaluate_detail(data_loader_val, model, device, os.path.join(args.output_dir, args.filename), 
                                      args.nb_classes, args.data_set, args.breeds_sort)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
@@ -488,7 +488,7 @@ def main(args):
         test_stats = evaluate(data_loader_val, model, device, args.nb_classes)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
         
-        if max_accuracy < test_stats["acc1"]:
+        if max_accuracy < test_stats["acc1"]: 
             max_accuracy = test_stats["acc1"]
             if args.output_dir:
                 checkpoint_paths = [output_dir / 'best_checkpoint.pth']
@@ -517,6 +517,8 @@ def main(args):
         if args.output_dir and utils.is_main_process():
             with (output_dir / "log.txt").open("a") as f:
                 f.write(json.dumps(log_stats) + "\n")
+
+
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))

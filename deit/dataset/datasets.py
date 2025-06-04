@@ -22,6 +22,7 @@ import breeds_seeds
 import inat21_mini
 import inat21_mini_seeds
 
+import inat18_seeds
 
 
 def build_dataset(is_train, args):
@@ -80,7 +81,20 @@ def build_dataset(is_train, args):
         )
         nb_classes = [200, 38, 13]
 
-
+    elif args.data_set == 'INAT18-HIER-SUPERPIXEL':
+        dataset = inat18_seeds.iNatHierDataset(
+            args.data_path,
+            is_train=is_train,
+            transform=transform,
+            is_hier=True,
+            mean=[0.466, 0.471, 0.380],
+            std=[0.195, 0.194, 0.192],
+            n_segments=args.num_superpixels,
+            compactness=10.0,
+            blur_ops=None,
+            scale_factor=1.0,
+        )
+        nb_classes = [8142, 274, 14]
 
     elif args.data_set == 'INAT21-MINI-HIER':
         dataset = inat21_mini.iNat21MiniDataset(

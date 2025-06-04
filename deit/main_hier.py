@@ -431,7 +431,7 @@ def main(args):
         lr_scheduler.step(args.start_epoch)
     if args.eval:
         if 'accuracy' in checkpoint:
-            print('Checkpoint Accuracy:', checkpoint['accuracy'], 'at Epoch ', checkpoint['epoch'])
+            print('Checkpoint Accuracy:', checkpoint['accuracy'])
         
         test_stats = evaluate_detail(data_loader_val, model, device, args.filename, len(args.nb_classes), args.data_set, args.breeds_sort)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
