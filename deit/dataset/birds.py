@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torchvision.datasets as datasets
 import torchvision.datasets.folder as folder
 
-from birds_get_tree_target_2 import *
+from dataset.birds_get_tree_target_2 import *
 
 import random
 from collections import defaultdict

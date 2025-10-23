@@ -20,7 +20,7 @@ from timm.scheduler.cosine_lr import CosineLRScheduler
 from timm.optim import create_optimizer
 from timm.utils import NativeScaler, get_state_dict, ModelEma
 
-from datasets import build_dataset
+from dataset.datasets import build_dataset
 from engine_hier import train_one_epoch, evaluate 
 from engine_hier_eval import evaluate_detail
 from losses import DistillationLoss
@@ -194,12 +194,15 @@ def get_args_parser():
     
     ## Added
     parser.add_argument('--globalkl', action='store_true', default=False, help='Use global KL loss')
+    parser.add_argument('--ot_loss', action='store_true', default=False, help='Use OT loss')
+    parser.add_argument('--ot_weight', default= 1, type= float)
     parser.add_argument('--globalbce', action='store_true', default=False, help='Use global bce loss')
     parser.add_argument('--gk_weight', default=1, type=float)
     parser.add_argument('--filename', default='results.csv', type=str)
     parser.add_argument('--breeds_sort', default='entity13', type=str, choices=['entity13', 'living17', 'nonliving26', 'entity30'])
     parser.add_argument('--random_seed', default=1, type=int)
     parser.add_argument('--local_rank', type=int, default=-1, help='Local rank for distributed training')
+    parser.add_argument('--tree_path', type= str, default= "./tree.json", help= "path to the tree of dataset")
 
     return parser
 
@@ -290,7 +293,7 @@ def main(args):
         img_size=args.input_size,
         nb_classes=args.nb_classes
     )
-    print(model)
+    # print(model)
                     
     if args.finetune:
         if args.finetune.startswith('https'):

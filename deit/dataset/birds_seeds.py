@@ -8,7 +8,7 @@ import torchvision.datasets as datasets
 import torchvision.datasets.folder as folder
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 import cv2
-from birds_get_tree_target_2 import *
+from dataset.birds_get_tree_target_2 import *
 import random
 from collections import defaultdict
 class ImageFolder(datasets.ImageFolder):

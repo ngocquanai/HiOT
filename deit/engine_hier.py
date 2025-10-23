@@ -16,6 +16,8 @@ from losses import DistillationLoss
 import utils
 import torch.nn.functional as F
 
+from losses import HierachicalOTLoss
+
 def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
                     device: torch.device, epoch: int, loss_scaler, max_norm: float = 0,
@@ -25,9 +27,13 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     metric_logger = utils.MetricLogger(delimiter="  ")
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     header = 'Epoch: [{}]'.format(epoch)
-    print_freq = 10
+    print_freq = 50
     
     if args.globalkl:
+        gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
+    
+    if args.ot_loss :
+        ot_criterion = HierachicalOTLoss(tree_path= args.tree_path)
         gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
 
     if args.cosub:
@@ -67,6 +73,15 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         gk_loss = gk_criterion(all_outputs, all_targets)
                         loss = loss + gk_loss * args.gk_weight
+                    
+                    if args.ot_loss :
+                        all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
+                        all_outputs = F.log_softmax(all_outputs, dim=1)
+                        all_targets = torch.cat((mf_targets, family_targets, targets), dim=1)
+                        all_targets = F.normalize(all_targets, p=1, dim=1)
+                        ot_loss = ot_criterion(all_outputs, all_targets)
+                        gk_loss = gk_criterion(all_outputs, all_targets)
+                        loss = loss + ot_loss * args.ot_weight + 0 * gk_loss
                 else:
                     outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
                     loss = 0.25 * criterion(outputs[0], targets) 
@@ -96,6 +111,9 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             metric_logger.update(fam_loss=loss_family.item())
             metric_logger.update(manu_loss=loss_manufacturer.item())
             if args.globalkl:
+                metric_logger.update(gk_loss=gk_loss.item())
+            if args.ot_loss:
+                metric_logger.update(ot_loss=ot_loss.item())
                 metric_logger.update(gk_loss=gk_loss.item())
             metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
@@ -134,6 +152,13 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         gk_loss = gk_criterion(all_outputs, all_targets)
                         loss = loss + gk_loss * args.gk_weight
+                    if args.ot_loss:
+                        all_outputs = torch.cat((family_out, outputs), dim=1)
+                        all_outputs = F.log_softmax(all_outputs, dim=1)
+                        all_targets = torch.cat((family_targets, targets), dim=1)
+                        all_targets = F.normalize(all_targets, p=1, dim=1)
+                        ot_loss = ot_criterion(all_outputs, all_targets)
+                        loss = loss + ot_loss * args.ot_weight
 
                 else:
                     outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
@@ -164,6 +189,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             metric_logger.update(fam_loss=loss_family.item())
             if args.globalkl:
                 metric_logger.update(gk_loss=gk_loss.item())
+            if args.ot_loss:
+                metric_logger.update(ot_loss=ot_loss.item())
             metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
     # gather the stats from all processes
@@ -183,7 +210,7 @@ def evaluate(data_loader, model, device, nb_classes):
     model.eval()
 
     if len(nb_classes) == 3:
-        for images, segments, target, family_targets, mf_targets in metric_logger.log_every(data_loader, 10, header):
+        for images, segments, target, family_targets, mf_targets in metric_logger.log_every(data_loader, 100, header):
             images = images.to(device, non_blocking=True)
             segments = segments.to(device, non_blocking=True)
             target = target.to(device, non_blocking=True)

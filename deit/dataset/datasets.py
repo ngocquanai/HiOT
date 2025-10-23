@@ -10,19 +10,19 @@ from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from timm.data import create_transform
 
 
-import aircraft_seeds
-import aircraft
+from dataset import aircraft_seeds
+from dataset import aircraft
 
-import birds_seeds
-import birds
+from dataset import birds_seeds
+from dataset import birds
 
-import breeds
-import breeds_seeds
+from dataset import breeds
+from dataset import breeds_seeds
 
-import inat21_mini
-import inat21_mini_seeds
+from dataset import inat21_mini
+from dataset import inat21_mini_seeds
 
-import inat18_seeds
+from dataset import inat18_seeds
 
 
 def build_dataset(is_train, args):

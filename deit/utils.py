@@ -14,6 +14,9 @@ import datetime
 import torch
 import torch.distributed as dist
 
+import json
+import numpy as np
+
 
 class SmoothedValue(object):
     """Track a series of values and provide access to smoothed values over a
@@ -238,3 +241,61 @@ def init_distributed_mode(args):
                                          world_size=args.world_size, rank=args.rank)
     torch.distributed.barrier()
     setup_for_distributed(args.rank == 0)
+
+
+
+
+
+
+def create_ot_matrix(tree_path) :
+
+    with open(tree_path, "r") as file :
+        trees = json.load(file)
+
+
+    names = [trees[i][0] for i in range(len(trees))]
+    families = [trees[i][1] for i in range(len(trees))]
+    orders = [trees[i][2] for i in range(len(trees))]
+
+    names = list(set(names))
+    families = list(set(families))
+    orders = list(set(orders))
+
+    NAME = len(names)
+    FAMILY = len(families)
+    ORDER = len(orders)
+
+    dim = NAME + FAMILY + ORDER
+    
+    H = np.eye(dim, dtype= int)
+
+
+
+    for idx in range(len(trees)) :
+        name, family, order = trees[idx]
+        family = NAME + family
+        order = NAME + FAMILY + order
+        H[name, family] = 1
+        H[name, order] = 1
+        H[family, order] = 1
+    
+    # DEBUG
+    correct = 0
+    for idx in range(H.shape[0]) :
+        if idx < NAME :
+            if np.sum(H[idx, :]) == 3  :
+                correct += 1
+            else :
+                print(idx, np.sum(H[idx, :]))
+        elif idx < NAME + FAMILY :
+            if np.sum(H[idx, :]) == 2  :
+                correct += 1
+            else :
+                print(idx, np.sum(H[idx, :]))
+        else :
+            if np.sum(H[idx, :]) == 1  :
+                correct += 1
+            else :
+                print(idx, np.sum(H[idx, :]))
+    print(correct)
+    return H

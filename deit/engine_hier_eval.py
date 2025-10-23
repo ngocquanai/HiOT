@@ -16,7 +16,7 @@ from losses import DistillationLoss
 import utils
 import csv
 import shutil
-from birds_get_tree_target_2 import *
+from dataset.birds_get_tree_target_2 import *
 import json
 import torch.nn.functional as F
 

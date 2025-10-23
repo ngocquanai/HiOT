@@ -5,7 +5,10 @@ Implements the knowledge distillation loss
 """
 import torch
 from torch.nn import functional as F
+import numpy as np
+import torch.nn as nn
 
+from utils import create_ot_matrix
 
 class DistillationLoss(torch.nn.Module):
     """
@@ -67,4 +70,39 @@ class DistillationLoss(torch.nn.Module):
             distillation_loss = F.cross_entropy(outputs_kd, teacher_outputs.argmax(dim=1))
 
         loss = base_loss * (1 - self.alpha) + distillation_loss * self.alpha
+        return loss
+
+
+
+class HierachicalOTLoss(torch.nn.Module):
+    """
+    This module wraps a standard criterion and adds an extra knowledge distillation loss by
+    taking a teacher model prediction and using it as additional supervision.
+    """
+    def __init__(self, tree_path: str):
+        super().__init__()
+
+        self.H = create_ot_matrix(tree_path)
+        self.H = torch.from_numpy(self.H).float()
+        self.mse_loss = nn.MSELoss()
+        self.scaling = self.H.shape[0]
+
+    def forward(self, outputs, labels):
+
+        self.H = self.H.to(outputs.device)
+        outputs_kd = None
+        if not isinstance(outputs, torch.Tensor):
+            # assume that the model outputs a tuple of [outputs, outputs_kd]
+            outputs, outputs_kd = outputs
+
+        labels = torch.matmul(labels, self.H)
+        outputs = torch.matmul(outputs, self.H)
+
+        ot_loss = self.mse_loss(outputs, labels)
+
+
+
+
+        # loss = base_loss * (1 - self.alpha) + ot_loss * self.alpha
+        loss = ot_loss /self.scaling
         return loss

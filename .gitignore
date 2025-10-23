@@ -132,6 +132,7 @@ lincls_log
 *tmp*
 *.ipynb
 visualize_ovseg_cast.ipynb
-scripts/
 
 train_imagenet1k_cast.sh
+sbatch_results/
+./best_checkpoint.pth
