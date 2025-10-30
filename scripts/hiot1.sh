@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 #SBATCH --job-name=hiot1# create a short name for your job
-#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/sbatch_results/hiot1.out # create a output file
-#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/sbatch_results/hiot1.err # create a error file
+#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot1mix.out # create a output file
+#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot1mix.err # create a error file
 #SBATCH --partition=movianr # choose partition
 #SBATCH --gpus-per-node=2
 #SBATCH --cpus-per-task=32
@@ -26,7 +26,7 @@ conda activate hcast
 cd /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
 
 export PYTHONPATH=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
-torchrun --nproc_per_node=2 deit/main_suppix_hier.py \
+torchrun --nproc_per_node=2  --master_port=23010 deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
   --epochs 100 \
@@ -37,3 +37,5 @@ torchrun --nproc_per_node=2 deit/main_suppix_hier.py \
   --ot_loss --ot_weight 1.0 \
   --finetune best_checkpoint.pth \
   --tree_path ./data/inat21_3tree.json --distributed
+
+chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/

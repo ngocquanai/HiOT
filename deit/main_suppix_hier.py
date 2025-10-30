@@ -195,7 +195,9 @@ def get_args_parser():
     ## Added
     parser.add_argument('--globalkl', action='store_true', default=False, help='Use global KL loss')
     parser.add_argument('--ot_loss', action='store_true', default=False, help='Use OT loss')
+    parser.add_argument('--learnable_ot', action='store_true', default=False, help='Use learnable weight for OT')
     parser.add_argument('--ot_weight', default= 1, type= float)
+    parser.add_argument('--base_weight', default= 0, type= float)
     parser.add_argument('--globalbce', action='store_true', default=False, help='Use global bce loss')
     parser.add_argument('--gk_weight', default=1, type=float)
     parser.add_argument('--filename', default='results.csv', type=str)
@@ -425,9 +427,9 @@ def main(args):
 
     # wrap the criterion in our custom DistillationLoss, which
     # just dispatches to the original criterion if args.distillation_type is 'none'
-    criterion = DistillationLoss(
-        criterion, teacher_model, args.distillation_type, args.distillation_alpha, args.distillation_tau
-    )
+    # criterion = DistillationLoss(
+    #     criterion, teacher_model, args.distillation_type, args.distillation_alpha, args.distillation_tau
+    # )
 
     output_dir = Path(args.output_dir)
     if args.resume:

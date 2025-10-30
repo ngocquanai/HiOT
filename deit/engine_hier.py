@@ -33,7 +33,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
         gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
     
     if args.ot_loss :
-        ot_criterion = HierachicalOTLoss(tree_path= args.tree_path)
+        ot_criterion = HierachicalOTLoss(tree_path= args.tree_path, learnable= args.learnable_ot)
         gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
 
     if args.cosub:
@@ -62,9 +62,9 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             with torch.cuda.amp.autocast():
                 outputs, family_out, manu_out = model(samples, segments)###
                 if not args.cosub:
-                    loss_species = criterion(samples, outputs, targets)
-                    loss_family = criterion(samples, family_out, family_targets)
-                    loss_manufacturer = criterion(samples, manu_out, mf_targets)
+                    loss_species = criterion(outputs, targets)
+                    loss_family = criterion(family_out, family_targets)
+                    loss_manufacturer = criterion(manu_out, mf_targets)
                     loss = loss_species + loss_family + loss_manufacturer
                     if args.globalkl:
                         all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
@@ -77,17 +77,12 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     if args.ot_loss :
                         all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
                         all_outputs = F.log_softmax(all_outputs, dim=1)
-                        all_targets = torch.cat((mf_targets, family_targets, targets), dim=1)
+                        all_targets = torch.cat((0.45 * mf_targets, 0.75 * family_targets, 1.8 * targets), dim=1)
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         ot_loss = ot_criterion(all_outputs, all_targets)
-                        gk_loss = gk_criterion(all_outputs, all_targets)
-                        loss = loss + ot_loss * args.ot_weight + 0 * gk_loss
-                else:
-                    outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
-                    loss = 0.25 * criterion(outputs[0], targets) 
-                    loss = loss + 0.25 * criterion(outputs[1], targets) 
-                    loss = loss + 0.25 * criterion(outputs[0], outputs[1].detach().sigmoid())
-                    loss = loss + 0.25 * criterion(outputs[1], outputs[0].detach().sigmoid()) 
+                        base_loss = criterion(all_outputs, all_targets)
+                        loss = loss + args.ot_weight * ot_loss + args.base_weight * base_loss
+
 
             loss_value = loss.item()
 
@@ -114,85 +109,12 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                 metric_logger.update(gk_loss=gk_loss.item())
             if args.ot_loss:
                 metric_logger.update(ot_loss=ot_loss.item())
-                metric_logger.update(gk_loss=gk_loss.item())
+                metric_logger.update(base_loss=base_loss.item())
             metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
 
 
     
-    elif len(args.nb_classes) == 2:
-        for samples, segments, targets, family_targets in metric_logger.log_every(data_loader, print_freq, header):
-            samples = samples.to(device, non_blocking=True)
-            segments = segments.to(device, non_blocking=True)
-            targets = targets.to(device, non_blocking=True)
-            family_targets = family_targets.to(device, non_blocking=True)
-            
-            if mixup_fn is not None:
-                """
-                targets before: Bx1 [3, 10, .. ]
-                after funcion: BxN_Class [[0.0033, 0.0033, 0.0033, 0.456, ...]...]
-                """
-                samples, targets, family_targets = mixup_fn(samples, [targets, family_targets])
-            if args.cosub:
-                samples = torch.cat((samples,samples),dim=0)
-                
-            if args.bce_loss:
-                targets = targets.gt(0.0).type(targets.dtype)
-            
-            with torch.cuda.amp.autocast():
-                outputs, family_out = model(samples, segments)###
-                if not args.cosub:
-                    loss_species = criterion(samples, outputs, targets)
-                    loss_family = criterion(samples, family_out, family_targets)
-                    loss = loss_species + loss_family 
-                    if args.globalkl:
-                        all_outputs = torch.cat((family_out, outputs), dim=1)
-                        all_outputs = F.log_softmax(all_outputs, dim=1)
-                        all_targets = torch.cat((family_targets, targets), dim=1)
-                        all_targets = F.normalize(all_targets, p=1, dim=1)
-                        gk_loss = gk_criterion(all_outputs, all_targets)
-                        loss = loss + gk_loss * args.gk_weight
-                    if args.ot_loss:
-                        all_outputs = torch.cat((family_out, outputs), dim=1)
-                        all_outputs = F.log_softmax(all_outputs, dim=1)
-                        all_targets = torch.cat((family_targets, targets), dim=1)
-                        all_targets = F.normalize(all_targets, p=1, dim=1)
-                        ot_loss = ot_criterion(all_outputs, all_targets)
-                        loss = loss + ot_loss * args.ot_weight
-
-                else:
-                    outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
-                    loss = 0.25 * criterion(outputs[0], targets) 
-                    loss = loss + 0.25 * criterion(outputs[1], targets) 
-                    loss = loss + 0.25 * criterion(outputs[0], outputs[1].detach().sigmoid())
-                    loss = loss + 0.25 * criterion(outputs[1], outputs[0].detach().sigmoid()) 
-
-            loss_value = loss.item()
-
-            if not math.isfinite(loss_value):
-                print("Loss is {}, stopping training".format(loss_value))
-                sys.exit(1)
-
-            optimizer.zero_grad()
-
-            # this attribute is added by timm on one optimizer (adahessian)
-            is_second_order = hasattr(optimizer, 'is_second_order') and optimizer.is_second_order
-            loss_scaler(loss, optimizer, clip_grad=max_norm,
-                        parameters=model.parameters(), create_graph=is_second_order)
-
-            torch.cuda.synchronize()
-            if model_ema is not None:
-                model_ema.update(model)
-
-            #metric_logger.update(loss=loss_value)
-            metric_logger.update(sp_loss=loss_species.item())
-            metric_logger.update(fam_loss=loss_family.item())
-            if args.globalkl:
-                metric_logger.update(gk_loss=gk_loss.item())
-            if args.ot_loss:
-                metric_logger.update(ot_loss=ot_loss.item())
-            metric_logger.update(lr=optimizer.param_groups[0]["lr"])
-
     # gather the stats from all processes
     metric_logger.synchronize_between_processes()
     print("Averaged stats:", metric_logger)
@@ -210,7 +132,7 @@ def evaluate(data_loader, model, device, nb_classes):
     model.eval()
 
     if len(nb_classes) == 3:
-        for images, segments, target, family_targets, mf_targets in metric_logger.log_every(data_loader, 100, header):
+        for images, segments, target, family_targets, mf_targets in metric_logger.log_every(data_loader, 50, header):
             images = images.to(device, non_blocking=True)
             segments = segments.to(device, non_blocking=True)
             target = target.to(device, non_blocking=True)

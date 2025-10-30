@@ -275,27 +275,27 @@ def create_ot_matrix(tree_path) :
         name, family, order = trees[idx]
         family = NAME + family
         order = NAME + FAMILY + order
-        H[name, family] = 1
-        H[name, order] = 1
-        H[family, order] = 1
+        H[name, family] = 1.33
+        # H[name, order] = 1
+        H[family, order] = 0.66
     
-    # DEBUG
-    correct = 0
-    for idx in range(H.shape[0]) :
-        if idx < NAME :
-            if np.sum(H[idx, :]) == 3  :
-                correct += 1
-            else :
-                print(idx, np.sum(H[idx, :]))
-        elif idx < NAME + FAMILY :
-            if np.sum(H[idx, :]) == 2  :
-                correct += 1
-            else :
-                print(idx, np.sum(H[idx, :]))
-        else :
-            if np.sum(H[idx, :]) == 1  :
-                correct += 1
-            else :
-                print(idx, np.sum(H[idx, :]))
-    print(correct)
+    # # DEBUG
+    # correct = 0
+    # for idx in range(H.shape[0]) :
+    #     if idx < NAME :
+    #         if np.sum(H[idx, :]) == 3  :
+    #             correct += 1
+    #         else :
+    #             print(idx, np.sum(H[idx, :]))
+    #     elif idx < NAME + FAMILY :
+    #         if np.sum(H[idx, :]) == 2  :
+    #             correct += 1
+    #         else :
+    #             print(idx, np.sum(H[idx, :]))
+    #     else :
+    #         if np.sum(H[idx, :]) == 1  :
+    #             correct += 1
+    #         else :
+    #             print(idx, np.sum(H[idx, :]))
+    # print(correct)
     return H

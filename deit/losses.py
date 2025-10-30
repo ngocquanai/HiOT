@@ -7,6 +7,8 @@ import torch
 from torch.nn import functional as F
 import numpy as np
 import torch.nn as nn
+from torch.nn.parameter import Parameter
+
 
 from utils import create_ot_matrix
 
@@ -74,35 +76,54 @@ class DistillationLoss(torch.nn.Module):
 
 
 
+
+
 class HierachicalOTLoss(torch.nn.Module):
     """
     This module wraps a standard criterion and adds an extra knowledge distillation loss by
     taking a teacher model prediction and using it as additional supervision.
     """
-    def __init__(self, tree_path: str):
+    def __init__(self, tree_path: str, learnable= False):
         super().__init__()
 
-        self.H = create_ot_matrix(tree_path)
-        self.H = torch.from_numpy(self.H).float()
+        H = create_ot_matrix(tree_path)
+        H = torch.from_numpy(H).float()
+        self.register_buffer("H_base", H)
+        self.learnable = learnable
+
+        if learnable :
+            print("*"*333)
+            print("LEARNABLE OT WEIGHT!!!")
+
+            one_matrix = torch.ones_like(H)
+            self.weight = Parameter(one_matrix)
+        else :
+            pass 
+
+
+
         self.mse_loss = nn.MSELoss()
-        self.scaling = self.H.shape[0]
+        self.scaling = self.H_base.shape[0]
 
     def forward(self, outputs, labels):
 
-        self.H = self.H.to(outputs.device)
+        if self.learnable :
+            H = self.H_base * self.weight
+        else :
+            H = self.H_base
+
         outputs_kd = None
         if not isinstance(outputs, torch.Tensor):
             # assume that the model outputs a tuple of [outputs, outputs_kd]
             outputs, outputs_kd = outputs
 
-        labels = torch.matmul(labels, self.H)
-        outputs = torch.matmul(outputs, self.H)
+        # base_loss = self.base_criterion(outputs, labels)
+        H = H.to(outputs.device)
+        labels = torch.matmul(labels, H)
+        outputs = torch.matmul(outputs, H)
 
         ot_loss = self.mse_loss(outputs, labels)
-
-
-
-
-        # loss = base_loss * (1 - self.alpha) + ot_loss * self.alpha
         loss = ot_loss /self.scaling
+
         return loss
+
