@@ -39,6 +39,10 @@ def get_args_parser():
     parser.add_argument('--bce-loss', action='store_true')
     parser.add_argument('--unscale-lr', action='store_true')
 
+    # FEW SHOT setting
+    parser.add_argument('--few_shot', type=int, default=0,
+                        help='if few_shot > 0, doing few-shot setting with corresponding shots. (default: 0)')
+
     # Model parameters
     parser.add_argument('--model', default='cast_small', type=str, metavar='MODEL',
                         help='Name of model to train')
@@ -205,6 +209,14 @@ def get_args_parser():
     parser.add_argument('--random_seed', default=1, type=int)
     parser.add_argument('--local_rank', type=int, default=-1, help='Local rank for distributed training')
     parser.add_argument('--tree_path', type= str, default= "./tree.json", help= "path to the tree of dataset")
+
+    parser.add_argument(
+        '--label_weight', 
+        type=int, 
+        nargs='+', 
+        default=[1, 2, 3], 
+        help='List of weight at family, order, species labels for OT (e.g., --label_weight 1 2 4)'
+    )
 
     return parser
 
@@ -488,33 +500,46 @@ def main(args):
                     'scaler': loss_scaler.state_dict(),
                     'args': args,
                 }, checkpoint_path)
-             
-
-        test_stats = evaluate(data_loader_val, model, device, args.nb_classes)
-        print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
         
-        if max_accuracy < test_stats["acc1"]: 
-            max_accuracy = test_stats["acc1"]
-            if args.output_dir:
-                checkpoint_paths = [output_dir / 'best_checkpoint.pth']
-                for checkpoint_path in checkpoint_paths:
-                    utils.save_on_master({
-                        'model': model_without_ddp.state_dict(),
-                        'optimizer': optimizer.state_dict(),
-                        'lr_scheduler': lr_scheduler.state_dict(),
-                        'epoch': epoch,
-                        'accuracy': max_accuracy,
-                        'model_ema': get_state_dict(model_ema),
-                        'scaler': loss_scaler.state_dict(),
-                        'args': args,
-                    }, checkpoint_path)
+        if args.few_shot > 0 :
+            condition = epoch > 40 and epoch % 2 == 0
+        else : # Full training
+            condition = epoch > 50
+             
+        if condition :
+                
+            test_stats = evaluate(data_loader_val, model, device, args.nb_classes)
+            print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
             
-        print(f'Max accuracy: {max_accuracy:.2f}%')
+            if max_accuracy < test_stats["acc1"]: 
+                max_accuracy = test_stats["acc1"]
+                if args.output_dir:
+                    checkpoint_paths = [output_dir / 'best_checkpoint.pth']
+                    for checkpoint_path in checkpoint_paths:
+                        utils.save_on_master({
+                            'model': model_without_ddp.state_dict(),
+                            'optimizer': optimizer.state_dict(),
+                            'lr_scheduler': lr_scheduler.state_dict(),
+                            'epoch': epoch,
+                            'accuracy': max_accuracy,
+                            'model_ema': get_state_dict(model_ema),
+                            'scaler': loss_scaler.state_dict(),
+                            'args': args,
+                        }, checkpoint_path)
+                
+            print(f'Max accuracy: {max_accuracy:.2f}%')
 
-        log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
-                     **{f'test_{k}': v for k, v in test_stats.items()},
-                     'epoch': epoch,
-                     'n_parameters': n_parameters}
+            log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
+                        **{f'test_{k}': v for k, v in test_stats.items()},
+                        'epoch': epoch,
+                        'n_parameters': n_parameters}
+        
+        else :
+
+            log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
+                        'epoch': epoch,
+                        'n_parameters': n_parameters}
+
         
         
         

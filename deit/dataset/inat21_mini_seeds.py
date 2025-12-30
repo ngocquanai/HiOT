@@ -22,7 +22,8 @@ class iNat21MiniDataset(Dataset):
                  n_segments: int = 256,
                  compactness: float = 10.0,
                  blur_ops: Optional[Callable] = None,
-                 scale_factor=1.0,):
+                 scale_factor=1.0,
+                 few_shot: int = 0):
         self.mean = mean
         self.std = std
         self.n_segments = n_segments
@@ -41,7 +42,10 @@ class iNat21MiniDataset(Dataset):
         self.order_label_list = []
 
         if is_train:
-            filename = 'data/inat21_mini_train.txt'
+            if few_shot > 0 :
+                filename = f"data/few_shot/inat21_mini_train_k{few_shot}.txt"
+            else :
+                filename = 'data/inat21_mini_train.txt'
         else:
             filename = 'data/inat21_mini_val.txt'
 

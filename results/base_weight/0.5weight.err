@@ -2,3 +2,12 @@
 [2025-10-29 14:52:38,407] torch.distributed.run: [WARNING] *****************************************
 [2025-10-29 14:52:38,407] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
 [2025-10-29 14:52:38,407] torch.distributed.run: [WARNING] *****************************************
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/x.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0.5base_5ot.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/x.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0.5base_5ot.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/learnable': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot01mix.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot01mix.out': Operation not permitted

@@ -136,3 +136,6 @@ visualize_ovseg_cast.ipynb
 train_imagenet1k_cast.sh
 sbatch_results/
 ./best_checkpoint.pth
+
+results/
+results_new/

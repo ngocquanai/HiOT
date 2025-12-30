@@ -102,6 +102,7 @@ def build_dataset(is_train, args):
             transform=transform,
             is_hier=True,
             is_train=is_train,
+            few_shot = args.few_shot
         )
         nb_classes = [10000, 1103, 273]
 
@@ -117,6 +118,7 @@ def build_dataset(is_train, args):
             compactness=10.0,
             blur_ops=None,
             scale_factor=1.0,
+            few_shot = args.few_shot
         )
         nb_classes = [10000, 1103, 273]
 

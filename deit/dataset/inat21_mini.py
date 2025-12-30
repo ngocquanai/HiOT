@@ -16,7 +16,8 @@ class iNat21MiniDataset(Dataset):
                  transform=None,
                  is_hier: bool = True,
                  path_yn: bool = False,
-                 category: str = 'name',):
+                 category: str = 'name',
+                 few_shot: int = 0):
         self.is_hier = is_hier
         self.transform = transform
         self.category = category
@@ -27,7 +28,10 @@ class iNat21MiniDataset(Dataset):
         self.order_label_list = []
 
         if is_train:
-            filename = 'data/inat21_mini_train.txt'
+            if few_shot > 0 :
+                filename = f"data/few_shot/inat21_mini_train_k{few_shot}.txt"
+            else :
+                filename = 'data/inat21_mini_train.txt'
         else:
             filename = 'data/inat21_mini_val.txt'
 
