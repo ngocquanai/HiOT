@@ -26,7 +26,7 @@ conda activate /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcas
 cd /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
 
 export PYTHONPATH=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
-torchrun --nproc_per_node=1  --master_port=25825 deit/main_suppix_hier.py \
+torchrun --nproc_per_node=1  --master_port=12310 deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
   --epochs 100 \
