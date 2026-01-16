@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
 #SBATCH --job-name=hiot05# create a short name for your job
-#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/0.5weight.out # create a output file
-#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/0.5weight.err # create a error file
+#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/full/0.5ot_2e-3lr_0.02wd.out # create a output file
+#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/full/0.5ot_2e-3lr_0.02wd.err # create a error file
 #SBATCH --partition=movianr # choose partition
-#SBATCH --gpus-per-node=4
+#SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=32
 #SBATCH --mem-per-gpu=128GB
 #SBATCH --nodes=1
@@ -26,18 +26,20 @@ conda activate /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcas
 cd /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
 MASTER_PORT=$(shuf -i 9152-29535 -n 1)
 export PYTHONPATH=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
-torchrun --nproc_per_node=4  --master_port=$MASTER_PORT deit/main_suppix_hier.py \
+torchrun --nproc_per_node=1  --master_port=$MASTER_PORT deit/main_suppix_hier.py \
+  --weight-decay 0.02 \
+  --lr 2e-3 \
   --model cast_small \
   --batch-size 256 \
   --epochs 100 \
   --num-superpixels 196 --num_workers 12 \
   --data-set INAT21-MINI-HIER-SUPERPIXEL \
   --data-path ../dataset/ \
-  --output_dir ./output/new_baseline/0.5_weight  \
+  --output_dir ./output/new_baseline/full/0.5ot_2e-3lr_0.02wd  \
   --ot_loss --ot_weight 0.5 \
   --base_weight 0.5 \
   --finetune best_checkpoint.pth \
-  --tree_path ./data/inat21_3tree.json --distributed
+  --tree_path ./data/inat21_3tree.json --distributed 
 
-chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/
-chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/output/
+chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/full
+chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/output/new_baseline/full

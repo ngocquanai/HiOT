@@ -139,3 +139,5 @@ sbatch_results/
 
 results/
 results_new/
+
+hiot-imagenet/local/

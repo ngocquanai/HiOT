@@ -21,7 +21,7 @@ from timm.optim import create_optimizer
 from timm.utils import NativeScaler, get_state_dict, ModelEma
 
 from dataset.datasets import build_dataset
-from engine_hier import train_one_epoch, evaluate 
+from engine_hier import train_one_epoch, evaluate, evaluate_hier
 from engine_hier_eval import evaluate_detail
 from losses import DistillationLoss
 from samplers import RASampler
@@ -504,11 +504,12 @@ def main(args):
         if args.few_shot > 0 :
             condition = epoch > 40 and epoch % 2 == 0
         else : # Full training
-            condition = epoch > 50
+            condition = epoch > -1
              
         if condition :
                 
-            test_stats = evaluate(data_loader_val, model, device, args.nb_classes)
+            # test_stats = evaluate(data_loader_val, model, device, args.nb_classes)
+            test_stats = evaluate_hier(data_loader_val, model, device, args.nb_classes)
             print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
             
             if max_accuracy < test_stats["acc1"]: 
