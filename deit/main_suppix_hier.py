@@ -504,7 +504,7 @@ def main(args):
         if args.few_shot > 0 :
             condition = epoch > 40 and epoch % 2 == 0
         else : # Full training
-            condition = epoch > -1
+            condition = epoch > 50
              
         if condition :
                 
