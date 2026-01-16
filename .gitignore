@@ -138,6 +138,6 @@ sbatch_results/
 ./best_checkpoint.pth
 
 results/
-results_new/
 
-hiot-imagenet/local/
+
+hiot-imagenet/

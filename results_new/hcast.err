@@ -1,0 +1,20 @@
+[2025-12-27 19:47:33,427] torch.distributed.run: [WARNING] 
+[2025-12-27 19:47:33,427] torch.distributed.run: [WARNING] *****************************************
+[2025-12-27 19:47:33,427] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2025-12-27 19:47:33,427] torch.distributed.run: [WARNING] *****************************************
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot05mix.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0.5weight.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/1base_10ot.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0.5base_5ot.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0base_10ot.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0.5weight.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0base_10ot.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/1base_10ot.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/base_weight/0.5base_5ot.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot004mix.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot05mix.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/learnable/0.5base5ot.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/learnable/0.5base2ot.err': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/learnable/0.5base5ot.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/learnable/0.5base2ot.out': Operation not permitted
+chmod: changing permissions of '/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/hiot004mix.out': Operation not permitted
