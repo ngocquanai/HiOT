@@ -1,0 +1,972 @@
+Namespace(batch_size=256, epochs=100, bce_loss=False, unscale_lr=False, few_shot=8, model='cast_small', input_size=224, drop=0.0, drop_path=0.1, model_ema=True, model_ema_decay=0.99996, model_ema_force_cpu=False, num_superpixels=196, opt='adamw', opt_eps=1e-08, opt_betas=None, clip_grad=None, momentum=0.9, weight_decay=0.05, sched='cosine', lr=0.0005, lr_noise=None, lr_noise_pct=0.67, lr_noise_std=1.0, warmup_lr=1e-06, min_lr=1e-05, decay_epochs=30, warmup_epochs=5, cooldown_epochs=10, patience_epochs=10, decay_rate=0.1, color_jitter=0.3, aa='rand-m9-mstd0.5-inc1', smoothing=0.1, train_interpolation='bicubic', repeated_aug=True, train_mode=True, ThreeAugment=False, src=False, reprob=0.25, remode='pixel', recount=1, resplit=False, mixup=0.8, cutmix=1.0, cutmix_minmax=None, mixup_prob=1.0, mixup_switch_prob=0.5, mixup_mode='batch', teacher_model='regnety_160', teacher_path='', distillation_type='none', distillation_alpha=0.5, distillation_tau=1.0, cosub=False, finetune='best_checkpoint.pth', attn_only=False, data_path='../dataset/', data_set='INAT21-MINI-HIER-SUPERPIXEL', path_yn=False, inat_category='name', output_dir='./output/few_shot/eight/20ot', device='cuda', seed=0, resume='', start_epoch=0, eval=False, eval_crop_ratio=0.875, dist_eval=False, num_workers=12, pin_mem=True, distributed=True, world_size=1, dist_url='env://', globalkl=False, ot_loss=True, learnable_ot=False, ot_weight=20.0, base_weight=1, globalbce=False, gk_weight=1, filename='results.csv', breeds_sort='entity13', random_seed=1, local_rank=-1, tree_path='./data/inat21_3tree.json', label_weight=[1, 2, 3])
+| distributed init (rank 0): env://
+seed 0
+args.nb_classes [10000, 1103, 273]
+Creating model: cast_small
+dict_keys(['model', 'optimizer', 'lr_scheduler', 'epoch', 'model_ema', 'scaler', 'args'])
+Removing key head.weight from pretrained checkpoint
+Removing key head.bias from pretrained checkpoint
+number of params: 30556704
+Start training for 100 epochs
+Epoch: [0]  [  0/312]  eta: 1:01:09  lr: 0.000001  sp_loss: 9.2592 (9.2592)  fam_loss: 7.0877 (7.0877)  manu_loss: 5.6135 (5.6135)  ot_loss: 4.9219 (4.9219)  base_loss: 21.9604 (21.9604)  time: 11.7596  data: 8.5166  max mem: 10970
+Epoch: [0]  [250/312]  eta: 0:00:31  lr: 0.000001  sp_loss: 9.2564 (9.2678)  fam_loss: 7.0424 (7.0647)  manu_loss: 5.4396 (5.5392)  ot_loss: 4.9297 (4.9374)  base_loss: 21.7144 (21.8717)  time: 0.3811  data: 0.1345  max mem: 11381
+Epoch: [0]  [311/312]  eta: 0:00:00  lr: 0.000001  sp_loss: 9.2688 (9.2689)  fam_loss: 7.0206 (7.0557)  manu_loss: 5.3886 (5.5120)  ot_loss: 4.9141 (4.9343)  base_loss: 21.6418 (21.8365)  time: 0.3650  data: 0.1409  max mem: 11381
+Epoch: [0] Total time: 0:02:37 (0.5047 s / it)
+Averaged stats: lr: 0.000001  sp_loss: 9.2688 (9.2689)  fam_loss: 7.0206 (7.0557)  manu_loss: 5.3886 (5.5120)  ot_loss: 4.9141 (4.9343)  base_loss: 21.6418 (21.8365)
+Epoch: [1]  [  0/312]  eta: 0:33:49  lr: 0.000001  sp_loss: 9.3748 (9.3748)  fam_loss: 7.1151 (7.1151)  manu_loss: 5.3614 (5.3614)  ot_loss: 4.8984 (4.8984)  base_loss: 21.8513 (21.8513)  time: 6.5063  data: 6.2338  max mem: 11381
+Epoch: [1]  [250/312]  eta: 0:00:29  lr: 0.000001  sp_loss: 9.3098 (9.2775)  fam_loss: 7.0270 (6.9834)  manu_loss: 5.0379 (5.1910)  ot_loss: 4.7656 (4.8715)  base_loss: 21.3599 (21.4519)  time: 0.3569  data: 0.1271  max mem: 11381
+Epoch: [1]  [311/312]  eta: 0:00:00  lr: 0.000001  sp_loss: 9.3091 (9.2840)  fam_loss: 7.5018 (7.0717)  manu_loss: 5.0612 (5.1652)  ot_loss: 4.6094 (4.8237)  base_loss: 21.9214 (21.5210)  time: 0.3253  data: 0.1008  max mem: 11381
+Epoch: [1] Total time: 0:02:26 (0.4682 s / it)
+Averaged stats: lr: 0.000001  sp_loss: 9.3091 (9.2840)  fam_loss: 7.5018 (7.0717)  manu_loss: 5.0612 (5.1652)  ot_loss: 4.6094 (4.8237)  base_loss: 21.9214 (21.5210)
+Epoch: [2]  [  0/312]  eta: 0:32:01  lr: 0.000051  sp_loss: 9.3699 (9.3699)  fam_loss: 7.5194 (7.5194)  manu_loss: 4.9719 (4.9719)  ot_loss: 4.5742 (4.5742)  base_loss: 21.8611 (21.8611)  time: 6.1573  data: 5.8831  max mem: 11381
+Epoch: [2]  [250/312]  eta: 0:00:25  lr: 0.000051  sp_loss: 12.3103 (12.0499)  fam_loss: 5.8553 (6.2450)  manu_loss: 3.9320 (4.3952)  ot_loss: 2.4160 (2.7867)  base_loss: 22.1286 (22.6901)  time: 0.3277  data: 0.0921  max mem: 11381
+Epoch: [2]  [311/312]  eta: 0:00:00  lr: 0.000051  sp_loss: 12.2806 (12.0968)  fam_loss: 5.9012 (6.1770)  manu_loss: 4.0306 (4.3160)  ot_loss: 2.4316 (2.7186)  base_loss: 22.2124 (22.5898)  time: 0.3133  data: 0.0849  max mem: 11381
+Epoch: [2] Total time: 0:02:07 (0.4082 s / it)
+Averaged stats: lr: 0.000051  sp_loss: 12.2806 (12.0968)  fam_loss: 5.9012 (6.1770)  manu_loss: 4.0306 (4.3160)  ot_loss: 2.4316 (2.7186)  base_loss: 22.2124 (22.5898)
+Epoch: [3]  [  0/312]  eta: 0:32:02  lr: 0.000101  sp_loss: 12.2059 (12.2059)  fam_loss: 5.9964 (5.9964)  manu_loss: 4.1667 (4.1667)  ot_loss: 2.3594 (2.3594)  base_loss: 22.3689 (22.3689)  time: 6.1629  data: 5.8730  max mem: 11381
+Epoch: [3]  [250/312]  eta: 0:00:25  lr: 0.000101  sp_loss: 12.2189 (12.2070)  fam_loss: 5.7283 (5.7249)  manu_loss: 3.8921 (3.8518)  ot_loss: 2.3672 (2.3949)  base_loss: 21.8821 (21.7837)  time: 0.3328  data: 0.0988  max mem: 11381
+Epoch: [3]  [311/312]  eta: 0:00:00  lr: 0.000101  sp_loss: 12.1128 (12.1965)  fam_loss: 5.5130 (5.6833)  manu_loss: 3.7290 (3.8217)  ot_loss: 2.3301 (2.3852)  base_loss: 21.4095 (21.7015)  time: 0.3159  data: 0.0884  max mem: 11381
+Epoch: [3] Total time: 0:02:06 (0.4066 s / it)
+Averaged stats: lr: 0.000101  sp_loss: 12.1128 (12.1965)  fam_loss: 5.5130 (5.6833)  manu_loss: 3.7290 (3.8217)  ot_loss: 2.3301 (2.3852)  base_loss: 21.4095 (21.7015)
+Epoch: [4]  [  0/312]  eta: 0:33:41  lr: 0.000150  sp_loss: 11.8584 (11.8584)  fam_loss: 5.1733 (5.1733)  manu_loss: 3.1970 (3.1970)  ot_loss: 2.3574 (2.3574)  base_loss: 20.2287 (20.2287)  time: 6.4792  data: 6.1918  max mem: 11381
+Epoch: [4]  [250/312]  eta: 0:00:26  lr: 0.000150  sp_loss: 12.0456 (12.0973)  fam_loss: 5.1631 (5.4174)  manu_loss: 3.5385 (3.7425)  ot_loss: 2.3438 (2.3538)  base_loss: 20.8166 (21.2572)  time: 0.3639  data: 0.1314  max mem: 11381
+Epoch: [4]  [311/312]  eta: 0:00:00  lr: 0.000150  sp_loss: 12.0362 (12.0900)  fam_loss: 5.1830 (5.3980)  manu_loss: 3.7169 (3.7389)  ot_loss: 2.3320 (2.3519)  base_loss: 21.0445 (21.2268)  time: 0.3095  data: 0.0869  max mem: 11381
+Epoch: [4] Total time: 0:02:14 (0.4311 s / it)
+Averaged stats: lr: 0.000150  sp_loss: 12.0362 (12.0900)  fam_loss: 5.1830 (5.3980)  manu_loss: 3.7169 (3.7389)  ot_loss: 2.3320 (2.3519)  base_loss: 21.0445 (21.2268)
+Epoch: [5]  [  0/312]  eta: 0:34:40  lr: 0.000200  sp_loss: 11.8743 (11.8743)  fam_loss: 4.8435 (4.8435)  manu_loss: 2.9263 (2.9263)  ot_loss: 2.3047 (2.3047)  base_loss: 19.6440 (19.6440)  time: 6.6672  data: 6.4065  max mem: 11381
+Epoch: [5]  [250/312]  eta: 0:00:25  lr: 0.000200  sp_loss: 12.0408 (12.0012)  fam_loss: 5.2149 (5.2249)  manu_loss: 3.7743 (3.6785)  ot_loss: 2.3320 (2.3436)  base_loss: 21.0069 (20.9046)  time: 0.3277  data: 0.0960  max mem: 11381
+Epoch: [5]  [311/312]  eta: 0:00:00  lr: 0.000200  sp_loss: 11.9725 (11.9970)  fam_loss: 5.1011 (5.2083)  manu_loss: 3.7150 (3.6769)  ot_loss: 2.3086 (2.3397)  base_loss: 20.7853 (20.8822)  time: 0.3111  data: 0.0834  max mem: 11381
+Epoch: [5] Total time: 0:02:05 (0.4037 s / it)
+Averaged stats: lr: 0.000200  sp_loss: 11.9725 (11.9970)  fam_loss: 5.1011 (5.2083)  manu_loss: 3.7150 (3.6769)  ot_loss: 2.3086 (2.3397)  base_loss: 20.7853 (20.8822)
+Epoch: [6]  [  0/312]  eta: 0:31:15  lr: 0.000249  sp_loss: 12.1424 (12.1424)  fam_loss: 5.5309 (5.5309)  manu_loss: 4.2479 (4.2479)  ot_loss: 2.3203 (2.3203)  base_loss: 21.9211 (21.9211)  time: 6.0097  data: 5.7406  max mem: 11381
+Epoch: [6]  [250/312]  eta: 0:00:25  lr: 0.000249  sp_loss: 11.9361 (11.9147)  fam_loss: 5.1252 (5.0882)  manu_loss: 3.6887 (3.6612)  ot_loss: 2.3281 (2.3358)  base_loss: 20.6959 (20.6641)  time: 0.3679  data: 0.1341  max mem: 11381
+Epoch: [6]  [311/312]  eta: 0:00:00  lr: 0.000249  sp_loss: 11.9318 (11.9185)  fam_loss: 5.0373 (5.0968)  manu_loss: 3.6514 (3.6759)  ot_loss: 2.3164 (2.3363)  base_loss: 20.5812 (20.6911)  time: 0.2996  data: 0.0757  max mem: 11381
+Epoch: [6] Total time: 0:02:08 (0.4121 s / it)
+Averaged stats: lr: 0.000249  sp_loss: 11.9318 (11.9185)  fam_loss: 5.0373 (5.0968)  manu_loss: 3.6514 (3.6759)  ot_loss: 2.3164 (2.3363)  base_loss: 20.5812 (20.6911)
+Epoch: [7]  [  0/312]  eta: 0:30:55  lr: 0.000248  sp_loss: 11.6451 (11.6451)  fam_loss: 5.2001 (5.2001)  manu_loss: 3.8783 (3.8783)  ot_loss: 2.3555 (2.3555)  base_loss: 20.7236 (20.7236)  time: 5.9478  data: 5.6619  max mem: 11381
+Epoch: [7]  [250/312]  eta: 0:00:29  lr: 0.000248  sp_loss: 11.7746 (11.8133)  fam_loss: 4.9577 (4.9801)  manu_loss: 3.5516 (3.6227)  ot_loss: 2.3164 (2.3192)  base_loss: 20.2696 (20.4160)  time: 0.4098  data: 0.1823  max mem: 11381
+Epoch: [7]  [311/312]  eta: 0:00:00  lr: 0.000248  sp_loss: 11.7259 (11.8070)  fam_loss: 5.0031 (4.9825)  manu_loss: 3.6389 (3.6255)  ot_loss: 2.2812 (2.3183)  base_loss: 20.3724 (20.4150)  time: 0.3320  data: 0.1070  max mem: 11381
+Epoch: [7] Total time: 0:02:27 (0.4720 s / it)
+Averaged stats: lr: 0.000248  sp_loss: 11.7259 (11.8070)  fam_loss: 5.0031 (4.9825)  manu_loss: 3.6389 (3.6255)  ot_loss: 2.2812 (2.3183)  base_loss: 20.3724 (20.4150)
+Epoch: [8]  [  0/312]  eta: 0:31:33  lr: 0.000247  sp_loss: 11.4756 (11.4756)  fam_loss: 4.4989 (4.4989)  manu_loss: 3.1282 (3.1282)  ot_loss: 2.2930 (2.2930)  base_loss: 19.1027 (19.1027)  time: 6.0674  data: 5.8056  max mem: 11381
+Epoch: [8]  [250/312]  eta: 0:00:30  lr: 0.000247  sp_loss: 11.5247 (11.7237)  fam_loss: 4.7661 (4.9512)  manu_loss: 3.5658 (3.6349)  ot_loss: 2.2656 (2.3049)  base_loss: 19.7641 (20.3097)  time: 0.4939  data: 0.2605  max mem: 11381
+Epoch: [8]  [311/312]  eta: 0:00:00  lr: 0.000247  sp_loss: 11.6253 (11.7044)  fam_loss: 4.9660 (4.9430)  manu_loss: 3.5762 (3.6245)  ot_loss: 2.2871 (2.3014)  base_loss: 20.1430 (20.2718)  time: 0.4541  data: 0.2290  max mem: 11381
+Epoch: [8] Total time: 0:02:31 (0.4870 s / it)
+Averaged stats: lr: 0.000247  sp_loss: 11.6253 (11.7044)  fam_loss: 4.9660 (4.9430)  manu_loss: 3.5762 (3.6245)  ot_loss: 2.2871 (2.3014)  base_loss: 20.1430 (20.2718)
+Epoch: [9]  [  0/312]  eta: 0:33:52  lr: 0.000246  sp_loss: 11.8078 (11.8078)  fam_loss: 4.8770 (4.8770)  manu_loss: 3.6904 (3.6904)  ot_loss: 2.3594 (2.3594)  base_loss: 20.3752 (20.3752)  time: 6.5144  data: 6.2387  max mem: 11381
+Epoch: [9]  [250/312]  eta: 0:00:25  lr: 0.000246  sp_loss: 11.5104 (11.5411)  fam_loss: 4.8383 (4.8400)  manu_loss: 3.4963 (3.5505)  ot_loss: 2.2734 (2.2927)  base_loss: 19.8039 (19.9315)  time: 0.3176  data: 0.0806  max mem: 11381
+Epoch: [9]  [311/312]  eta: 0:00:00  lr: 0.000246  sp_loss: 11.5647 (11.5364)  fam_loss: 4.8825 (4.8320)  manu_loss: 3.5422 (3.5499)  ot_loss: 2.2715 (2.2899)  base_loss: 19.9297 (19.9183)  time: 0.3324  data: 0.0986  max mem: 11381
+Epoch: [9] Total time: 0:02:09 (0.4156 s / it)
+Averaged stats: lr: 0.000246  sp_loss: 11.5647 (11.5364)  fam_loss: 4.8825 (4.8320)  manu_loss: 3.5422 (3.5499)  ot_loss: 2.2715 (2.2899)  base_loss: 19.9297 (19.9183)
+Epoch: [10]  [  0/312]  eta: 0:36:06  lr: 0.000245  sp_loss: 11.3433 (11.3433)  fam_loss: 4.8515 (4.8515)  manu_loss: 3.5057 (3.5057)  ot_loss: 2.2812 (2.2812)  base_loss: 19.7005 (19.7005)  time: 6.9428  data: 6.6791  max mem: 11381
+Epoch: [10]  [250/312]  eta: 0:00:25  lr: 0.000245  sp_loss: 11.4460 (11.4359)  fam_loss: 4.8528 (4.7958)  manu_loss: 3.5402 (3.5343)  ot_loss: 2.2637 (2.2826)  base_loss: 19.8191 (19.7660)  time: 0.3451  data: 0.1008  max mem: 11381
+Epoch: [10]  [311/312]  eta: 0:00:00  lr: 0.000245  sp_loss: 11.3023 (11.4284)  fam_loss: 4.8642 (4.7937)  manu_loss: 3.4496 (3.5405)  ot_loss: 2.2734 (2.2799)  base_loss: 19.6439 (19.7625)  time: 0.3367  data: 0.1035  max mem: 11381
+Epoch: [10] Total time: 0:02:08 (0.4110 s / it)
+Averaged stats: lr: 0.000245  sp_loss: 11.3023 (11.4284)  fam_loss: 4.8642 (4.7937)  manu_loss: 3.4496 (3.5405)  ot_loss: 2.2734 (2.2799)  base_loss: 19.6439 (19.7625)
+Epoch: [11]  [  0/312]  eta: 0:39:16  lr: 0.000244  sp_loss: 11.6040 (11.6040)  fam_loss: 5.1969 (5.1969)  manu_loss: 3.8051 (3.8051)  ot_loss: 2.2383 (2.2383)  base_loss: 20.6060 (20.6060)  time: 7.5530  data: 7.2638  max mem: 11381
+Epoch: [11]  [250/312]  eta: 0:00:32  lr: 0.000244  sp_loss: 11.3349 (11.3200)  fam_loss: 4.8771 (4.7747)  manu_loss: 3.6435 (3.5413)  ot_loss: 2.2695 (2.2717)  base_loss: 19.9339 (19.6359)  time: 0.3979  data: 0.1511  max mem: 11381
+Epoch: [11]  [311/312]  eta: 0:00:00  lr: 0.000244  sp_loss: 11.4072 (11.3194)  fam_loss: 4.9499 (4.7761)  manu_loss: 3.6430 (3.5442)  ot_loss: 2.2656 (2.2702)  base_loss: 19.8765 (19.6397)  time: 0.3463  data: 0.1116  max mem: 11381
+Epoch: [11] Total time: 0:02:39 (0.5124 s / it)
+Averaged stats: lr: 0.000244  sp_loss: 11.4072 (11.3194)  fam_loss: 4.9499 (4.7761)  manu_loss: 3.6430 (3.5442)  ot_loss: 2.2656 (2.2702)  base_loss: 19.8765 (19.6397)
+Epoch: [12]  [  0/312]  eta: 0:37:20  lr: 0.000243  sp_loss: 11.2402 (11.2402)  fam_loss: 4.5811 (4.5811)  manu_loss: 3.4826 (3.4826)  ot_loss: 2.2168 (2.2168)  base_loss: 19.3039 (19.3039)  time: 7.1801  data: 6.8968  max mem: 11381
+Epoch: [12]  [250/312]  eta: 0:00:30  lr: 0.000243  sp_loss: 11.3023 (11.1852)  fam_loss: 4.8331 (4.7092)  manu_loss: 3.6463 (3.4995)  ot_loss: 2.2559 (2.2626)  base_loss: 19.7816 (19.3938)  time: 0.4060  data: 0.1646  max mem: 11381
+Epoch: [12]  [311/312]  eta: 0:00:00  lr: 0.000243  sp_loss: 11.4537 (11.1960)  fam_loss: 4.8920 (4.7215)  manu_loss: 3.7658 (3.5087)  ot_loss: 2.2832 (2.2638)  base_loss: 20.0163 (19.4262)  time: 0.3259  data: 0.0925  max mem: 11381
+Epoch: [12] Total time: 0:02:32 (0.4880 s / it)
+Averaged stats: lr: 0.000243  sp_loss: 11.4537 (11.1960)  fam_loss: 4.8920 (4.7215)  manu_loss: 3.7658 (3.5087)  ot_loss: 2.2832 (2.2638)  base_loss: 20.0163 (19.4262)
+Epoch: [13]  [  0/312]  eta: 0:29:56  lr: 0.000242  sp_loss: 11.3081 (11.3081)  fam_loss: 4.7670 (4.7670)  manu_loss: 3.6930 (3.6930)  ot_loss: 2.1621 (2.1621)  base_loss: 19.7682 (19.7682)  time: 5.7590  data: 5.4765  max mem: 11381
+Epoch: [13]  [250/312]  eta: 0:00:32  lr: 0.000242  sp_loss: 10.8617 (11.0337)  fam_loss: 4.6014 (4.6249)  manu_loss: 3.3651 (3.4534)  ot_loss: 2.2324 (2.2504)  base_loss: 18.7431 (19.1119)  time: 0.4945  data: 0.2431  max mem: 11381
+Epoch: [13]  [311/312]  eta: 0:00:00  lr: 0.000242  sp_loss: 11.2683 (11.0372)  fam_loss: 4.8263 (4.6317)  manu_loss: 3.5205 (3.4561)  ot_loss: 2.2539 (2.2495)  base_loss: 19.5784 (19.1250)  time: 0.3347  data: 0.0998  max mem: 11381
+Epoch: [13] Total time: 0:02:40 (0.5130 s / it)
+Averaged stats: lr: 0.000242  sp_loss: 11.2683 (11.0372)  fam_loss: 4.8263 (4.6317)  manu_loss: 3.5205 (3.4561)  ot_loss: 2.2539 (2.2495)  base_loss: 19.5784 (19.1250)
+Epoch: [14]  [  0/312]  eta: 0:40:22  lr: 0.000240  sp_loss: 11.0511 (11.0511)  fam_loss: 4.8995 (4.8995)  manu_loss: 3.7105 (3.7105)  ot_loss: 2.2422 (2.2422)  base_loss: 19.6612 (19.6612)  time: 7.7648  data: 7.4735  max mem: 11381
+Epoch: [14]  [250/312]  eta: 0:00:34  lr: 0.000240  sp_loss: 10.7874 (10.9856)  fam_loss: 4.5728 (4.6619)  manu_loss: 3.5221 (3.4935)  ot_loss: 2.2324 (2.2542)  base_loss: 18.9015 (19.1410)  time: 0.4275  data: 0.1785  max mem: 11381
+Epoch: [14]  [311/312]  eta: 0:00:00  lr: 0.000240  sp_loss: 11.0667 (10.9934)  fam_loss: 4.7279 (4.6629)  manu_loss: 3.5984 (3.4924)  ot_loss: 2.2520 (2.2522)  base_loss: 19.2627 (19.1487)  time: 0.4006  data: 0.1666  max mem: 11381
+Epoch: [14] Total time: 0:02:49 (0.5434 s / it)
+Averaged stats: lr: 0.000240  sp_loss: 11.0667 (10.9934)  fam_loss: 4.7279 (4.6629)  manu_loss: 3.5984 (3.4924)  ot_loss: 2.2520 (2.2522)  base_loss: 19.2627 (19.1487)
+Epoch: [15]  [  0/312]  eta: 0:41:14  lr: 0.000239  sp_loss: 10.8562 (10.8562)  fam_loss: 4.6638 (4.6638)  manu_loss: 3.5015 (3.5015)  ot_loss: 2.1914 (2.1914)  base_loss: 19.0215 (19.0215)  time: 7.9312  data: 7.6269  max mem: 11381
+Epoch: [15]  [250/312]  eta: 0:00:33  lr: 0.000239  sp_loss: 11.0047 (10.8402)  fam_loss: 4.7247 (4.5948)  manu_loss: 3.5182 (3.4541)  ot_loss: 2.2207 (2.2363)  base_loss: 19.0745 (18.8892)  time: 0.4458  data: 0.1989  max mem: 11381
+Epoch: [15]  [311/312]  eta: 0:00:00  lr: 0.000239  sp_loss: 11.1208 (10.8538)  fam_loss: 4.8738 (4.6077)  manu_loss: 3.5934 (3.4605)  ot_loss: 2.2676 (2.2384)  base_loss: 19.5718 (18.9220)  time: 0.3444  data: 0.1117  max mem: 11381
+Epoch: [15] Total time: 0:02:48 (0.5385 s / it)
+Averaged stats: lr: 0.000239  sp_loss: 11.1208 (10.8538)  fam_loss: 4.8738 (4.6077)  manu_loss: 3.5934 (3.4605)  ot_loss: 2.2676 (2.2384)  base_loss: 19.5718 (18.9220)
+Epoch: [16]  [  0/312]  eta: 0:31:06  lr: 0.000237  sp_loss: 10.6784 (10.6784)  fam_loss: 4.7381 (4.7381)  manu_loss: 3.3850 (3.3850)  ot_loss: 2.2969 (2.2969)  base_loss: 18.8015 (18.8015)  time: 5.9825  data: 5.7037  max mem: 11381
+Epoch: [16]  [250/312]  eta: 0:00:30  lr: 0.000237  sp_loss: 10.8085 (10.7582)  fam_loss: 4.6647 (4.5839)  manu_loss: 3.5241 (3.4498)  ot_loss: 2.2598 (2.2378)  base_loss: 18.9636 (18.7919)  time: 0.4971  data: 0.2492  max mem: 11381
+Epoch: [16]  [311/312]  eta: 0:00:00  lr: 0.000237  sp_loss: 10.9605 (10.7736)  fam_loss: 4.7198 (4.6001)  manu_loss: 3.5298 (3.4684)  ot_loss: 2.2598 (2.2415)  base_loss: 19.1395 (18.8421)  time: 0.4074  data: 0.1801  max mem: 11381
+Epoch: [16] Total time: 0:02:29 (0.4807 s / it)
+Averaged stats: lr: 0.000237  sp_loss: 10.9605 (10.7736)  fam_loss: 4.7198 (4.6001)  manu_loss: 3.5298 (3.4684)  ot_loss: 2.2598 (2.2415)  base_loss: 19.1395 (18.8421)
+Epoch: [17]  [  0/312]  eta: 0:39:15  lr: 0.000235  sp_loss: 10.2484 (10.2484)  fam_loss: 4.3806 (4.3806)  manu_loss: 3.3118 (3.3118)  ot_loss: 2.1426 (2.1426)  base_loss: 17.9408 (17.9408)  time: 7.5487  data: 7.2350  max mem: 11381
+Epoch: [17]  [250/312]  eta: 0:00:28  lr: 0.000235  sp_loss: 10.6653 (10.6401)  fam_loss: 4.6943 (4.5629)  manu_loss: 3.5436 (3.4322)  ot_loss: 2.2285 (2.2331)  base_loss: 18.8924 (18.6352)  time: 0.3503  data: 0.1032  max mem: 11381
+Epoch: [17]  [311/312]  eta: 0:00:00  lr: 0.000235  sp_loss: 10.7575 (10.6448)  fam_loss: 4.7202 (4.5645)  manu_loss: 3.6277 (3.4342)  ot_loss: 2.2285 (2.2363)  base_loss: 19.1504 (18.6435)  time: 0.3205  data: 0.0891  max mem: 11381
+Epoch: [17] Total time: 0:02:21 (0.4527 s / it)
+Averaged stats: lr: 0.000235  sp_loss: 10.7575 (10.6448)  fam_loss: 4.7202 (4.5645)  manu_loss: 3.6277 (3.4342)  ot_loss: 2.2285 (2.2363)  base_loss: 19.1504 (18.6435)
+Epoch: [18]  [  0/312]  eta: 0:30:24  lr: 0.000233  sp_loss: 9.9453 (9.9453)  fam_loss: 3.7748 (3.7748)  manu_loss: 2.9684 (2.9684)  ot_loss: 2.1504 (2.1504)  base_loss: 16.6885 (16.6885)  time: 5.8491  data: 5.5809  max mem: 11381
+Epoch: [18]  [250/312]  eta: 0:00:26  lr: 0.000233  sp_loss: 10.8304 (10.5744)  fam_loss: 4.7728 (4.5452)  manu_loss: 3.5971 (3.4311)  ot_loss: 2.2383 (2.2259)  base_loss: 19.1330 (18.5507)  time: 0.3694  data: 0.1254  max mem: 11381
+Epoch: [18]  [311/312]  eta: 0:00:00  lr: 0.000233  sp_loss: 10.9336 (10.5838)  fam_loss: 4.7673 (4.5565)  manu_loss: 3.5905 (3.4460)  ot_loss: 2.2168 (2.2287)  base_loss: 19.1999 (18.5863)  time: 0.3145  data: 0.0822  max mem: 11381
+Epoch: [18] Total time: 0:02:12 (0.4262 s / it)
+Averaged stats: lr: 0.000233  sp_loss: 10.9336 (10.5838)  fam_loss: 4.7673 (4.5565)  manu_loss: 3.5905 (3.4460)  ot_loss: 2.2168 (2.2287)  base_loss: 19.1999 (18.5863)
+Epoch: [19]  [  0/312]  eta: 0:32:40  lr: 0.000231  sp_loss: 10.5840 (10.5840)  fam_loss: 4.7673 (4.7673)  manu_loss: 3.5002 (3.5002)  ot_loss: 2.2012 (2.2012)  base_loss: 18.8514 (18.8514)  time: 6.2831  data: 5.9978  max mem: 11381
+Epoch: [19]  [250/312]  eta: 0:00:29  lr: 0.000231  sp_loss: 10.6414 (10.4611)  fam_loss: 4.7173 (4.5120)  manu_loss: 3.6519 (3.4033)  ot_loss: 2.2695 (2.2255)  base_loss: 19.0151 (18.3764)  time: 0.4618  data: 0.2152  max mem: 11381
+Epoch: [19]  [311/312]  eta: 0:00:00  lr: 0.000231  sp_loss: 10.4942 (10.4596)  fam_loss: 4.5532 (4.5073)  manu_loss: 3.3610 (3.3987)  ot_loss: 2.2012 (2.2233)  base_loss: 18.3844 (18.3655)  time: 0.4440  data: 0.2121  max mem: 11381
+Epoch: [19] Total time: 0:02:26 (0.4705 s / it)
+Averaged stats: lr: 0.000231  sp_loss: 10.4942 (10.4596)  fam_loss: 4.5532 (4.5073)  manu_loss: 3.3610 (3.3987)  ot_loss: 2.2012 (2.2233)  base_loss: 18.3844 (18.3655)
+Epoch: [20]  [  0/312]  eta: 0:40:48  lr: 0.000229  sp_loss: 10.2220 (10.2220)  fam_loss: 4.4799 (4.4799)  manu_loss: 3.2050 (3.2050)  ot_loss: 2.1523 (2.1523)  base_loss: 17.9068 (17.9068)  time: 7.8473  data: 7.5472  max mem: 11381
+Epoch: [20]  [250/312]  eta: 0:00:33  lr: 0.000229  sp_loss: 10.3235 (10.4059)  fam_loss: 4.5383 (4.5059)  manu_loss: 3.2218 (3.4154)  ot_loss: 2.1953 (2.2185)  base_loss: 18.1315 (18.3273)  time: 0.4021  data: 0.1534  max mem: 11381
+Epoch: [20]  [311/312]  eta: 0:00:00  lr: 0.000229  sp_loss: 10.7011 (10.4104)  fam_loss: 4.7359 (4.5012)  manu_loss: 3.5125 (3.4118)  ot_loss: 2.2188 (2.2157)  base_loss: 19.0702 (18.3234)  time: 0.3707  data: 0.1411  max mem: 11381
+Epoch: [20] Total time: 0:02:47 (0.5372 s / it)
+Averaged stats: lr: 0.000229  sp_loss: 10.7011 (10.4104)  fam_loss: 4.7359 (4.5012)  manu_loss: 3.5125 (3.4118)  ot_loss: 2.2188 (2.2157)  base_loss: 19.0702 (18.3234)
+Epoch: [21]  [  0/312]  eta: 0:40:21  lr: 0.000227  sp_loss: 9.7342 (9.7342)  fam_loss: 3.8584 (3.8584)  manu_loss: 2.8389 (2.8389)  ot_loss: 2.1074 (2.1074)  base_loss: 16.4316 (16.4316)  time: 7.7614  data: 7.4734  max mem: 11381
+Epoch: [21]  [250/312]  eta: 0:00:33  lr: 0.000227  sp_loss: 10.6784 (10.2962)  fam_loss: 4.6268 (4.4695)  manu_loss: 3.5267 (3.3762)  ot_loss: 2.1738 (2.2154)  base_loss: 18.6272 (18.1419)  time: 0.4179  data: 0.1661  max mem: 11381
+Epoch: [21]  [311/312]  eta: 0:00:00  lr: 0.000227  sp_loss: 9.9169 (10.2737)  fam_loss: 4.0736 (4.4494)  manu_loss: 3.1320 (3.3607)  ot_loss: 2.1738 (2.2139)  base_loss: 17.1225 (18.0838)  time: 0.3655  data: 0.1293  max mem: 11381
+Epoch: [21] Total time: 0:02:46 (0.5350 s / it)
+Averaged stats: lr: 0.000227  sp_loss: 9.9169 (10.2737)  fam_loss: 4.0736 (4.4494)  manu_loss: 3.1320 (3.3607)  ot_loss: 2.1738 (2.2139)  base_loss: 17.1225 (18.0838)
+Epoch: [22]  [  0/312]  eta: 0:39:21  lr: 0.000225  sp_loss: 9.9446 (9.9446)  fam_loss: 4.5062 (4.5062)  manu_loss: 3.2763 (3.2763)  ot_loss: 2.1270 (2.1270)  base_loss: 17.7270 (17.7270)  time: 7.5687  data: 7.2795  max mem: 11381
+Epoch: [22]  [250/312]  eta: 0:00:34  lr: 0.000225  sp_loss: 10.2085 (10.1482)  fam_loss: 4.4434 (4.3723)  manu_loss: 3.3173 (3.3035)  ot_loss: 2.2188 (2.1988)  base_loss: 17.9656 (17.8241)  time: 0.4191  data: 0.1717  max mem: 11381
+Epoch: [22]  [311/312]  eta: 0:00:00  lr: 0.000225  sp_loss: 10.6955 (10.1982)  fam_loss: 4.6784 (4.4108)  manu_loss: 3.5247 (3.3384)  ot_loss: 2.2363 (2.2049)  base_loss: 18.7758 (17.9474)  time: 0.3289  data: 0.0954  max mem: 11381
+Epoch: [22] Total time: 0:02:47 (0.5384 s / it)
+Averaged stats: lr: 0.000225  sp_loss: 10.6955 (10.1982)  fam_loss: 4.6784 (4.4108)  manu_loss: 3.5247 (3.3384)  ot_loss: 2.2363 (2.2049)  base_loss: 18.7758 (17.9474)
+Epoch: [23]  [  0/312]  eta: 0:36:44  lr: 0.000222  sp_loss: 10.1879 (10.1879)  fam_loss: 4.4337 (4.4337)  manu_loss: 3.2482 (3.2482)  ot_loss: 2.1914 (2.1914)  base_loss: 17.8697 (17.8697)  time: 7.0652  data: 6.7914  max mem: 11381
+Epoch: [23]  [250/312]  eta: 0:00:33  lr: 0.000222  sp_loss: 10.3125 (10.1336)  fam_loss: 4.5065 (4.4050)  manu_loss: 3.4173 (3.3408)  ot_loss: 2.2051 (2.2010)  base_loss: 18.3735 (17.8795)  time: 0.4160  data: 0.1718  max mem: 11381
+Epoch: [23]  [311/312]  eta: 0:00:00  lr: 0.000222  sp_loss: 10.0644 (10.1347)  fam_loss: 4.3611 (4.4052)  manu_loss: 3.2687 (3.3403)  ot_loss: 2.1973 (2.2028)  base_loss: 17.6740 (17.8803)  time: 0.3157  data: 0.0882  max mem: 11381
+Epoch: [23] Total time: 0:02:45 (0.5312 s / it)
+Averaged stats: lr: 0.000222  sp_loss: 10.0644 (10.1347)  fam_loss: 4.3611 (4.4052)  manu_loss: 3.2687 (3.3403)  ot_loss: 2.1973 (2.2028)  base_loss: 17.6740 (17.8803)
+Epoch: [24]  [  0/312]  eta: 0:41:44  lr: 0.000220  sp_loss: 10.2867 (10.2867)  fam_loss: 4.8163 (4.8163)  manu_loss: 3.4462 (3.4462)  ot_loss: 2.1309 (2.1309)  base_loss: 18.5493 (18.5493)  time: 8.0285  data: 7.7566  max mem: 11381
+Epoch: [24]  [250/312]  eta: 0:00:32  lr: 0.000220  sp_loss: 9.9412 (10.0300)  fam_loss: 4.3470 (4.3710)  manu_loss: 3.2478 (3.3072)  ot_loss: 2.1836 (2.1894)  base_loss: 17.4413 (17.7082)  time: 0.3979  data: 0.1536  max mem: 11381
+Epoch: [24]  [311/312]  eta: 0:00:00  lr: 0.000220  sp_loss: 9.9970 (10.0338)  fam_loss: 4.3923 (4.3738)  manu_loss: 3.3128 (3.3067)  ot_loss: 2.2246 (2.1915)  base_loss: 17.3866 (17.7143)  time: 0.3261  data: 0.0949  max mem: 11381
+Epoch: [24] Total time: 0:02:40 (0.5158 s / it)
+Averaged stats: lr: 0.000220  sp_loss: 9.9970 (10.0338)  fam_loss: 4.3923 (4.3738)  manu_loss: 3.3128 (3.3067)  ot_loss: 2.2246 (2.1915)  base_loss: 17.3866 (17.7143)
+Epoch: [25]  [  0/312]  eta: 0:40:17  lr: 0.000217  sp_loss: 10.5895 (10.5895)  fam_loss: 4.9411 (4.9411)  manu_loss: 3.6823 (3.6823)  ot_loss: 2.3516 (2.3516)  base_loss: 19.2129 (19.2129)  time: 7.7480  data: 7.4629  max mem: 11381
+Epoch: [25]  [250/312]  eta: 0:00:32  lr: 0.000217  sp_loss: 10.0775 (9.9683)  fam_loss: 4.4285 (4.3528)  manu_loss: 3.3705 (3.3072)  ot_loss: 2.1973 (2.1920)  base_loss: 17.8020 (17.6284)  time: 0.3856  data: 0.1358  max mem: 11381
+Epoch: [25]  [311/312]  eta: 0:00:00  lr: 0.000217  sp_loss: 9.8443 (9.9864)  fam_loss: 4.3652 (4.3628)  manu_loss: 3.3553 (3.3146)  ot_loss: 2.1504 (2.1907)  base_loss: 17.7499 (17.6638)  time: 0.3243  data: 0.0960  max mem: 11381
+Epoch: [25] Total time: 0:02:41 (0.5175 s / it)
+Averaged stats: lr: 0.000217  sp_loss: 9.8443 (9.9864)  fam_loss: 4.3652 (4.3628)  manu_loss: 3.3553 (3.3146)  ot_loss: 2.1504 (2.1907)  base_loss: 17.7499 (17.6638)
+Epoch: [26]  [  0/312]  eta: 0:41:25  lr: 0.000215  sp_loss: 10.3074 (10.3074)  fam_loss: 4.6977 (4.6977)  manu_loss: 3.4879 (3.4879)  ot_loss: 2.1816 (2.1816)  base_loss: 18.4930 (18.4930)  time: 7.9654  data: 7.6787  max mem: 11381
+Epoch: [26]  [250/312]  eta: 0:00:32  lr: 0.000215  sp_loss: 10.2037 (9.9269)  fam_loss: 4.3850 (4.3554)  manu_loss: 3.2951 (3.3011)  ot_loss: 2.1836 (2.1846)  base_loss: 17.9372 (17.5834)  time: 0.3789  data: 0.1375  max mem: 11381
+Epoch: [26]  [311/312]  eta: 0:00:00  lr: 0.000215  sp_loss: 9.7899 (9.9291)  fam_loss: 4.4226 (4.3550)  manu_loss: 3.3897 (3.3044)  ot_loss: 2.1836 (2.1837)  base_loss: 17.6329 (17.5885)  time: 0.3202  data: 0.0878  max mem: 11381
+Epoch: [26] Total time: 0:02:40 (0.5152 s / it)
+Averaged stats: lr: 0.000215  sp_loss: 9.7899 (9.9291)  fam_loss: 4.4226 (4.3550)  manu_loss: 3.3897 (3.3044)  ot_loss: 2.1836 (2.1837)  base_loss: 17.6329 (17.5885)
+Epoch: [27]  [  0/312]  eta: 0:30:36  lr: 0.000212  sp_loss: 9.8364 (9.8364)  fam_loss: 4.1511 (4.1511)  manu_loss: 3.0521 (3.0521)  ot_loss: 2.0918 (2.0918)  base_loss: 17.0396 (17.0396)  time: 5.8877  data: 5.6127  max mem: 11381
+Epoch: [27]  [250/312]  eta: 0:00:31  lr: 0.000212  sp_loss: 9.8798 (9.9099)  fam_loss: 4.4252 (4.3760)  manu_loss: 3.2994 (3.3302)  ot_loss: 2.1719 (2.1877)  base_loss: 17.4191 (17.6161)  time: 0.5360  data: 0.2885  max mem: 11381
+Epoch: [27]  [311/312]  eta: 0:00:00  lr: 0.000212  sp_loss: 10.0315 (9.9018)  fam_loss: 4.5212 (4.3657)  manu_loss: 3.3852 (3.3265)  ot_loss: 2.2012 (2.1873)  base_loss: 17.8511 (17.5940)  time: 0.4138  data: 0.1793  max mem: 11381
+Epoch: [27] Total time: 0:02:36 (0.5006 s / it)
+Averaged stats: lr: 0.000212  sp_loss: 10.0315 (9.9018)  fam_loss: 4.5212 (4.3657)  manu_loss: 3.3852 (3.3265)  ot_loss: 2.2012 (2.1873)  base_loss: 17.8511 (17.5940)
+Epoch: [28]  [  0/312]  eta: 0:29:47  lr: 0.000209  sp_loss: 10.3775 (10.3775)  fam_loss: 5.0576 (5.0576)  manu_loss: 3.9292 (3.9292)  ot_loss: 2.2910 (2.2910)  base_loss: 19.3642 (19.3642)  time: 5.7289  data: 5.4548  max mem: 11381
+Epoch: [28]  [250/312]  eta: 0:00:30  lr: 0.000209  sp_loss: 9.8613 (9.8399)  fam_loss: 4.3521 (4.3519)  manu_loss: 3.3281 (3.3035)  ot_loss: 2.1660 (2.1807)  base_loss: 17.6528 (17.4953)  time: 0.5462  data: 0.2987  max mem: 11381
+Epoch: [28]  [311/312]  eta: 0:00:00  lr: 0.000209  sp_loss: 9.6932 (9.8165)  fam_loss: 4.1021 (4.3305)  manu_loss: 3.1606 (3.2898)  ot_loss: 2.1523 (2.1793)  base_loss: 16.6355 (17.4368)  time: 0.4551  data: 0.2226  max mem: 11381
+Epoch: [28] Total time: 0:02:30 (0.4825 s / it)
+Averaged stats: lr: 0.000209  sp_loss: 9.6932 (9.8165)  fam_loss: 4.1021 (4.3305)  manu_loss: 3.1606 (3.2898)  ot_loss: 2.1523 (2.1793)  base_loss: 16.6355 (17.4368)
+Epoch: [29]  [  0/312]  eta: 0:42:02  lr: 0.000206  sp_loss: 8.7879 (8.7879)  fam_loss: 3.8506 (3.8506)  manu_loss: 2.7872 (2.7872)  ot_loss: 2.1152 (2.1152)  base_loss: 15.4258 (15.4258)  time: 8.0858  data: 7.8085  max mem: 11381
+Epoch: [29]  [250/312]  eta: 0:00:30  lr: 0.000206  sp_loss: 9.6549 (9.7374)  fam_loss: 4.2007 (4.3025)  manu_loss: 3.1653 (3.2777)  ot_loss: 2.1738 (2.1780)  base_loss: 16.9162 (17.3177)  time: 0.4205  data: 0.1723  max mem: 11381
+Epoch: [29]  [311/312]  eta: 0:00:00  lr: 0.000206  sp_loss: 9.7584 (9.7213)  fam_loss: 4.4941 (4.2995)  manu_loss: 3.3732 (3.2715)  ot_loss: 2.2070 (2.1772)  base_loss: 17.6315 (17.2923)  time: 0.3735  data: 0.1439  max mem: 11381
+Epoch: [29] Total time: 0:02:28 (0.4763 s / it)
+Averaged stats: lr: 0.000206  sp_loss: 9.7584 (9.7213)  fam_loss: 4.4941 (4.2995)  manu_loss: 3.3732 (3.2715)  ot_loss: 2.2070 (2.1772)  base_loss: 17.6315 (17.2923)
+Epoch: [30]  [  0/312]  eta: 0:40:59  lr: 0.000204  sp_loss: 10.8648 (10.8648)  fam_loss: 4.9355 (4.9355)  manu_loss: 3.9860 (3.9860)  ot_loss: 2.2012 (2.2012)  base_loss: 19.7863 (19.7863)  time: 7.8831  data: 7.5598  max mem: 11381
+Epoch: [30]  [250/312]  eta: 0:00:31  lr: 0.000204  sp_loss: 9.7470 (9.7058)  fam_loss: 4.2777 (4.3050)  manu_loss: 3.1627 (3.2759)  ot_loss: 2.1621 (2.1673)  base_loss: 17.2843 (17.2867)  time: 0.5459  data: 0.2954  max mem: 11381
+Epoch: [30]  [311/312]  eta: 0:00:00  lr: 0.000204  sp_loss: 9.9928 (9.7091)  fam_loss: 4.4422 (4.3051)  manu_loss: 3.4457 (3.2712)  ot_loss: 2.1777 (2.1663)  base_loss: 18.0977 (17.2854)  time: 0.4043  data: 0.1686  max mem: 11381
+Epoch: [30] Total time: 0:02:32 (0.4889 s / it)
+Averaged stats: lr: 0.000204  sp_loss: 9.9928 (9.7091)  fam_loss: 4.4422 (4.3051)  manu_loss: 3.4457 (3.2712)  ot_loss: 2.1777 (2.1663)  base_loss: 18.0977 (17.2854)
+Epoch: [31]  [  0/312]  eta: 0:40:27  lr: 0.000201  sp_loss: 9.2945 (9.2945)  fam_loss: 4.0852 (4.0852)  manu_loss: 3.2554 (3.2554)  ot_loss: 2.1855 (2.1855)  base_loss: 16.6352 (16.6352)  time: 7.7793  data: 7.4992  max mem: 11381
+Epoch: [31]  [250/312]  eta: 0:00:32  lr: 0.000201  sp_loss: 10.2164 (9.6240)  fam_loss: 4.5714 (4.2784)  manu_loss: 3.4864 (3.2510)  ot_loss: 2.1895 (2.1627)  base_loss: 18.2639 (17.1534)  time: 0.5719  data: 0.3190  max mem: 11381
+Epoch: [31]  [311/312]  eta: 0:00:00  lr: 0.000201  sp_loss: 9.8396 (9.6264)  fam_loss: 4.5270 (4.2751)  manu_loss: 3.4292 (3.2545)  ot_loss: 2.1660 (2.1603)  base_loss: 17.8384 (17.1561)  time: 0.3980  data: 0.1627  max mem: 11381
+Epoch: [31] Total time: 0:02:36 (0.5001 s / it)
+Averaged stats: lr: 0.000201  sp_loss: 9.8396 (9.6264)  fam_loss: 4.5270 (4.2751)  manu_loss: 3.4292 (3.2545)  ot_loss: 2.1660 (2.1603)  base_loss: 17.8384 (17.1561)
+Epoch: [32]  [  0/312]  eta: 0:35:41  lr: 0.000197  sp_loss: 9.0037 (9.0037)  fam_loss: 3.8658 (3.8658)  manu_loss: 3.0661 (3.0661)  ot_loss: 2.1543 (2.1543)  base_loss: 15.9356 (15.9356)  time: 6.8640  data: 6.5971  max mem: 11381
+Epoch: [32]  [250/312]  eta: 0:00:30  lr: 0.000197  sp_loss: 9.4667 (9.6141)  fam_loss: 4.0378 (4.3051)  manu_loss: 3.0114 (3.2782)  ot_loss: 2.1309 (2.1693)  base_loss: 16.2569 (17.1974)  time: 0.3525  data: 0.1023  max mem: 11381
+Epoch: [32]  [311/312]  eta: 0:00:00  lr: 0.000197  sp_loss: 9.8845 (9.6392)  fam_loss: 4.3957 (4.3142)  manu_loss: 3.3689 (3.2848)  ot_loss: 2.1641 (2.1699)  base_loss: 17.7595 (17.2381)  time: 0.3117  data: 0.0839  max mem: 11381
+Epoch: [32] Total time: 0:02:31 (0.4861 s / it)
+Averaged stats: lr: 0.000197  sp_loss: 9.8845 (9.6392)  fam_loss: 4.3957 (4.3142)  manu_loss: 3.3689 (3.2848)  ot_loss: 2.1641 (2.1699)  base_loss: 17.7595 (17.2381)
+Epoch: [33]  [  0/312]  eta: 0:30:23  lr: 0.000194  sp_loss: 9.5275 (9.5275)  fam_loss: 4.1601 (4.1601)  manu_loss: 3.2580 (3.2580)  ot_loss: 2.1680 (2.1680)  base_loss: 16.9455 (16.9455)  time: 5.8451  data: 5.5722  max mem: 11381
+Epoch: [33]  [250/312]  eta: 0:00:31  lr: 0.000194  sp_loss: 9.0453 (9.4680)  fam_loss: 4.2149 (4.2210)  manu_loss: 3.1286 (3.2155)  ot_loss: 2.1309 (2.1540)  base_loss: 16.5113 (16.9046)  time: 0.4159  data: 0.1845  max mem: 11381
+Epoch: [33]  [311/312]  eta: 0:00:00  lr: 0.000194  sp_loss: 9.2529 (9.4472)  fam_loss: 4.1522 (4.2131)  manu_loss: 3.1069 (3.2059)  ot_loss: 2.1484 (2.1538)  base_loss: 16.5907 (16.8662)  time: 0.3383  data: 0.1136  max mem: 11381
+Epoch: [33] Total time: 0:02:38 (0.5083 s / it)
+Averaged stats: lr: 0.000194  sp_loss: 9.2529 (9.4472)  fam_loss: 4.1522 (4.2131)  manu_loss: 3.1069 (3.2059)  ot_loss: 2.1484 (2.1538)  base_loss: 16.5907 (16.8662)
+Epoch: [34]  [  0/312]  eta: 0:30:18  lr: 0.000191  sp_loss: 10.2334 (10.2334)  fam_loss: 4.4875 (4.4875)  manu_loss: 3.4585 (3.4585)  ot_loss: 2.1680 (2.1680)  base_loss: 18.1794 (18.1794)  time: 5.8272  data: 5.5526  max mem: 11381
+Epoch: [34]  [250/312]  eta: 0:00:25  lr: 0.000191  sp_loss: 9.8476 (9.4852)  fam_loss: 4.4193 (4.2418)  manu_loss: 3.3731 (3.2306)  ot_loss: 2.1445 (2.1539)  base_loss: 17.7263 (16.9576)  time: 0.3326  data: 0.1041  max mem: 11381
+Epoch: [34]  [311/312]  eta: 0:00:00  lr: 0.000191  sp_loss: 9.8376 (9.4701)  fam_loss: 4.3237 (4.2347)  manu_loss: 3.2792 (3.2223)  ot_loss: 2.1465 (2.1525)  base_loss: 17.4260 (16.9271)  time: 0.3144  data: 0.0888  max mem: 11381
+Epoch: [34] Total time: 0:02:08 (0.4119 s / it)
+Averaged stats: lr: 0.000191  sp_loss: 9.8376 (9.4701)  fam_loss: 4.3237 (4.2347)  manu_loss: 3.2792 (3.2223)  ot_loss: 2.1465 (2.1525)  base_loss: 17.4260 (16.9271)
+Epoch: [35]  [  0/312]  eta: 0:31:12  lr: 0.000188  sp_loss: 8.6736 (8.6736)  fam_loss: 3.5695 (3.5695)  manu_loss: 2.8635 (2.8635)  ot_loss: 2.0938 (2.0938)  base_loss: 15.1065 (15.1065)  time: 6.0013  data: 5.7360  max mem: 11381
+Epoch: [35]  [250/312]  eta: 0:00:25  lr: 0.000188  sp_loss: 9.4022 (9.4680)  fam_loss: 4.2568 (4.2578)  manu_loss: 3.1547 (3.2422)  ot_loss: 2.1328 (2.1498)  base_loss: 16.8069 (16.9679)  time: 0.3236  data: 0.0911  max mem: 11381
+Epoch: [35]  [311/312]  eta: 0:00:00  lr: 0.000188  sp_loss: 9.7782 (9.4546)  fam_loss: 4.3081 (4.2507)  manu_loss: 3.3840 (3.2401)  ot_loss: 2.1543 (2.1509)  base_loss: 17.6271 (16.9454)  time: 0.3110  data: 0.0832  max mem: 11381
+Epoch: [35] Total time: 0:02:04 (0.4005 s / it)
+Averaged stats: lr: 0.000188  sp_loss: 9.7782 (9.4546)  fam_loss: 4.3081 (4.2507)  manu_loss: 3.3840 (3.2401)  ot_loss: 2.1543 (2.1509)  base_loss: 17.6271 (16.9454)
+Epoch: [36]  [  0/312]  eta: 0:39:00  lr: 0.000184  sp_loss: 9.9954 (9.9954)  fam_loss: 4.2827 (4.2827)  manu_loss: 3.2160 (3.2160)  ot_loss: 2.2305 (2.2305)  base_loss: 17.4940 (17.4940)  time: 7.5002  data: 7.2032  max mem: 11381
+Epoch: [36]  [250/312]  eta: 0:00:30  lr: 0.000184  sp_loss: 9.6172 (9.3928)  fam_loss: 4.2957 (4.2364)  manu_loss: 3.3136 (3.2178)  ot_loss: 2.1152 (2.1424)  base_loss: 17.3236 (16.8470)  time: 0.4717  data: 0.2243  max mem: 11381
+Epoch: [36]  [311/312]  eta: 0:00:00  lr: 0.000184  sp_loss: 9.3062 (9.4254)  fam_loss: 4.2476 (4.2513)  manu_loss: 3.1726 (3.2327)  ot_loss: 2.1426 (2.1436)  base_loss: 16.8997 (16.9093)  time: 0.3975  data: 0.1613  max mem: 11381
+Epoch: [36] Total time: 0:02:30 (0.4830 s / it)
+Averaged stats: lr: 0.000184  sp_loss: 9.3062 (9.4254)  fam_loss: 4.2476 (4.2513)  manu_loss: 3.1726 (3.2327)  ot_loss: 2.1426 (2.1436)  base_loss: 16.8997 (16.9093)
+Epoch: [37]  [  0/312]  eta: 0:38:17  lr: 0.000181  sp_loss: 10.3233 (10.3233)  fam_loss: 5.0432 (5.0432)  manu_loss: 3.7587 (3.7587)  ot_loss: 2.2598 (2.2598)  base_loss: 19.1252 (19.1252)  time: 7.3631  data: 7.0813  max mem: 11381
+Epoch: [37]  [250/312]  eta: 0:00:31  lr: 0.000181  sp_loss: 9.2359 (9.2332)  fam_loss: 4.2266 (4.1513)  manu_loss: 3.2568 (3.1561)  ot_loss: 2.1387 (2.1259)  base_loss: 16.6918 (16.5406)  time: 0.3809  data: 0.1259  max mem: 11381
+Epoch: [37]  [311/312]  eta: 0:00:00  lr: 0.000181  sp_loss: 9.6832 (9.2734)  fam_loss: 4.2978 (4.1733)  manu_loss: 3.2782 (3.1766)  ot_loss: 2.1426 (2.1296)  base_loss: 17.2208 (16.6233)  time: 0.3317  data: 0.0968  max mem: 11381
+Epoch: [37] Total time: 0:02:34 (0.4940 s / it)
+Averaged stats: lr: 0.000181  sp_loss: 9.6832 (9.2734)  fam_loss: 4.2978 (4.1733)  manu_loss: 3.2782 (3.1766)  ot_loss: 2.1426 (2.1296)  base_loss: 17.2208 (16.6233)
+Epoch: [38]  [  0/312]  eta: 0:41:04  lr: 0.000178  sp_loss: 7.8423 (7.8423)  fam_loss: 3.3035 (3.3035)  manu_loss: 2.4535 (2.4535)  ot_loss: 1.9678 (1.9678)  base_loss: 13.5993 (13.5993)  time: 7.9001  data: 7.6164  max mem: 11381
+Epoch: [38]  [250/312]  eta: 0:00:30  lr: 0.000178  sp_loss: 8.8189 (9.2515)  fam_loss: 3.9830 (4.1648)  manu_loss: 2.9634 (3.1739)  ot_loss: 2.1016 (2.1329)  base_loss: 15.9038 (16.5902)  time: 0.4629  data: 0.2231  max mem: 11381
+Epoch: [38]  [311/312]  eta: 0:00:00  lr: 0.000178  sp_loss: 9.3365 (9.2432)  fam_loss: 4.2107 (4.1640)  manu_loss: 3.2918 (3.1701)  ot_loss: 2.1074 (2.1309)  base_loss: 16.8905 (16.5772)  time: 0.3761  data: 0.1443  max mem: 11381
+Epoch: [38] Total time: 0:02:29 (0.4790 s / it)
+Averaged stats: lr: 0.000178  sp_loss: 9.3365 (9.2432)  fam_loss: 4.2107 (4.1640)  manu_loss: 3.2918 (3.1701)  ot_loss: 2.1074 (2.1309)  base_loss: 16.8905 (16.5772)
+Epoch: [39]  [  0/312]  eta: 0:38:46  lr: 0.000174  sp_loss: 9.6957 (9.6957)  fam_loss: 4.3638 (4.3638)  manu_loss: 3.3387 (3.3387)  ot_loss: 2.1191 (2.1191)  base_loss: 17.3982 (17.3982)  time: 7.4581  data: 7.1741  max mem: 11381
+Epoch: [39]  [250/312]  eta: 0:00:32  lr: 0.000174  sp_loss: 9.1139 (9.1278)  fam_loss: 4.1638 (4.1108)  manu_loss: 3.1308 (3.1221)  ot_loss: 2.1289 (2.1177)  base_loss: 16.3850 (16.3606)  time: 0.5451  data: 0.2939  max mem: 11381
+Epoch: [39]  [311/312]  eta: 0:00:00  lr: 0.000174  sp_loss: 9.1816 (9.1260)  fam_loss: 4.1383 (4.1098)  manu_loss: 3.2320 (3.1241)  ot_loss: 2.1270 (2.1174)  base_loss: 16.6094 (16.3599)  time: 0.3463  data: 0.1117  max mem: 11381
+Epoch: [39] Total time: 0:02:37 (0.5057 s / it)
+Averaged stats: lr: 0.000174  sp_loss: 9.1816 (9.1260)  fam_loss: 4.1383 (4.1098)  manu_loss: 3.2320 (3.1241)  ot_loss: 2.1270 (2.1174)  base_loss: 16.6094 (16.3599)
+Epoch: [40]  [  0/312]  eta: 0:36:59  lr: 0.000171  sp_loss: 8.9958 (8.9958)  fam_loss: 3.8338 (3.8338)  manu_loss: 2.8500 (2.8500)  ot_loss: 2.1133 (2.1133)  base_loss: 15.6797 (15.6797)  time: 7.1154  data: 6.8245  max mem: 11381
+Epoch: [40]  [250/312]  eta: 0:00:30  lr: 0.000171  sp_loss: 9.8086 (9.2152)  fam_loss: 4.3923 (4.1947)  manu_loss: 3.2496 (3.1885)  ot_loss: 2.1270 (2.1241)  base_loss: 17.2190 (16.5984)  time: 0.4113  data: 0.1642  max mem: 11381
+Epoch: [40]  [311/312]  eta: 0:00:00  lr: 0.000171  sp_loss: 8.7354 (9.1936)  fam_loss: 3.9986 (4.1843)  manu_loss: 3.0183 (3.1802)  ot_loss: 2.1250 (2.1223)  base_loss: 15.7021 (16.5581)  time: 0.3376  data: 0.1004  max mem: 11381
+Epoch: [40] Total time: 0:02:30 (0.4824 s / it)
+Averaged stats: lr: 0.000171  sp_loss: 8.7354 (9.1936)  fam_loss: 3.9986 (4.1843)  manu_loss: 3.0183 (3.1802)  ot_loss: 2.1250 (2.1223)  base_loss: 15.7021 (16.5581)
+Epoch: [41]  [  0/312]  eta: 0:36:57  lr: 0.000167  sp_loss: 8.1288 (8.1288)  fam_loss: 3.5988 (3.5988)  manu_loss: 2.4486 (2.4486)  ot_loss: 2.0605 (2.0605)  base_loss: 14.1762 (14.1762)  time: 7.1076  data: 6.8296  max mem: 11381
+Epoch: [41]  [250/312]  eta: 0:00:30  lr: 0.000167  sp_loss: 9.2344 (9.1629)  fam_loss: 4.2919 (4.1651)  manu_loss: 3.2791 (3.1626)  ot_loss: 2.1445 (2.1195)  base_loss: 16.7976 (16.4906)  time: 0.3666  data: 0.1184  max mem: 11381
+Epoch: [41]  [311/312]  eta: 0:00:00  lr: 0.000167  sp_loss: 9.6841 (9.1649)  fam_loss: 4.4328 (4.1632)  manu_loss: 3.3228 (3.1571)  ot_loss: 2.1543 (2.1190)  base_loss: 17.4873 (16.4851)  time: 0.3365  data: 0.1065  max mem: 11381
+Epoch: [41] Total time: 0:02:30 (0.4812 s / it)
+Averaged stats: lr: 0.000167  sp_loss: 9.6841 (9.1649)  fam_loss: 4.4328 (4.1632)  manu_loss: 3.3228 (3.1571)  ot_loss: 2.1543 (2.1190)  base_loss: 17.4873 (16.4851)
+Test:  [  0/391]  eta: 0:39:31  sploss: 7.4101 (7.4101)  famloss: 2.3476 (2.3476)  manuloss: 1.5401 (1.5401)  acc1: 0.7812 (0.7812)  acc5: 3.5156 (3.5156)  family_acc1: 47.2656 (47.2656)  manu_acc1: 68.3594 (68.3594)  time: 6.0647  data: 5.6819  max mem: 11381
+Test:  [250/391]  eta: 0:00:59  sploss: 7.4678 (7.4149)  famloss: 2.4541 (2.4572)  manuloss: 1.7540 (1.7490)  acc1: 0.7812 (0.8357)  acc5: 5.0781 (5.4470)  family_acc1: 47.2656 (48.3706)  manu_acc1: 61.7188 (63.6797)  time: 0.3283  data: 0.1190  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 7.1228 (7.3569)  famloss: 2.1687 (2.3918)  manuloss: 1.3518 (1.6644)  acc1: 1.1719 (0.8740)  acc5: 6.6406 (5.6060)  family_acc1: 53.7500 (49.4220)  manu_acc1: 71.8750 (65.3510)  time: 0.4284  data: 0.2127  max mem: 11381
+Test: Total time: 0:02:43 (0.4190 s / it)
+* Acc@1 0.874 Acc@5 5.606 family@1 49.422 manu@1 65.351 sploss 7.357 fmloss 2.392 mfloss 1.664
+FPA: 0.716% | TICE: 98.258%   
+ wAP: 7.128  |  LCA: 294.483   |   Precision and Recall: 1.848%
+Accuracy of the network on the 100000 test images: 0.9%
+Max accuracy: 0.87%
+Epoch: [42]  [  0/312]  eta: 0:31:14  lr: 0.000163  sp_loss: 9.8710 (9.8710)  fam_loss: 4.8672 (4.8672)  manu_loss: 3.7688 (3.7688)  ot_loss: 2.1836 (2.1836)  base_loss: 18.5070 (18.5070)  time: 6.0091  data: 5.6681  max mem: 11381
+Epoch: [42]  [250/312]  eta: 0:00:30  lr: 0.000163  sp_loss: 9.2876 (9.0275)  fam_loss: 4.3892 (4.0976)  manu_loss: 3.2956 (3.1107)  ot_loss: 2.1191 (2.1083)  base_loss: 16.9352 (16.2358)  time: 0.5540  data: 0.3073  max mem: 11381
+Epoch: [42]  [311/312]  eta: 0:00:00  lr: 0.000163  sp_loss: 8.5732 (9.0229)  fam_loss: 3.7990 (4.0978)  manu_loss: 2.8603 (3.1135)  ot_loss: 2.0684 (2.1080)  base_loss: 15.2637 (16.2343)  time: 0.4575  data: 0.2188  max mem: 11381
+Epoch: [42] Total time: 0:02:33 (0.4911 s / it)
+Averaged stats: lr: 0.000163  sp_loss: 8.5732 (9.0229)  fam_loss: 3.7990 (4.0978)  manu_loss: 2.8603 (3.1135)  ot_loss: 2.0684 (2.1080)  base_loss: 15.2637 (16.2343)
+Test:  [  0/391]  eta: 0:52:27  sploss: 7.1532 (7.1532)  famloss: 2.2409 (2.2409)  manuloss: 1.4616 (1.4616)  acc1: 0.3906 (0.3906)  acc5: 5.8594 (5.8594)  family_acc1: 51.1719 (51.1719)  manu_acc1: 71.4844 (71.4844)  time: 8.0493  data: 7.8147  max mem: 11381
+Test:  [250/391]  eta: 0:01:13  sploss: 7.1839 (7.2081)  famloss: 2.3942 (2.3846)  manuloss: 1.7374 (1.7161)  acc1: 1.1719 (1.1361)  acc5: 7.4219 (7.2927)  family_acc1: 47.6562 (49.2141)  manu_acc1: 62.8906 (64.6228)  time: 0.4616  data: 0.2207  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.9324 (7.1457)  famloss: 2.1119 (2.3210)  manuloss: 1.2560 (1.6331)  acc1: 1.5625 (1.1640)  acc5: 8.2031 (7.4740)  family_acc1: 52.7344 (50.1220)  manu_acc1: 74.2188 (66.2680)  time: 0.3377  data: 0.1327  max mem: 11381
+Test: Total time: 0:03:15 (0.5000 s / it)
+* Acc@1 1.164 Acc@5 7.474 family@1 50.122 manu@1 66.268 sploss 7.146 fmloss 2.321 mfloss 1.633
+FPA: 0.966% | TICE: 98.173%   
+ wAP: 7.473  |  LCA: 293.541   |   Precision and Recall: 2.125%
+Accuracy of the network on the 100000 test images: 1.2%
+Max accuracy: 1.16%
+Epoch: [43]  [  0/312]  eta: 0:40:04  lr: 0.000160  sp_loss: 9.4325 (9.4325)  fam_loss: 4.2172 (4.2172)  manu_loss: 3.3169 (3.3169)  ot_loss: 2.0996 (2.0996)  base_loss: 16.9666 (16.9666)  time: 7.7080  data: 7.4205  max mem: 11381
+Epoch: [43]  [250/312]  eta: 0:00:32  lr: 0.000160  sp_loss: 8.7590 (8.9309)  fam_loss: 3.9855 (4.0613)  manu_loss: 3.0285 (3.1001)  ot_loss: 2.0664 (2.0981)  base_loss: 16.0081 (16.0923)  time: 0.4692  data: 0.2213  max mem: 11381
+Epoch: [43]  [311/312]  eta: 0:00:00  lr: 0.000160  sp_loss: 8.9960 (8.9527)  fam_loss: 4.1755 (4.0708)  manu_loss: 3.1523 (3.1028)  ot_loss: 2.0977 (2.0986)  base_loss: 16.4245 (16.1263)  time: 0.3034  data: 0.0768  max mem: 11381
+Epoch: [43] Total time: 0:02:36 (0.5032 s / it)
+Averaged stats: lr: 0.000160  sp_loss: 8.9960 (8.9527)  fam_loss: 4.1755 (4.0708)  manu_loss: 3.1523 (3.1028)  ot_loss: 2.0977 (2.0986)  base_loss: 16.4245 (16.1263)
+Test:  [  0/391]  eta: 0:46:01  sploss: 7.0415 (7.0415)  famloss: 2.1637 (2.1637)  manuloss: 1.3826 (1.3826)  acc1: 0.3906 (0.3906)  acc5: 7.8125 (7.8125)  family_acc1: 53.5156 (53.5156)  manu_acc1: 71.4844 (71.4844)  time: 7.0620  data: 6.7376  max mem: 11381
+Test:  [250/391]  eta: 0:01:17  sploss: 7.2442 (7.1814)  famloss: 2.3633 (2.3598)  manuloss: 1.7429 (1.6801)  acc1: 0.7812 (0.9913)  acc5: 7.0312 (7.7331)  family_acc1: 50.0000 (50.0031)  manu_acc1: 62.1094 (65.1083)  time: 0.5006  data: 0.2407  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.8853 (7.1197)  famloss: 2.0778 (2.2906)  manuloss: 1.2288 (1.5947)  acc1: 1.1719 (1.0360)  acc5: 8.9844 (7.9180)  family_acc1: 54.6875 (51.1630)  manu_acc1: 73.8281 (66.8160)  time: 0.3119  data: 0.1034  max mem: 11381
+Test: Total time: 0:03:28 (0.5322 s / it)
+* Acc@1 1.036 Acc@5 7.918 family@1 51.163 manu@1 66.816 sploss 7.120 fmloss 2.291 mfloss 1.595
+FPA: 0.859% | TICE: 98.115%   
+ wAP: 7.475  |  LCA: 293.925   |   Precision and Recall: 2.035%
+Accuracy of the network on the 100000 test images: 1.0%
+Max accuracy: 1.16%
+Epoch: [44]  [  0/312]  eta: 0:40:41  lr: 0.000156  sp_loss: 9.3854 (9.3854)  fam_loss: 4.5038 (4.5038)  manu_loss: 3.4566 (3.4566)  ot_loss: 2.1328 (2.1328)  base_loss: 17.3458 (17.3458)  time: 7.8255  data: 7.5374  max mem: 11381
+Epoch: [44]  [250/312]  eta: 0:00:31  lr: 0.000156  sp_loss: 8.9864 (8.9343)  fam_loss: 4.1761 (4.0741)  manu_loss: 3.1641 (3.0910)  ot_loss: 2.1230 (2.0987)  base_loss: 16.6022 (16.0995)  time: 0.3997  data: 0.1508  max mem: 11381
+Epoch: [44]  [311/312]  eta: 0:00:00  lr: 0.000156  sp_loss: 9.0819 (8.9812)  fam_loss: 4.1328 (4.1005)  manu_loss: 3.0877 (3.1088)  ot_loss: 2.0938 (2.1007)  base_loss: 16.2954 (16.1904)  time: 0.3118  data: 0.0770  max mem: 11381
+Epoch: [44] Total time: 0:02:36 (0.5022 s / it)
+Averaged stats: lr: 0.000156  sp_loss: 9.0819 (8.9812)  fam_loss: 4.1328 (4.1005)  manu_loss: 3.0877 (3.1088)  ot_loss: 2.0938 (2.1007)  base_loss: 16.2954 (16.1904)
+Test:  [  0/391]  eta: 0:48:53  sploss: 7.2624 (7.2624)  famloss: 2.1649 (2.1649)  manuloss: 1.3796 (1.3796)  acc1: 0.7812 (0.7812)  acc5: 4.2969 (4.2969)  family_acc1: 51.1719 (51.1719)  manu_acc1: 70.3125 (70.3125)  time: 7.5019  data: 7.1973  max mem: 11381
+Test:  [250/391]  eta: 0:01:11  sploss: 7.3467 (7.3043)  famloss: 2.3622 (2.3799)  manuloss: 1.7350 (1.7066)  acc1: 0.7812 (0.9571)  acc5: 6.2500 (6.5721)  family_acc1: 49.2188 (49.7837)  manu_acc1: 62.1094 (64.4951)  time: 0.4044  data: 0.1364  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 7.0035 (7.2426)  famloss: 2.1785 (2.3144)  manuloss: 1.2880 (1.6222)  acc1: 1.1719 (1.0110)  acc5: 7.4219 (6.7100)  family_acc1: 53.1250 (50.8730)  manu_acc1: 73.7500 (66.3230)  time: 0.4530  data: 0.2357  max mem: 11381
+Test: Total time: 0:03:11 (0.4907 s / it)
+* Acc@1 1.011 Acc@5 6.710 family@1 50.873 manu@1 66.323 sploss 7.243 fmloss 2.314 mfloss 1.622
+FPA: 0.817% | TICE: 98.223%   
+ wAP: 7.413  |  LCA: 293.865   |   Precision and Recall: 2.048%
+Accuracy of the network on the 100000 test images: 1.0%
+Max accuracy: 1.16%
+Epoch: [45]  [  0/312]  eta: 0:29:08  lr: 0.000152  sp_loss: 7.6007 (7.6007)  fam_loss: 3.1642 (3.1642)  manu_loss: 2.4641 (2.4641)  ot_loss: 1.9521 (1.9521)  base_loss: 13.2290 (13.2290)  time: 5.6031  data: 5.3176  max mem: 11381
+Epoch: [45]  [250/312]  eta: 0:00:25  lr: 0.000152  sp_loss: 8.7630 (8.9518)  fam_loss: 4.0848 (4.1056)  manu_loss: 3.1227 (3.1199)  ot_loss: 2.0645 (2.0933)  base_loss: 16.0846 (16.1772)  time: 0.4229  data: 0.1770  max mem: 11381
+Epoch: [45]  [311/312]  eta: 0:00:00  lr: 0.000152  sp_loss: 8.9296 (8.9620)  fam_loss: 4.1268 (4.1068)  manu_loss: 3.2047 (3.1249)  ot_loss: 2.0801 (2.0951)  base_loss: 15.9811 (16.1937)  time: 0.4162  data: 0.1877  max mem: 11381
+Epoch: [45] Total time: 0:02:08 (0.4132 s / it)
+Averaged stats: lr: 0.000152  sp_loss: 8.9296 (8.9620)  fam_loss: 4.1268 (4.1068)  manu_loss: 3.2047 (3.1249)  ot_loss: 2.0801 (2.0951)  base_loss: 15.9811 (16.1937)
+Test:  [  0/391]  eta: 0:47:12  sploss: 6.8962 (6.8962)  famloss: 2.1735 (2.1735)  manuloss: 1.3403 (1.3403)  acc1: 0.3906 (0.3906)  acc5: 8.2031 (8.2031)  family_acc1: 54.6875 (54.6875)  manu_acc1: 70.7031 (70.7031)  time: 7.2434  data: 6.8513  max mem: 11381
+Test:  [250/391]  eta: 0:01:09  sploss: 7.0921 (7.0544)  famloss: 2.3031 (2.3317)  manuloss: 1.6409 (1.6620)  acc1: 1.1719 (1.2201)  acc5: 8.2031 (8.8054)  family_acc1: 50.3906 (50.5961)  manu_acc1: 64.4531 (65.1223)  time: 0.5489  data: 0.2977  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.7948 (6.9943)  famloss: 2.0916 (2.2687)  manuloss: 1.2347 (1.5796)  acc1: 1.5625 (1.2630)  acc5: 9.7656 (9.0650)  family_acc1: 54.2969 (51.6000)  manu_acc1: 74.2188 (66.7170)  time: 0.3931  data: 0.1749  max mem: 11381
+Test: Total time: 0:03:08 (0.4827 s / it)
+* Acc@1 1.263 Acc@5 9.065 family@1 51.600 manu@1 66.717 sploss 6.994 fmloss 2.269 mfloss 1.580
+FPA: 1.054% | TICE: 97.724%   
+ wAP: 7.714  |  LCA: 292.976   |   Precision and Recall: 2.318%
+Accuracy of the network on the 100000 test images: 1.3%
+Max accuracy: 1.26%
+Epoch: [46]  [  0/312]  eta: 0:29:37  lr: 0.000149  sp_loss: 8.4405 (8.4405)  fam_loss: 4.2450 (4.2450)  manu_loss: 2.9910 (2.9910)  ot_loss: 2.1484 (2.1484)  base_loss: 15.6765 (15.6765)  time: 5.6959  data: 5.4186  max mem: 11381
+Epoch: [46]  [250/312]  eta: 0:00:27  lr: 0.000149  sp_loss: 9.4495 (9.0162)  fam_loss: 4.3502 (4.1494)  manu_loss: 3.2492 (3.1585)  ot_loss: 2.1172 (2.0996)  base_loss: 16.9833 (16.3241)  time: 0.3539  data: 0.1088  max mem: 11381
+Epoch: [46]  [311/312]  eta: 0:00:00  lr: 0.000149  sp_loss: 9.2304 (8.9968)  fam_loss: 4.2334 (4.1376)  manu_loss: 3.2107 (3.1487)  ot_loss: 2.1055 (2.0985)  base_loss: 16.7340 (16.2831)  time: 0.3268  data: 0.0990  max mem: 11381
+Epoch: [46] Total time: 0:02:14 (0.4301 s / it)
+Averaged stats: lr: 0.000149  sp_loss: 9.2304 (8.9968)  fam_loss: 4.2334 (4.1376)  manu_loss: 3.2107 (3.1487)  ot_loss: 2.1055 (2.0985)  base_loss: 16.7340 (16.2831)
+Test:  [  0/391]  eta: 0:40:42  sploss: 6.8753 (6.8753)  famloss: 2.1344 (2.1344)  manuloss: 1.3489 (1.3489)  acc1: 0.7812 (0.7812)  acc5: 5.8594 (5.8594)  family_acc1: 51.9531 (51.9531)  manu_acc1: 72.2656 (72.2656)  time: 6.2479  data: 5.9432  max mem: 11381
+Test:  [250/391]  eta: 0:01:14  sploss: 7.0930 (7.0442)  famloss: 2.2963 (2.3021)  manuloss: 1.7251 (1.6577)  acc1: 1.1719 (1.2404)  acc5: 9.3750 (9.2754)  family_acc1: 50.3906 (50.7455)  manu_acc1: 62.8906 (65.4491)  time: 0.5910  data: 0.3723  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.7091 (6.9796)  famloss: 2.0530 (2.2381)  manuloss: 1.2250 (1.5763)  acc1: 1.5625 (1.3030)  acc5: 10.5469 (9.5180)  family_acc1: 54.6875 (51.7970)  manu_acc1: 73.4375 (67.0810)  time: 0.3736  data: 0.1760  max mem: 11381
+Test: Total time: 0:03:14 (0.4972 s / it)
+* Acc@1 1.303 Acc@5 9.518 family@1 51.797 manu@1 67.081 sploss 6.980 fmloss 2.238 mfloss 1.576
+FPA: 1.057% | TICE: 97.895%   
+ wAP: 7.777  |  LCA: 292.978   |   Precision and Recall: 2.349%
+Accuracy of the network on the 100000 test images: 1.3%
+Max accuracy: 1.30%
+Epoch: [47]  [  0/312]  eta: 0:30:52  lr: 0.000145  sp_loss: 9.5252 (9.5252)  fam_loss: 4.3473 (4.3473)  manu_loss: 3.1538 (3.1538)  ot_loss: 2.0527 (2.0527)  base_loss: 17.0263 (17.0263)  time: 5.9389  data: 5.6404  max mem: 11381
+Epoch: [47]  [250/312]  eta: 0:00:25  lr: 0.000145  sp_loss: 9.4336 (8.7869)  fam_loss: 4.3653 (4.0187)  manu_loss: 3.2790 (3.0563)  ot_loss: 2.1152 (2.0788)  base_loss: 17.2717 (15.8620)  time: 0.3410  data: 0.0994  max mem: 11381
+Epoch: [47]  [311/312]  eta: 0:00:00  lr: 0.000145  sp_loss: 8.6339 (8.7937)  fam_loss: 3.9957 (4.0243)  manu_loss: 2.9543 (3.0605)  ot_loss: 2.0527 (2.0785)  base_loss: 15.9773 (15.8785)  time: 0.3059  data: 0.0786  max mem: 11381
+Epoch: [47] Total time: 0:02:07 (0.4083 s / it)
+Averaged stats: lr: 0.000145  sp_loss: 8.6339 (8.7937)  fam_loss: 3.9957 (4.0243)  manu_loss: 2.9543 (3.0605)  ot_loss: 2.0527 (2.0785)  base_loss: 15.9773 (15.8785)
+Test:  [  0/391]  eta: 0:40:56  sploss: 6.9914 (6.9914)  famloss: 2.1478 (2.1478)  manuloss: 1.4315 (1.4315)  acc1: 0.3906 (0.3906)  acc5: 6.2500 (6.2500)  family_acc1: 51.5625 (51.5625)  manu_acc1: 70.7031 (70.7031)  time: 6.2837  data: 6.0159  max mem: 11381
+Test:  [250/391]  eta: 0:00:59  sploss: 7.1385 (7.1016)  famloss: 2.3478 (2.3382)  manuloss: 1.7703 (1.6808)  acc1: 1.1719 (1.1345)  acc5: 7.8125 (8.3090)  family_acc1: 48.8281 (50.5385)  manu_acc1: 62.5000 (65.2624)  time: 0.3413  data: 0.1344  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.7815 (7.0361)  famloss: 2.0712 (2.2736)  manuloss: 1.2697 (1.5978)  acc1: 1.9531 (1.2200)  acc5: 9.7656 (8.5430)  family_acc1: 54.2969 (51.6300)  manu_acc1: 73.8281 (66.9530)  time: 0.4005  data: 0.2015  max mem: 11381
+Test: Total time: 0:02:42 (0.4160 s / it)
+* Acc@1 1.220 Acc@5 8.543 family@1 51.630 manu@1 66.953 sploss 7.036 fmloss 2.274 mfloss 1.598
+FPA: 0.985% | TICE: 98.100%   
+ wAP: 7.685  |  LCA: 293.228   |   Precision and Recall: 2.253%
+Accuracy of the network on the 100000 test images: 1.2%
+Max accuracy: 1.30%
+Epoch: [48]  [  0/312]  eta: 0:33:29  lr: 0.000141  sp_loss: 8.6793 (8.6793)  fam_loss: 3.8049 (3.8049)  manu_loss: 2.9446 (2.9446)  ot_loss: 2.0137 (2.0137)  base_loss: 15.4288 (15.4288)  time: 6.4420  data: 6.1334  max mem: 11381
+Epoch: [48]  [250/312]  eta: 0:00:25  lr: 0.000141  sp_loss: 9.0507 (8.8462)  fam_loss: 4.1012 (4.0619)  manu_loss: 3.0483 (3.0863)  ot_loss: 2.0840 (2.0792)  base_loss: 16.1781 (15.9944)  time: 0.3328  data: 0.0884  max mem: 11381
+Epoch: [48]  [311/312]  eta: 0:00:00  lr: 0.000141  sp_loss: 9.1314 (8.8568)  fam_loss: 4.2843 (4.0684)  manu_loss: 3.2171 (3.0968)  ot_loss: 2.1074 (2.0814)  base_loss: 16.8781 (16.0221)  time: 0.3065  data: 0.0753  max mem: 11381
+Epoch: [48] Total time: 0:02:07 (0.4098 s / it)
+Averaged stats: lr: 0.000141  sp_loss: 9.1314 (8.8568)  fam_loss: 4.2843 (4.0684)  manu_loss: 3.2171 (3.0968)  ot_loss: 2.1074 (2.0814)  base_loss: 16.8781 (16.0221)
+Test:  [  0/391]  eta: 0:39:21  sploss: 6.9622 (6.9622)  famloss: 2.1549 (2.1549)  manuloss: 1.4278 (1.4278)  acc1: 0.7812 (0.7812)  acc5: 6.2500 (6.2500)  family_acc1: 53.5156 (53.5156)  manu_acc1: 70.3125 (70.3125)  time: 6.0400  data: 5.7500  max mem: 11381
+Test:  [250/391]  eta: 0:00:59  sploss: 7.0803 (7.0603)  famloss: 2.3061 (2.3164)  manuloss: 1.6799 (1.6657)  acc1: 1.1719 (1.2061)  acc5: 9.3750 (8.8147)  family_acc1: 49.2188 (50.7392)  manu_acc1: 62.5000 (65.4180)  time: 0.3434  data: 0.1085  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.7480 (6.9915)  famloss: 2.0501 (2.2469)  manuloss: 1.2782 (1.5810)  acc1: 1.1719 (1.2470)  acc5: 10.1562 (9.0910)  family_acc1: 55.4688 (51.9010)  manu_acc1: 73.8281 (67.0940)  time: 0.3915  data: 0.1873  max mem: 11381
+Test: Total time: 0:02:43 (0.4172 s / it)
+* Acc@1 1.247 Acc@5 9.091 family@1 51.901 manu@1 67.094 sploss 6.991 fmloss 2.247 mfloss 1.581
+FPA: 1.015% | TICE: 98.127%   
+ wAP: 7.739  |  LCA: 293.082   |   Precision and Recall: 2.310%
+Accuracy of the network on the 100000 test images: 1.2%
+Max accuracy: 1.30%
+Epoch: [49]  [  0/312]  eta: 0:29:54  lr: 0.000138  sp_loss: 9.4981 (9.4981)  fam_loss: 4.1808 (4.1808)  manu_loss: 3.3898 (3.3898)  ot_loss: 2.1504 (2.1504)  base_loss: 17.0686 (17.0686)  time: 5.7519  data: 5.4701  max mem: 11381
+Epoch: [49]  [250/312]  eta: 0:00:25  lr: 0.000138  sp_loss: 9.2575 (8.7268)  fam_loss: 4.2911 (4.0313)  manu_loss: 3.2329 (3.0711)  ot_loss: 2.0664 (2.0736)  base_loss: 16.8037 (15.8291)  time: 0.3190  data: 0.0774  max mem: 11381
+Epoch: [49]  [311/312]  eta: 0:00:00  lr: 0.000138  sp_loss: 8.7568 (8.7479)  fam_loss: 4.1120 (4.0397)  manu_loss: 3.1409 (3.0741)  ot_loss: 2.0996 (2.0728)  base_loss: 16.0478 (15.8617)  time: 0.3103  data: 0.0816  max mem: 11381
+Epoch: [49] Total time: 0:02:07 (0.4090 s / it)
+Averaged stats: lr: 0.000138  sp_loss: 8.7568 (8.7479)  fam_loss: 4.1120 (4.0397)  manu_loss: 3.1409 (3.0741)  ot_loss: 2.0996 (2.0728)  base_loss: 16.0478 (15.8617)
+Test:  [  0/391]  eta: 0:38:13  sploss: 6.9071 (6.9071)  famloss: 2.0803 (2.0803)  manuloss: 1.2914 (1.2914)  acc1: 0.3906 (0.3906)  acc5: 9.3750 (9.3750)  family_acc1: 53.5156 (53.5156)  manu_acc1: 71.8750 (71.8750)  time: 5.8658  data: 5.5811  max mem: 11381
+Test:  [250/391]  eta: 0:00:59  sploss: 7.0567 (7.0003)  famloss: 2.2907 (2.2705)  manuloss: 1.6619 (1.6229)  acc1: 1.1719 (1.3400)  acc5: 9.3750 (9.6365)  family_acc1: 50.3906 (51.7290)  manu_acc1: 64.0625 (66.2179)  time: 0.3711  data: 0.1349  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.6432 (6.9322)  famloss: 2.0282 (2.2093)  manuloss: 1.2202 (1.5401)  acc1: 1.5625 (1.3970)  acc5: 10.9375 (9.9230)  family_acc1: 55.0000 (52.6860)  manu_acc1: 75.7812 (67.9370)  time: 0.3922  data: 0.1874  max mem: 11381
+Test: Total time: 0:02:42 (0.4164 s / it)
+* Acc@1 1.397 Acc@5 9.923 family@1 52.686 manu@1 67.937 sploss 6.932 fmloss 2.209 mfloss 1.540
+FPA: 1.149% | TICE: 97.553%   
+ wAP: 7.967  |  LCA: 292.601   |   Precision and Recall: 2.478%
+Accuracy of the network on the 100000 test images: 1.4%
+Max accuracy: 1.40%
+Epoch: [50]  [  0/312]  eta: 0:30:47  lr: 0.000134  sp_loss: 8.1913 (8.1913)  fam_loss: 3.8469 (3.8469)  manu_loss: 2.9248 (2.9248)  ot_loss: 1.9873 (1.9873)  base_loss: 14.9630 (14.9630)  time: 5.9209  data: 5.6307  max mem: 11381
+Epoch: [50]  [250/312]  eta: 0:00:25  lr: 0.000134  sp_loss: 8.9529 (8.7579)  fam_loss: 4.2278 (4.0302)  manu_loss: 3.0818 (3.0690)  ot_loss: 2.0586 (2.0730)  base_loss: 16.4735 (15.8571)  time: 0.3236  data: 0.0806  max mem: 11381
+Epoch: [50]  [311/312]  eta: 0:00:00  lr: 0.000134  sp_loss: 8.0878 (8.7846)  fam_loss: 3.9211 (4.0508)  manu_loss: 3.0917 (3.0840)  ot_loss: 2.0410 (2.0759)  base_loss: 15.0883 (15.9193)  time: 0.3293  data: 0.0972  max mem: 11381
+Epoch: [50] Total time: 0:02:06 (0.4043 s / it)
+Averaged stats: lr: 0.000134  sp_loss: 8.0878 (8.7846)  fam_loss: 3.9211 (4.0508)  manu_loss: 3.0917 (3.0840)  ot_loss: 2.0410 (2.0759)  base_loss: 15.0883 (15.9193)
+Test:  [  0/391]  eta: 0:40:36  sploss: 6.7947 (6.7947)  famloss: 2.0716 (2.0716)  manuloss: 1.3341 (1.3341)  acc1: 0.7812 (0.7812)  acc5: 5.0781 (5.0781)  family_acc1: 55.4688 (55.4688)  manu_acc1: 70.7031 (70.7031)  time: 6.2324  data: 5.9220  max mem: 11381
+Test:  [250/391]  eta: 0:00:59  sploss: 7.0294 (6.9356)  famloss: 2.3026 (2.2917)  manuloss: 1.6723 (1.6402)  acc1: 1.5625 (1.5158)  acc5: 8.2031 (8.7276)  family_acc1: 50.3906 (51.4909)  manu_acc1: 62.5000 (65.9752)  time: 0.3890  data: 0.1413  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.6223 (6.8708)  famloss: 2.0304 (2.2261)  manuloss: 1.2261 (1.5551)  acc1: 1.9531 (1.6020)  acc5: 10.1562 (9.0590)  family_acc1: 55.8594 (52.6870)  manu_acc1: 75.3906 (67.7420)  time: 0.3051  data: 0.1020  max mem: 11381
+Test: Total time: 0:02:40 (0.4116 s / it)
+* Acc@1 1.602 Acc@5 9.059 family@1 52.687 manu@1 67.742 sploss 6.871 fmloss 2.226 mfloss 1.555
+FPA: 1.348% | TICE: 97.519%   
+ wAP: 8.142  |  LCA: 291.830   |   Precision and Recall: 2.718%
+Accuracy of the network on the 100000 test images: 1.6%
+Max accuracy: 1.60%
+Epoch: [51]  [  0/312]  eta: 0:30:54  lr: 0.000130  sp_loss: 9.3242 (9.3242)  fam_loss: 4.2510 (4.2510)  manu_loss: 3.0574 (3.0574)  ot_loss: 2.0273 (2.0273)  base_loss: 16.6327 (16.6327)  time: 5.9444  data: 5.6677  max mem: 11381
+Epoch: [51]  [250/312]  eta: 0:00:25  lr: 0.000130  sp_loss: 8.9478 (8.6427)  fam_loss: 4.1498 (3.9986)  manu_loss: 3.1624 (3.0340)  ot_loss: 2.0820 (2.0637)  base_loss: 16.1316 (15.6753)  time: 0.3703  data: 0.1305  max mem: 11381
+Epoch: [51]  [311/312]  eta: 0:00:00  lr: 0.000130  sp_loss: 9.1791 (8.6574)  fam_loss: 4.1915 (3.9988)  manu_loss: 3.1128 (3.0306)  ot_loss: 2.0664 (2.0641)  base_loss: 16.4476 (15.6869)  time: 0.3290  data: 0.1006  max mem: 11381
+Epoch: [51] Total time: 0:02:06 (0.4040 s / it)
+Averaged stats: lr: 0.000130  sp_loss: 9.1791 (8.6574)  fam_loss: 4.1915 (3.9988)  manu_loss: 3.1128 (3.0306)  ot_loss: 2.0664 (2.0641)  base_loss: 16.4476 (15.6869)
+Test:  [  0/391]  eta: 0:37:50  sploss: 6.7873 (6.7873)  famloss: 2.1461 (2.1461)  manuloss: 1.3981 (1.3981)  acc1: 1.1719 (1.1719)  acc5: 5.0781 (5.0781)  family_acc1: 54.2969 (54.2969)  manu_acc1: 71.8750 (71.8750)  time: 5.8074  data: 5.5685  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 6.9463 (6.9087)  famloss: 2.3381 (2.3080)  manuloss: 1.6563 (1.6449)  acc1: 1.9531 (1.6310)  acc5: 8.5938 (8.7930)  family_acc1: 50.0000 (51.2357)  manu_acc1: 63.2812 (65.9643)  time: 0.3301  data: 0.0971  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.6040 (6.8426)  famloss: 2.0629 (2.2409)  manuloss: 1.2387 (1.5653)  acc1: 2.3438 (1.7280)  acc5: 10.1562 (9.0980)  family_acc1: 56.6406 (52.3520)  manu_acc1: 74.3750 (67.5290)  time: 0.4183  data: 0.2121  max mem: 11381
+Test: Total time: 0:02:47 (0.4272 s / it)
+* Acc@1 1.728 Acc@5 9.098 family@1 52.352 manu@1 67.529 sploss 6.843 fmloss 2.241 mfloss 1.565
+FPA: 1.448% | TICE: 97.420%   
+ wAP: 8.216  |  LCA: 291.580   |   Precision and Recall: 2.808%
+Accuracy of the network on the 100000 test images: 1.7%
+Max accuracy: 1.73%
+Epoch: [52]  [  0/312]  eta: 0:33:45  lr: 0.000126  sp_loss: 8.5646 (8.5646)  fam_loss: 4.1900 (4.1900)  manu_loss: 2.9017 (2.9017)  ot_loss: 2.0137 (2.0137)  base_loss: 15.6563 (15.6563)  time: 6.4921  data: 6.1781  max mem: 11381
+Epoch: [52]  [250/312]  eta: 0:00:27  lr: 0.000126  sp_loss: 9.2155 (8.6125)  fam_loss: 4.0690 (3.9706)  manu_loss: 3.0644 (3.0077)  ot_loss: 2.0625 (2.0497)  base_loss: 16.4260 (15.5909)  time: 0.3375  data: 0.0915  max mem: 11381
+Epoch: [52]  [311/312]  eta: 0:00:00  lr: 0.000126  sp_loss: 8.1910 (8.6215)  fam_loss: 3.7463 (3.9810)  manu_loss: 2.8328 (3.0162)  ot_loss: 2.0254 (2.0520)  base_loss: 14.6675 (15.6186)  time: 0.3113  data: 0.0795  max mem: 11381
+Epoch: [52] Total time: 0:02:15 (0.4342 s / it)
+Averaged stats: lr: 0.000126  sp_loss: 8.1910 (8.6215)  fam_loss: 3.7463 (3.9810)  manu_loss: 2.8328 (3.0162)  ot_loss: 2.0254 (2.0520)  base_loss: 14.6675 (15.6186)
+Test:  [  0/391]  eta: 0:40:12  sploss: 6.5131 (6.5131)  famloss: 1.9876 (1.9876)  manuloss: 1.2374 (1.2374)  acc1: 0.3906 (0.3906)  acc5: 8.5938 (8.5938)  family_acc1: 52.3438 (52.3438)  manu_acc1: 74.2188 (74.2188)  time: 6.1692  data: 5.8633  max mem: 11381
+Test:  [250/391]  eta: 0:01:03  sploss: 6.6492 (6.6311)  famloss: 2.2287 (2.2253)  manuloss: 1.5961 (1.5991)  acc1: 2.3438 (2.2473)  acc5: 12.8906 (12.9591)  family_acc1: 51.5625 (52.2737)  manu_acc1: 65.2344 (66.8280)  time: 0.4118  data: 0.1623  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.3478 (6.5723)  famloss: 1.9784 (2.1636)  manuloss: 1.1715 (1.5200)  acc1: 2.7344 (2.3090)  acc5: 14.0625 (13.2340)  family_acc1: 56.6406 (53.3240)  manu_acc1: 75.0000 (68.4260)  time: 0.3440  data: 0.1351  max mem: 11381
+Test: Total time: 0:02:51 (0.4383 s / it)
+* Acc@1 2.309 Acc@5 13.234 family@1 53.324 manu@1 68.426 sploss 6.572 fmloss 2.164 mfloss 1.520
+FPA: 1.937% | TICE: 96.478%   
+ wAP: 8.842  |  LCA: 288.677   |   Precision and Recall: 3.719%
+Accuracy of the network on the 100000 test images: 2.3%
+Max accuracy: 2.31%
+Epoch: [53]  [  0/312]  eta: 0:32:13  lr: 0.000122  sp_loss: 9.3800 (9.3800)  fam_loss: 4.4782 (4.4782)  manu_loss: 3.2568 (3.2568)  ot_loss: 2.1699 (2.1699)  base_loss: 17.1150 (17.1150)  time: 6.1978  data: 5.9049  max mem: 11381
+Epoch: [53]  [250/312]  eta: 0:00:27  lr: 0.000122  sp_loss: 8.9063 (8.6224)  fam_loss: 4.2146 (3.9933)  manu_loss: 3.0873 (3.0249)  ot_loss: 2.0723 (2.0576)  base_loss: 16.3873 (15.6406)  time: 0.3404  data: 0.0939  max mem: 11381
+Epoch: [53]  [311/312]  eta: 0:00:00  lr: 0.000122  sp_loss: 9.0077 (8.6185)  fam_loss: 4.1342 (3.9854)  manu_loss: 3.0829 (3.0218)  ot_loss: 2.0664 (2.0554)  base_loss: 16.3631 (15.6257)  time: 0.3664  data: 0.1349  max mem: 11381
+Epoch: [53] Total time: 0:02:15 (0.4345 s / it)
+Averaged stats: lr: 0.000122  sp_loss: 9.0077 (8.6185)  fam_loss: 4.1342 (3.9854)  manu_loss: 3.0829 (3.0218)  ot_loss: 2.0664 (2.0554)  base_loss: 16.3631 (15.6257)
+Test:  [  0/391]  eta: 0:45:57  sploss: 6.6771 (6.6771)  famloss: 2.0125 (2.0125)  manuloss: 1.2580 (1.2580)  acc1: 0.7812 (0.7812)  acc5: 8.9844 (8.9844)  family_acc1: 54.2969 (54.2969)  manu_acc1: 73.4375 (73.4375)  time: 7.0526  data: 6.7543  max mem: 11381
+Test:  [250/391]  eta: 0:01:05  sploss: 6.7873 (6.7579)  famloss: 2.2181 (2.2329)  manuloss: 1.6131 (1.5986)  acc1: 1.5625 (1.6170)  acc5: 10.1562 (10.5064)  family_acc1: 51.9531 (52.3344)  manu_acc1: 66.4062 (66.9681)  time: 0.3625  data: 0.1269  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.4634 (6.6967)  famloss: 2.0291 (2.1700)  manuloss: 1.2159 (1.5178)  acc1: 2.3438 (1.6740)  acc5: 12.1094 (10.8140)  family_acc1: 55.8594 (53.4450)  manu_acc1: 75.0000 (68.5820)  time: 0.4293  data: 0.2255  max mem: 11381
+Test: Total time: 0:03:00 (0.4607 s / it)
+* Acc@1 1.674 Acc@5 10.814 family@1 53.445 manu@1 68.582 sploss 6.697 fmloss 2.170 mfloss 1.518
+FPA: 1.453% | TICE: 97.439%   
+ wAP: 8.299  |  LCA: 291.462   |   Precision and Recall: 2.837%
+Accuracy of the network on the 100000 test images: 1.7%
+Max accuracy: 2.31%
+Epoch: [54]  [  0/312]  eta: 0:33:54  lr: 0.000119  sp_loss: 9.4566 (9.4566)  fam_loss: 4.4677 (4.4677)  manu_loss: 3.6062 (3.6062)  ot_loss: 2.1191 (2.1191)  base_loss: 17.5305 (17.5305)  time: 6.5195  data: 6.2190  max mem: 11381
+Epoch: [54]  [250/312]  eta: 0:00:27  lr: 0.000119  sp_loss: 8.7172 (8.5070)  fam_loss: 4.0929 (3.9447)  manu_loss: 3.1322 (2.9871)  ot_loss: 2.0527 (2.0377)  base_loss: 15.9427 (15.4388)  time: 0.3482  data: 0.1161  max mem: 11381
+Epoch: [54]  [311/312]  eta: 0:00:00  lr: 0.000119  sp_loss: 8.9599 (8.5488)  fam_loss: 4.1557 (3.9684)  manu_loss: 3.1949 (3.0028)  ot_loss: 2.0918 (2.0414)  base_loss: 16.3552 (15.5200)  time: 0.3646  data: 0.1380  max mem: 11381
+Epoch: [54] Total time: 0:02:19 (0.4459 s / it)
+Averaged stats: lr: 0.000119  sp_loss: 8.9599 (8.5488)  fam_loss: 4.1557 (3.9684)  manu_loss: 3.1949 (3.0028)  ot_loss: 2.0918 (2.0414)  base_loss: 16.3552 (15.5200)
+Test:  [  0/391]  eta: 0:42:24  sploss: 6.8446 (6.8446)  famloss: 2.0496 (2.0496)  manuloss: 1.2312 (1.2312)  acc1: 0.0000 (0.0000)  acc5: 5.8594 (5.8594)  family_acc1: 60.1562 (60.1562)  manu_acc1: 77.3438 (77.3438)  time: 6.5065  data: 6.2465  max mem: 11381
+Test:  [250/391]  eta: 0:01:19  sploss: 6.9575 (6.9536)  famloss: 2.3259 (2.3061)  manuloss: 1.6907 (1.6308)  acc1: 1.5625 (1.4364)  acc5: 7.8125 (7.7938)  family_acc1: 49.6094 (51.8255)  manu_acc1: 63.2812 (66.2600)  time: 0.4284  data: 0.2204  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.6297 (6.8861)  famloss: 2.0790 (2.2411)  manuloss: 1.2673 (1.5517)  acc1: 1.9531 (1.5320)  acc5: 9.7656 (8.1320)  family_acc1: 57.0312 (52.9520)  manu_acc1: 74.6094 (67.8710)  time: 0.4816  data: 0.2797  max mem: 11381
+Test: Total time: 0:03:37 (0.5566 s / it)
+* Acc@1 1.532 Acc@5 8.132 family@1 52.952 manu@1 67.871 sploss 6.886 fmloss 2.241 mfloss 1.552
+FPA: 1.320% | TICE: 97.761%   
+ wAP: 8.110  |  LCA: 292.133   |   Precision and Recall: 2.617%
+Accuracy of the network on the 100000 test images: 1.5%
+Max accuracy: 2.31%
+Epoch: [55]  [  0/312]  eta: 0:36:23  lr: 0.000115  sp_loss: 9.3999 (9.3999)  fam_loss: 4.3072 (4.3072)  manu_loss: 3.2982 (3.2982)  ot_loss: 2.0781 (2.0781)  base_loss: 17.0053 (17.0053)  time: 6.9975  data: 6.7358  max mem: 11381
+Epoch: [55]  [250/312]  eta: 0:00:33  lr: 0.000115  sp_loss: 8.8277 (8.5018)  fam_loss: 4.0379 (3.9409)  manu_loss: 3.0929 (2.9941)  ot_loss: 2.0586 (2.0408)  base_loss: 16.0502 (15.4368)  time: 0.3818  data: 0.1526  max mem: 11381
+Epoch: [55]  [311/312]  eta: 0:00:00  lr: 0.000115  sp_loss: 8.7923 (8.4995)  fam_loss: 4.0054 (3.9423)  manu_loss: 3.0848 (2.9904)  ot_loss: 2.0625 (2.0385)  base_loss: 15.8713 (15.4322)  time: 0.3661  data: 0.1410  max mem: 11381
+Epoch: [55] Total time: 0:02:47 (0.5358 s / it)
+Averaged stats: lr: 0.000115  sp_loss: 8.7923 (8.4995)  fam_loss: 4.0054 (3.9423)  manu_loss: 3.0848 (2.9904)  ot_loss: 2.0625 (2.0385)  base_loss: 15.8713 (15.4322)
+Test:  [  0/391]  eta: 0:42:29  sploss: 6.6015 (6.6015)  famloss: 1.9114 (1.9114)  manuloss: 1.2008 (1.2008)  acc1: 0.0000 (0.0000)  acc5: 7.4219 (7.4219)  family_acc1: 58.5938 (58.5938)  manu_acc1: 74.6094 (74.6094)  time: 6.5196  data: 6.2487  max mem: 11381
+Test:  [250/391]  eta: 0:01:19  sploss: 6.7781 (6.7470)  famloss: 2.2336 (2.2365)  manuloss: 1.6236 (1.5988)  acc1: 1.9531 (1.7850)  acc5: 10.1562 (10.7367)  family_acc1: 51.1719 (52.5009)  manu_acc1: 64.8438 (66.8140)  time: 0.4638  data: 0.2478  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.4210 (6.6762)  famloss: 2.0094 (2.1717)  manuloss: 1.1994 (1.5187)  acc1: 1.9531 (1.8580)  acc5: 12.8906 (11.1210)  family_acc1: 56.6406 (53.5980)  manu_acc1: 75.7812 (68.4520)  time: 0.4840  data: 0.2833  max mem: 11381
+Test: Total time: 0:03:36 (0.5545 s / it)
+* Acc@1 1.858 Acc@5 11.121 family@1 53.598 manu@1 68.452 sploss 6.676 fmloss 2.172 mfloss 1.519
+FPA: 1.557% | TICE: 97.300%   
+ wAP: 8.473  |  LCA: 290.910   |   Precision and Recall: 3.030%
+Accuracy of the network on the 100000 test images: 1.9%
+Max accuracy: 2.31%
+Epoch: [56]  [  0/312]  eta: 0:32:27  lr: 0.000111  sp_loss: 8.2078 (8.2078)  fam_loss: 3.7358 (3.7358)  manu_loss: 2.6725 (2.6725)  ot_loss: 1.9492 (1.9492)  base_loss: 14.6161 (14.6161)  time: 6.2408  data: 5.9719  max mem: 11381
+Epoch: [56]  [250/312]  eta: 0:00:26  lr: 0.000111  sp_loss: 8.4882 (8.4684)  fam_loss: 3.9935 (3.9338)  manu_loss: 3.0395 (2.9828)  ot_loss: 2.0195 (2.0321)  base_loss: 15.7639 (15.3850)  time: 0.3400  data: 0.0990  max mem: 11381
+Epoch: [56]  [311/312]  eta: 0:00:00  lr: 0.000111  sp_loss: 8.6334 (8.4835)  fam_loss: 4.0413 (3.9440)  manu_loss: 2.9187 (2.9870)  ot_loss: 2.0117 (2.0336)  base_loss: 15.7075 (15.4145)  time: 0.3306  data: 0.1005  max mem: 11381
+Epoch: [56] Total time: 0:02:12 (0.4240 s / it)
+Averaged stats: lr: 0.000111  sp_loss: 8.6334 (8.4835)  fam_loss: 4.0413 (3.9440)  manu_loss: 2.9187 (2.9870)  ot_loss: 2.0117 (2.0336)  base_loss: 15.7075 (15.4145)
+Test:  [  0/391]  eta: 0:44:05  sploss: 6.5456 (6.5456)  famloss: 1.9644 (1.9644)  manuloss: 1.2807 (1.2807)  acc1: 0.3906 (0.3906)  acc5: 9.3750 (9.3750)  family_acc1: 57.0312 (57.0312)  manu_acc1: 73.4375 (73.4375)  time: 6.7671  data: 6.4488  max mem: 11381
+Test:  [250/391]  eta: 0:01:03  sploss: 6.6775 (6.6567)  famloss: 2.1996 (2.2023)  manuloss: 1.5906 (1.5765)  acc1: 1.9531 (1.9811)  acc5: 10.5469 (12.1109)  family_acc1: 53.1250 (53.0674)  manu_acc1: 64.4531 (67.2482)  time: 0.3510  data: 0.1242  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.3447 (6.5862)  famloss: 1.9699 (2.1383)  manuloss: 1.1770 (1.4967)  acc1: 1.9531 (2.0790)  acc5: 14.0625 (12.5690)  family_acc1: 57.4219 (54.1210)  manu_acc1: 76.9531 (68.8880)  time: 0.4279  data: 0.2204  max mem: 11381
+Test: Total time: 0:02:50 (0.4364 s / it)
+* Acc@1 2.079 Acc@5 12.569 family@1 54.121 manu@1 68.888 sploss 6.586 fmloss 2.138 mfloss 1.497
+FPA: 1.766% | TICE: 97.084%   
+ wAP: 8.728  |  LCA: 290.286   |   Precision and Recall: 3.225%
+Accuracy of the network on the 100000 test images: 2.1%
+Max accuracy: 2.31%
+Epoch: [57]  [  0/312]  eta: 0:35:01  lr: 0.000108  sp_loss: 7.0771 (7.0771)  fam_loss: 3.0779 (3.0779)  manu_loss: 1.9855 (1.9855)  ot_loss: 1.8770 (1.8770)  base_loss: 12.1405 (12.1405)  time: 6.7364  data: 6.4699  max mem: 11381
+Epoch: [57]  [250/312]  eta: 0:00:26  lr: 0.000108  sp_loss: 8.4487 (8.3896)  fam_loss: 4.0388 (3.9039)  manu_loss: 3.0691 (2.9583)  ot_loss: 2.0469 (2.0249)  base_loss: 15.5212 (15.2519)  time: 0.3439  data: 0.1123  max mem: 11381
+Epoch: [57]  [311/312]  eta: 0:00:00  lr: 0.000108  sp_loss: 9.1854 (8.4379)  fam_loss: 4.2028 (3.9256)  manu_loss: 3.1914 (2.9732)  ot_loss: 2.0742 (2.0284)  base_loss: 16.4639 (15.3368)  time: 0.3315  data: 0.1016  max mem: 11381
+Epoch: [57] Total time: 0:02:13 (0.4270 s / it)
+Averaged stats: lr: 0.000108  sp_loss: 9.1854 (8.4379)  fam_loss: 4.2028 (3.9256)  manu_loss: 3.1914 (2.9732)  ot_loss: 2.0742 (2.0284)  base_loss: 16.4639 (15.3368)
+Test:  [  0/391]  eta: 0:40:55  sploss: 6.7252 (6.7252)  famloss: 2.0258 (2.0258)  manuloss: 1.3520 (1.3520)  acc1: 0.0000 (0.0000)  acc5: 6.6406 (6.6406)  family_acc1: 54.6875 (54.6875)  manu_acc1: 72.6562 (72.6562)  time: 6.2790  data: 6.0190  max mem: 11381
+Test:  [250/391]  eta: 0:01:01  sploss: 6.8528 (6.8387)  famloss: 2.2507 (2.2299)  manuloss: 1.5956 (1.5943)  acc1: 1.5625 (1.3680)  acc5: 9.7656 (9.5400)  family_acc1: 51.5625 (52.6799)  manu_acc1: 66.0156 (66.9603)  time: 0.3440  data: 0.1221  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.5025 (6.7686)  famloss: 1.9677 (2.1607)  manuloss: 1.1886 (1.5138)  acc1: 1.9531 (1.5070)  acc5: 11.7188 (9.9880)  family_acc1: 57.0312 (53.8530)  manu_acc1: 75.7812 (68.6570)  time: 0.4482  data: 0.2406  max mem: 11381
+Test: Total time: 0:02:50 (0.4353 s / it)
+* Acc@1 1.507 Acc@5 9.988 family@1 53.853 manu@1 68.657 sploss 6.769 fmloss 2.161 mfloss 1.514
+FPA: 1.322% | TICE: 97.672%   
+ wAP: 8.194  |  LCA: 292.421   |   Precision and Recall: 2.542%
+Accuracy of the network on the 100000 test images: 1.5%
+Max accuracy: 2.31%
+Epoch: [58]  [  0/312]  eta: 0:32:08  lr: 0.000104  sp_loss: 9.6113 (9.6113)  fam_loss: 4.5339 (4.5339)  manu_loss: 3.3360 (3.3360)  ot_loss: 2.0547 (2.0547)  base_loss: 17.4813 (17.4813)  time: 6.1803  data: 5.8774  max mem: 11381
+Epoch: [58]  [250/312]  eta: 0:00:28  lr: 0.000104  sp_loss: 8.2880 (8.5414)  fam_loss: 3.8450 (3.9842)  manu_loss: 2.9174 (3.0278)  ot_loss: 2.0195 (2.0350)  base_loss: 15.2404 (15.5534)  time: 0.3643  data: 0.1128  max mem: 11381
+Epoch: [58]  [311/312]  eta: 0:00:00  lr: 0.000104  sp_loss: 8.5990 (8.5277)  fam_loss: 4.1678 (3.9766)  manu_loss: 3.1338 (3.0191)  ot_loss: 2.0625 (2.0340)  base_loss: 15.9313 (15.5234)  time: 0.3480  data: 0.1118  max mem: 11381
+Epoch: [58] Total time: 0:02:19 (0.4474 s / it)
+Averaged stats: lr: 0.000104  sp_loss: 8.5990 (8.5277)  fam_loss: 4.1678 (3.9766)  manu_loss: 3.1338 (3.0191)  ot_loss: 2.0625 (2.0340)  base_loss: 15.9313 (15.5234)
+Test:  [  0/391]  eta: 0:55:14  sploss: 6.3821 (6.3821)  famloss: 1.9388 (1.9388)  manuloss: 1.2401 (1.2401)  acc1: 1.1719 (1.1719)  acc5: 8.2031 (8.2031)  family_acc1: 54.2969 (54.2969)  manu_acc1: 75.3906 (75.3906)  time: 8.4768  data: 8.2249  max mem: 11381
+Test:  [250/391]  eta: 0:01:22  sploss: 6.4927 (6.4835)  famloss: 2.1917 (2.1823)  manuloss: 1.6064 (1.5639)  acc1: 1.9531 (2.3126)  acc5: 13.2812 (13.6361)  family_acc1: 52.7344 (53.8144)  manu_acc1: 66.7969 (67.7073)  time: 0.4427  data: 0.2218  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.1807 (6.4187)  famloss: 1.9302 (2.1223)  manuloss: 1.2055 (1.4905)  acc1: 3.1250 (2.4820)  acc5: 15.2344 (14.0560)  family_acc1: 57.8125 (54.7800)  manu_acc1: 75.7812 (69.2080)  time: 0.4632  data: 0.2639  max mem: 11381
+Test: Total time: 0:03:45 (0.5755 s / it)
+* Acc@1 2.482 Acc@5 14.056 family@1 54.780 manu@1 69.208 sploss 6.419 fmloss 2.122 mfloss 1.490
+FPA: 2.128% | TICE: 96.320%   
+ wAP: 9.154  |  LCA: 288.474   |   Precision and Recall: 3.821%
+Accuracy of the network on the 100000 test images: 2.5%
+Max accuracy: 2.48%
+Epoch: [59]  [  0/312]  eta: 0:33:26  lr: 0.000100  sp_loss: 8.2010 (8.2010)  fam_loss: 3.9888 (3.9888)  manu_loss: 2.9650 (2.9650)  ot_loss: 1.9551 (1.9551)  base_loss: 15.1548 (15.1548)  time: 6.4315  data: 6.1696  max mem: 11381
+Epoch: [59]  [250/312]  eta: 0:00:33  lr: 0.000100  sp_loss: 8.5885 (8.3221)  fam_loss: 3.9803 (3.8897)  manu_loss: 3.0117 (2.9450)  ot_loss: 2.0391 (2.0162)  base_loss: 15.5536 (15.1568)  time: 0.4358  data: 0.2082  max mem: 11381
+Epoch: [59]  [311/312]  eta: 0:00:00  lr: 0.000100  sp_loss: 7.7387 (8.3054)  fam_loss: 3.6672 (3.8832)  manu_loss: 2.7673 (2.9405)  ot_loss: 1.9668 (2.0132)  base_loss: 14.1094 (15.1291)  time: 0.3426  data: 0.1186  max mem: 11381
+Epoch: [59] Total time: 0:02:48 (0.5412 s / it)
+Averaged stats: lr: 0.000100  sp_loss: 7.7387 (8.3054)  fam_loss: 3.6672 (3.8832)  manu_loss: 2.7673 (2.9405)  ot_loss: 1.9668 (2.0132)  base_loss: 14.1094 (15.1291)
+Test:  [  0/391]  eta: 0:44:25  sploss: 6.4683 (6.4683)  famloss: 2.0656 (2.0656)  manuloss: 1.3307 (1.3307)  acc1: 0.3906 (0.3906)  acc5: 7.4219 (7.4219)  family_acc1: 57.4219 (57.4219)  manu_acc1: 73.0469 (73.0469)  time: 6.8174  data: 6.5758  max mem: 11381
+Test:  [250/391]  eta: 0:01:22  sploss: 6.6208 (6.6283)  famloss: 2.1967 (2.2195)  manuloss: 1.5889 (1.5908)  acc1: 1.9531 (2.0278)  acc5: 10.5469 (11.5180)  family_acc1: 51.9531 (53.0410)  manu_acc1: 66.0156 (67.1439)  time: 0.4401  data: 0.2184  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.3064 (6.5645)  famloss: 1.9640 (2.1558)  manuloss: 1.1911 (1.5124)  acc1: 2.3438 (2.1060)  acc5: 13.2812 (11.8780)  family_acc1: 57.0312 (54.1510)  manu_acc1: 76.5625 (68.7030)  time: 0.4452  data: 0.2436  max mem: 11381
+Test: Total time: 0:03:43 (0.5709 s / it)
+* Acc@1 2.106 Acc@5 11.878 family@1 54.151 manu@1 68.703 sploss 6.564 fmloss 2.156 mfloss 1.512
+FPA: 1.796% | TICE: 96.830%   
+ wAP: 8.750  |  LCA: 290.018   |   Precision and Recall: 3.326%
+Accuracy of the network on the 100000 test images: 2.1%
+Max accuracy: 2.48%
+Epoch: [60]  [  0/312]  eta: 0:34:51  lr: 0.000097  sp_loss: 8.0957 (8.0957)  fam_loss: 3.6626 (3.6626)  manu_loss: 2.8894 (2.8894)  ot_loss: 1.9326 (1.9326)  base_loss: 14.6476 (14.6476)  time: 6.7024  data: 6.4098  max mem: 11381
+Epoch: [60]  [250/312]  eta: 0:00:32  lr: 0.000097  sp_loss: 8.1275 (8.3527)  fam_loss: 3.7539 (3.9021)  manu_loss: 2.8986 (2.9582)  ot_loss: 1.9863 (2.0103)  base_loss: 14.7212 (15.2129)  time: 0.6219  data: 0.3853  max mem: 11381
+Epoch: [60]  [311/312]  eta: 0:00:00  lr: 0.000097  sp_loss: 8.8040 (8.3594)  fam_loss: 4.1430 (3.8986)  manu_loss: 3.0664 (2.9515)  ot_loss: 2.0098 (2.0100)  base_loss: 16.0582 (15.2095)  time: 0.4888  data: 0.2592  max mem: 11381
+Epoch: [60] Total time: 0:02:42 (0.5222 s / it)
+Averaged stats: lr: 0.000097  sp_loss: 8.8040 (8.3594)  fam_loss: 4.1430 (3.8986)  manu_loss: 3.0664 (2.9515)  ot_loss: 2.0098 (2.0100)  base_loss: 16.0582 (15.2095)
+Test:  [  0/391]  eta: 0:42:28  sploss: 6.1931 (6.1931)  famloss: 1.9430 (1.9430)  manuloss: 1.2118 (1.2118)  acc1: 1.5625 (1.5625)  acc5: 12.8906 (12.8906)  family_acc1: 56.6406 (56.6406)  manu_acc1: 74.6094 (74.6094)  time: 6.5172  data: 6.2686  max mem: 11381
+Test:  [250/391]  eta: 0:01:11  sploss: 6.3541 (6.3624)  famloss: 2.1715 (2.1525)  manuloss: 1.5680 (1.5542)  acc1: 2.7344 (2.6597)  acc5: 14.8438 (15.5659)  family_acc1: 53.1250 (54.0292)  manu_acc1: 67.1875 (67.9999)  time: 0.5197  data: 0.3054  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.0592 (6.2936)  famloss: 1.9071 (2.0883)  manuloss: 1.1598 (1.4733)  acc1: 3.1250 (2.7610)  acc5: 18.3594 (16.0610)  family_acc1: 56.6406 (55.0300)  manu_acc1: 76.9531 (69.5870)  time: 0.4140  data: 0.2012  max mem: 11381
+Test: Total time: 0:03:11 (0.4899 s / it)
+* Acc@1 2.761 Acc@5 16.061 family@1 55.030 manu@1 69.587 sploss 6.294 fmloss 2.088 mfloss 1.473
+FPA: 2.358% | TICE: 95.912%   
+ wAP: 9.433  |  LCA: 287.280   |   Precision and Recall: 4.194%
+Accuracy of the network on the 100000 test images: 2.8%
+Max accuracy: 2.76%
+Epoch: [61]  [  0/312]  eta: 0:31:38  lr: 0.000093  sp_loss: 9.1489 (9.1489)  fam_loss: 4.3703 (4.3703)  manu_loss: 3.0914 (3.0914)  ot_loss: 2.1074 (2.1074)  base_loss: 16.6105 (16.6105)  time: 6.0834  data: 5.8094  max mem: 11381
+Epoch: [61]  [250/312]  eta: 0:00:31  lr: 0.000093  sp_loss: 7.7321 (8.3413)  fam_loss: 3.4810 (3.9082)  manu_loss: 2.6829 (2.9572)  ot_loss: 1.9424 (2.0100)  base_loss: 13.8523 (15.2067)  time: 0.5019  data: 0.2668  max mem: 11381
+Epoch: [61]  [311/312]  eta: 0:00:00  lr: 0.000093  sp_loss: 8.5370 (8.3369)  fam_loss: 3.9621 (3.8997)  manu_loss: 2.9711 (2.9508)  ot_loss: 2.0391 (2.0071)  base_loss: 15.5997 (15.1874)  time: 0.4373  data: 0.2115  max mem: 11381
+Epoch: [61] Total time: 0:02:38 (0.5064 s / it)
+Averaged stats: lr: 0.000093  sp_loss: 8.5370 (8.3369)  fam_loss: 3.9621 (3.8997)  manu_loss: 2.9711 (2.9508)  ot_loss: 2.0391 (2.0071)  base_loss: 15.5997 (15.1874)
+Test:  [  0/391]  eta: 0:45:24  sploss: 6.3930 (6.3930)  famloss: 1.9467 (1.9467)  manuloss: 1.2046 (1.2046)  acc1: 1.1719 (1.1719)  acc5: 7.0312 (7.0312)  family_acc1: 55.4688 (55.4688)  manu_acc1: 73.0469 (73.0469)  time: 6.9669  data: 6.7260  max mem: 11381
+Test:  [250/391]  eta: 0:01:13  sploss: 6.5090 (6.5240)  famloss: 2.1340 (2.1854)  manuloss: 1.5207 (1.5616)  acc1: 2.3438 (2.1757)  acc5: 12.5000 (12.6401)  family_acc1: 53.1250 (53.8393)  manu_acc1: 66.7969 (67.6684)  time: 0.4185  data: 0.1285  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.2204 (6.4549)  famloss: 1.9340 (2.1183)  manuloss: 1.1556 (1.4792)  acc1: 2.3438 (2.2680)  acc5: 14.0625 (13.0100)  family_acc1: 57.0312 (54.9970)  manu_acc1: 76.1719 (69.3770)  time: 0.4364  data: 0.2206  max mem: 11381
+Test: Total time: 0:03:25 (0.5257 s / it)
+* Acc@1 2.268 Acc@5 13.010 family@1 54.997 manu@1 69.377 sploss 6.455 fmloss 2.118 mfloss 1.479
+FPA: 1.981% | TICE: 96.550%   
+ wAP: 8.991  |  LCA: 289.303   |   Precision and Recall: 3.539%
+Accuracy of the network on the 100000 test images: 2.3%
+Max accuracy: 2.76%
+Epoch: [62]  [  0/312]  eta: 0:30:51  lr: 0.000089  sp_loss: 9.1753 (9.1753)  fam_loss: 4.1814 (4.1814)  manu_loss: 3.3209 (3.3209)  ot_loss: 2.0137 (2.0137)  base_loss: 16.6776 (16.6776)  time: 5.9351  data: 5.6535  max mem: 11381
+Epoch: [62]  [250/312]  eta: 0:00:32  lr: 0.000089  sp_loss: 8.1683 (8.3607)  fam_loss: 3.8414 (3.9248)  manu_loss: 3.0006 (2.9779)  ot_loss: 2.0332 (2.0134)  base_loss: 14.9891 (15.2633)  time: 0.3902  data: 0.1373  max mem: 11381
+Epoch: [62]  [311/312]  eta: 0:00:00  lr: 0.000089  sp_loss: 7.8070 (8.3458)  fam_loss: 3.6207 (3.9092)  manu_loss: 2.7479 (2.9665)  ot_loss: 1.9355 (2.0103)  base_loss: 14.0483 (15.2215)  time: 0.3276  data: 0.0954  max mem: 11381
+Epoch: [62] Total time: 0:02:41 (0.5188 s / it)
+Averaged stats: lr: 0.000089  sp_loss: 7.8070 (8.3458)  fam_loss: 3.6207 (3.9092)  manu_loss: 2.7479 (2.9665)  ot_loss: 1.9355 (2.0103)  base_loss: 14.0483 (15.2215)
+Test:  [  0/391]  eta: 0:40:15  sploss: 6.3210 (6.3210)  famloss: 1.9685 (1.9685)  manuloss: 1.2531 (1.2531)  acc1: 1.5625 (1.5625)  acc5: 10.9375 (10.9375)  family_acc1: 58.2031 (58.2031)  manu_acc1: 74.2188 (74.2188)  time: 6.1775  data: 5.8728  max mem: 11381
+Test:  [250/391]  eta: 0:01:25  sploss: 6.4582 (6.4611)  famloss: 2.1388 (2.1496)  manuloss: 1.5652 (1.5447)  acc1: 2.3438 (2.2846)  acc5: 12.8906 (13.1692)  family_acc1: 53.5156 (54.1802)  manu_acc1: 66.7969 (67.9999)  time: 0.4290  data: 0.1515  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.1942 (6.3958)  famloss: 1.9183 (2.0869)  manuloss: 1.1786 (1.4669)  acc1: 2.7344 (2.3960)  acc5: 14.4531 (13.6150)  family_acc1: 57.8125 (55.2580)  manu_acc1: 75.7812 (69.6230)  time: 0.5487  data: 0.3479  max mem: 11381
+Test: Total time: 0:03:53 (0.5960 s / it)
+* Acc@1 2.396 Acc@5 13.615 family@1 55.258 manu@1 69.623 sploss 6.396 fmloss 2.087 mfloss 1.467
+FPA: 2.069% | TICE: 96.408%   
+ wAP: 9.135  |  LCA: 288.980   |   Precision and Recall: 3.648%
+Accuracy of the network on the 100000 test images: 2.4%
+Max accuracy: 2.76%
+Epoch: [63]  [  0/312]  eta: 0:34:53  lr: 0.000086  sp_loss: 7.1469 (7.1469)  fam_loss: 3.4682 (3.4682)  manu_loss: 2.4265 (2.4265)  ot_loss: 1.9785 (1.9785)  base_loss: 13.0417 (13.0417)  time: 6.7102  data: 6.4254  max mem: 11381
+Epoch: [63]  [250/312]  eta: 0:00:30  lr: 0.000086  sp_loss: 8.3608 (8.2371)  fam_loss: 3.7857 (3.8594)  manu_loss: 3.0389 (2.9214)  ot_loss: 1.9805 (1.9999)  base_loss: 15.1277 (15.0178)  time: 0.4835  data: 0.2504  max mem: 11381
+Epoch: [63]  [311/312]  eta: 0:00:00  lr: 0.000086  sp_loss: 8.4818 (8.2485)  fam_loss: 4.0665 (3.8683)  manu_loss: 3.0069 (2.9259)  ot_loss: 2.0078 (2.0005)  base_loss: 15.5077 (15.0427)  time: 0.4903  data: 0.2603  max mem: 11381
+Epoch: [63] Total time: 0:02:36 (0.5023 s / it)
+Averaged stats: lr: 0.000086  sp_loss: 8.4818 (8.2485)  fam_loss: 4.0665 (3.8683)  manu_loss: 3.0069 (2.9259)  ot_loss: 2.0078 (2.0005)  base_loss: 15.5077 (15.0427)
+Test:  [  0/391]  eta: 0:43:37  sploss: 6.3213 (6.3213)  famloss: 1.9697 (1.9697)  manuloss: 1.2665 (1.2665)  acc1: 2.3438 (2.3438)  acc5: 11.7188 (11.7188)  family_acc1: 57.0312 (57.0312)  manu_acc1: 73.0469 (73.0469)  time: 6.6946  data: 6.4279  max mem: 11381
+Test:  [250/391]  eta: 0:01:18  sploss: 6.4589 (6.4820)  famloss: 2.1359 (2.1380)  manuloss: 1.5642 (1.5449)  acc1: 2.7344 (2.5165)  acc5: 12.8906 (13.0571)  family_acc1: 53.5156 (54.2455)  manu_acc1: 66.4062 (68.0372)  time: 0.5801  data: 0.3402  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.1517 (6.4109)  famloss: 1.9103 (2.0762)  manuloss: 1.1899 (1.4676)  acc1: 3.1250 (2.6480)  acc5: 14.4531 (13.5350)  family_acc1: 58.5938 (55.3410)  manu_acc1: 76.1719 (69.6340)  time: 0.3717  data: 0.1743  max mem: 11381
+Test: Total time: 0:03:33 (0.5456 s / it)
+* Acc@1 2.648 Acc@5 13.535 family@1 55.341 manu@1 69.634 sploss 6.411 fmloss 2.076 mfloss 1.468
+FPA: 2.289% | TICE: 96.396%   
+ wAP: 9.365  |  LCA: 288.474   |   Precision and Recall: 3.832%
+Accuracy of the network on the 100000 test images: 2.6%
+Max accuracy: 2.76%
+Epoch: [64]  [  0/312]  eta: 0:34:59  lr: 0.000082  sp_loss: 8.0346 (8.0346)  fam_loss: 3.8697 (3.8697)  manu_loss: 2.9590 (2.9590)  ot_loss: 2.0391 (2.0391)  base_loss: 14.8633 (14.8633)  time: 6.7290  data: 6.4387  max mem: 11381
+Epoch: [64]  [250/312]  eta: 0:00:31  lr: 0.000082  sp_loss: 8.2188 (8.2054)  fam_loss: 3.9948 (3.8570)  manu_loss: 2.9562 (2.9118)  ot_loss: 1.9795 (1.9924)  base_loss: 15.1549 (14.9741)  time: 0.5299  data: 0.2996  max mem: 11381
+Epoch: [64]  [311/312]  eta: 0:00:00  lr: 0.000082  sp_loss: 8.4241 (8.2023)  fam_loss: 3.8943 (3.8532)  manu_loss: 2.9270 (2.9137)  ot_loss: 1.9580 (1.9928)  base_loss: 15.2139 (14.9692)  time: 0.4425  data: 0.2186  max mem: 11381
+Epoch: [64] Total time: 0:02:40 (0.5147 s / it)
+Averaged stats: lr: 0.000082  sp_loss: 8.4241 (8.2023)  fam_loss: 3.8943 (3.8532)  manu_loss: 2.9270 (2.9137)  ot_loss: 1.9580 (1.9928)  base_loss: 15.2139 (14.9692)
+Test:  [  0/391]  eta: 0:40:27  sploss: 6.3204 (6.3204)  famloss: 1.9905 (1.9905)  manuloss: 1.3132 (1.3132)  acc1: 1.9531 (1.9531)  acc5: 11.3281 (11.3281)  family_acc1: 55.0781 (55.0781)  manu_acc1: 71.4844 (71.4844)  time: 6.2088  data: 5.9107  max mem: 11381
+Test:  [250/391]  eta: 0:01:10  sploss: 6.4519 (6.4501)  famloss: 2.1382 (2.1414)  manuloss: 1.5652 (1.5477)  acc1: 2.3438 (2.1772)  acc5: 14.0625 (13.4602)  family_acc1: 53.5156 (54.4105)  manu_acc1: 66.4062 (68.0839)  time: 0.4565  data: 0.2375  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.1352 (6.3850)  famloss: 1.8979 (2.0788)  manuloss: 1.1664 (1.4691)  acc1: 2.7344 (2.3040)  acc5: 15.2344 (13.9300)  family_acc1: 59.3750 (55.5650)  manu_acc1: 76.9531 (69.6940)  time: 0.4698  data: 0.2692  max mem: 11381
+Test: Total time: 0:03:19 (0.5092 s / it)
+* Acc@1 2.304 Acc@5 13.930 family@1 55.565 manu@1 69.694 sploss 6.385 fmloss 2.079 mfloss 1.469
+FPA: 1.974% | TICE: 96.903%   
+ wAP: 9.085  |  LCA: 289.659   |   Precision and Recall: 3.455%
+Accuracy of the network on the 100000 test images: 2.3%
+Max accuracy: 2.76%
+Epoch: [65]  [  0/312]  eta: 0:34:19  lr: 0.000079  sp_loss: 8.9384 (8.9384)  fam_loss: 4.2511 (4.2511)  manu_loss: 3.2507 (3.2507)  ot_loss: 2.0508 (2.0508)  base_loss: 16.4401 (16.4401)  time: 6.5997  data: 6.3240  max mem: 11381
+Epoch: [65]  [250/312]  eta: 0:00:32  lr: 0.000079  sp_loss: 8.8058 (8.2101)  fam_loss: 4.1550 (3.8601)  manu_loss: 3.1804 (2.9014)  ot_loss: 2.0020 (1.9902)  base_loss: 16.1622 (14.9716)  time: 0.5539  data: 0.3252  max mem: 11381
+Epoch: [65]  [311/312]  eta: 0:00:00  lr: 0.000079  sp_loss: 8.4787 (8.2500)  fam_loss: 4.1036 (3.8801)  manu_loss: 3.0498 (2.9186)  ot_loss: 2.0469 (1.9952)  base_loss: 15.7008 (15.0487)  time: 0.3466  data: 0.1216  max mem: 11381
+Epoch: [65] Total time: 0:02:40 (0.5138 s / it)
+Averaged stats: lr: 0.000079  sp_loss: 8.4787 (8.2500)  fam_loss: 4.1036 (3.8801)  manu_loss: 3.0498 (2.9186)  ot_loss: 2.0469 (1.9952)  base_loss: 15.7008 (15.0487)
+Test:  [  0/391]  eta: 0:44:43  sploss: 6.3037 (6.3037)  famloss: 1.9461 (1.9461)  manuloss: 1.2292 (1.2292)  acc1: 1.5625 (1.5625)  acc5: 8.5938 (8.5938)  family_acc1: 58.2031 (58.2031)  manu_acc1: 74.2188 (74.2188)  time: 6.8636  data: 6.6165  max mem: 11381
+Test:  [250/391]  eta: 0:01:16  sploss: 6.3483 (6.3810)  famloss: 2.1227 (2.1310)  manuloss: 1.5480 (1.5286)  acc1: 2.7344 (2.6068)  acc5: 12.8906 (12.9529)  family_acc1: 53.5156 (54.8992)  manu_acc1: 66.4062 (68.6909)  time: 0.5460  data: 0.3322  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.0755 (6.3096)  famloss: 1.9122 (2.0665)  manuloss: 1.1578 (1.4498)  acc1: 3.1250 (2.7620)  acc5: 14.8438 (13.4450)  family_acc1: 58.5938 (56.0410)  manu_acc1: 77.3438 (70.3070)  time: 0.3203  data: 0.1204  max mem: 11381
+Test: Total time: 0:03:25 (0.5255 s / it)
+* Acc@1 2.762 Acc@5 13.445 family@1 56.041 manu@1 70.307 sploss 6.310 fmloss 2.066 mfloss 1.450
+FPA: 2.397% | TICE: 96.150%   
+ wAP: 9.549  |  LCA: 287.673   |   Precision and Recall: 4.073%
+Accuracy of the network on the 100000 test images: 2.8%
+Max accuracy: 2.76%
+Epoch: [66]  [  0/312]  eta: 0:41:10  lr: 0.000076  sp_loss: 8.7045 (8.7045)  fam_loss: 4.0769 (4.0769)  manu_loss: 3.0008 (3.0008)  ot_loss: 1.9141 (1.9141)  base_loss: 15.7822 (15.7822)  time: 7.9197  data: 7.6346  max mem: 11381
+Epoch: [66]  [250/312]  eta: 0:00:27  lr: 0.000076  sp_loss: 8.7954 (8.2681)  fam_loss: 4.1651 (3.8918)  manu_loss: 3.1316 (2.9389)  ot_loss: 2.0156 (1.9922)  base_loss: 16.2298 (15.0989)  time: 0.3450  data: 0.1085  max mem: 11381
+Epoch: [66]  [311/312]  eta: 0:00:00  lr: 0.000076  sp_loss: 8.2350 (8.2339)  fam_loss: 4.0395 (3.8735)  manu_loss: 2.8599 (2.9236)  ot_loss: 1.9795 (1.9898)  base_loss: 15.2629 (15.0310)  time: 0.4540  data: 0.2267  max mem: 11381
+Epoch: [66] Total time: 0:02:20 (0.4491 s / it)
+Averaged stats: lr: 0.000076  sp_loss: 8.2350 (8.2339)  fam_loss: 4.0395 (3.8735)  manu_loss: 2.8599 (2.9236)  ot_loss: 1.9795 (1.9898)  base_loss: 15.2629 (15.0310)
+Test:  [  0/391]  eta: 0:43:01  sploss: 6.2369 (6.2369)  famloss: 1.9521 (1.9521)  manuloss: 1.2510 (1.2510)  acc1: 1.9531 (1.9531)  acc5: 10.9375 (10.9375)  family_acc1: 55.0781 (55.0781)  manu_acc1: 72.6562 (72.6562)  time: 6.6017  data: 6.3263  max mem: 11381
+Test:  [250/391]  eta: 0:01:13  sploss: 6.3747 (6.3655)  famloss: 2.0870 (2.1122)  manuloss: 1.5634 (1.5122)  acc1: 2.3438 (2.4838)  acc5: 14.0625 (14.2461)  family_acc1: 54.6875 (55.1155)  manu_acc1: 67.1875 (68.7858)  time: 0.5976  data: 0.3873  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.0615 (6.2935)  famloss: 1.8464 (2.0473)  manuloss: 1.1290 (1.4328)  acc1: 2.7344 (2.6190)  acc5: 16.0156 (14.7950)  family_acc1: 59.3750 (56.2520)  manu_acc1: 76.5625 (70.3710)  time: 0.3177  data: 0.1186  max mem: 11381
+Test: Total time: 0:03:17 (0.5058 s / it)
+* Acc@1 2.619 Acc@5 14.795 family@1 56.252 manu@1 70.371 sploss 6.293 fmloss 2.047 mfloss 1.433
+FPA: 2.277% | TICE: 96.306%   
+ wAP: 9.445  |  LCA: 288.369   |   Precision and Recall: 3.875%
+Accuracy of the network on the 100000 test images: 2.6%
+Max accuracy: 2.76%
+Epoch: [67]  [  0/312]  eta: 0:31:59  lr: 0.000072  sp_loss: 7.7305 (7.7305)  fam_loss: 3.5489 (3.5489)  manu_loss: 2.6810 (2.6810)  ot_loss: 1.8838 (1.8838)  base_loss: 13.9603 (13.9603)  time: 6.1533  data: 5.8994  max mem: 11381
+Epoch: [67]  [250/312]  eta: 0:00:34  lr: 0.000072  sp_loss: 8.6244 (8.0471)  fam_loss: 4.0732 (3.7746)  manu_loss: 3.1350 (2.8572)  ot_loss: 2.0254 (1.9705)  base_loss: 15.9898 (14.6789)  time: 0.4080  data: 0.1804  max mem: 11381
+Epoch: [67]  [311/312]  eta: 0:00:00  lr: 0.000072  sp_loss: 8.5253 (8.0829)  fam_loss: 4.0176 (3.7953)  manu_loss: 2.8755 (2.8676)  ot_loss: 2.0059 (1.9724)  base_loss: 15.8191 (14.7458)  time: 0.3526  data: 0.1279  max mem: 11381
+Epoch: [67] Total time: 0:02:52 (0.5522 s / it)
+Averaged stats: lr: 0.000072  sp_loss: 8.5253 (8.0829)  fam_loss: 4.0176 (3.7953)  manu_loss: 2.8755 (2.8676)  ot_loss: 2.0059 (1.9724)  base_loss: 15.8191 (14.7458)
+Test:  [  0/391]  eta: 0:37:32  sploss: 6.3354 (6.3354)  famloss: 1.9907 (1.9907)  manuloss: 1.2567 (1.2567)  acc1: 1.1719 (1.1719)  acc5: 8.9844 (8.9844)  family_acc1: 56.2500 (56.2500)  manu_acc1: 72.6562 (72.6562)  time: 5.7617  data: 5.5274  max mem: 11381
+Test:  [250/391]  eta: 0:01:12  sploss: 6.4389 (6.4778)  famloss: 2.1692 (2.1534)  manuloss: 1.5523 (1.5429)  acc1: 2.3438 (2.1025)  acc5: 11.7188 (11.4884)  family_acc1: 54.2969 (54.8260)  manu_acc1: 66.7969 (68.5134)  time: 0.4926  data: 0.2739  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.2009 (6.4115)  famloss: 1.9155 (2.0900)  manuloss: 1.1420 (1.4654)  acc1: 2.3438 (2.2110)  acc5: 13.2812 (11.9370)  family_acc1: 58.9844 (55.9290)  manu_acc1: 76.8750 (70.0680)  time: 0.4306  data: 0.2284  max mem: 11381
+Test: Total time: 0:03:16 (0.5031 s / it)
+* Acc@1 2.211 Acc@5 11.937 family@1 55.929 manu@1 70.068 sploss 6.412 fmloss 2.090 mfloss 1.465
+FPA: 1.918% | TICE: 97.043%   
+ wAP: 9.048  |  LCA: 289.898   |   Precision and Recall: 3.382%
+Accuracy of the network on the 100000 test images: 2.2%
+Max accuracy: 2.76%
+Epoch: [68]  [  0/312]  eta: 0:36:20  lr: 0.000069  sp_loss: 8.3212 (8.3212)  fam_loss: 3.6963 (3.6963)  manu_loss: 2.9342 (2.9342)  ot_loss: 1.8789 (1.8789)  base_loss: 14.9516 (14.9516)  time: 6.9887  data: 6.7048  max mem: 11381
+Epoch: [68]  [250/312]  eta: 0:00:29  lr: 0.000069  sp_loss: 8.0913 (8.0375)  fam_loss: 4.0026 (3.7875)  manu_loss: 2.9754 (2.8584)  ot_loss: 1.9844 (1.9670)  base_loss: 15.1249 (14.6834)  time: 0.5462  data: 0.3135  max mem: 11381
+Epoch: [68]  [311/312]  eta: 0:00:00  lr: 0.000069  sp_loss: 8.4347 (8.0388)  fam_loss: 4.0174 (3.7886)  manu_loss: 3.0164 (2.8568)  ot_loss: 1.9795 (1.9679)  base_loss: 15.7870 (14.6842)  time: 0.4275  data: 0.2011  max mem: 11381
+Epoch: [68] Total time: 0:02:26 (0.4683 s / it)
+Averaged stats: lr: 0.000069  sp_loss: 8.4347 (8.0388)  fam_loss: 4.0174 (3.7886)  manu_loss: 3.0164 (2.8568)  ot_loss: 1.9795 (1.9679)  base_loss: 15.7870 (14.6842)
+Test:  [  0/391]  eta: 0:40:25  sploss: 6.2886 (6.2886)  famloss: 1.9718 (1.9718)  manuloss: 1.2334 (1.2334)  acc1: 1.5625 (1.5625)  acc5: 10.5469 (10.5469)  family_acc1: 57.4219 (57.4219)  manu_acc1: 74.2188 (74.2188)  time: 6.2030  data: 5.9075  max mem: 11381
+Test:  [250/391]  eta: 0:01:11  sploss: 6.4186 (6.4353)  famloss: 2.1306 (2.1151)  manuloss: 1.5505 (1.5211)  acc1: 2.3438 (2.1243)  acc5: 12.5000 (12.9684)  family_acc1: 54.2969 (55.2104)  manu_acc1: 67.1875 (68.6971)  time: 0.6057  data: 0.3901  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.1366 (6.3653)  famloss: 1.8574 (2.0481)  manuloss: 1.1370 (1.4417)  acc1: 2.3438 (2.2450)  acc5: 15.2344 (13.4400)  family_acc1: 60.1562 (56.4810)  manu_acc1: 78.1250 (70.3040)  time: 0.3823  data: 0.1806  max mem: 11381
+Test: Total time: 0:03:08 (0.4821 s / it)
+* Acc@1 2.245 Acc@5 13.440 family@1 56.481 manu@1 70.304 sploss 6.365 fmloss 2.048 mfloss 1.442
+FPA: 1.943% | TICE: 96.917%   
+ wAP: 9.137  |  LCA: 289.844   |   Precision and Recall: 3.405%
+Accuracy of the network on the 100000 test images: 2.2%
+Max accuracy: 2.76%
+Epoch: [69]  [  0/312]  eta: 0:33:26  lr: 0.000066  sp_loss: 6.8876 (6.8876)  fam_loss: 3.1231 (3.1231)  manu_loss: 2.4547 (2.4547)  ot_loss: 1.9141 (1.9141)  base_loss: 12.4654 (12.4654)  time: 6.4312  data: 6.1466  max mem: 11381
+Epoch: [69]  [250/312]  eta: 0:00:30  lr: 0.000066  sp_loss: 8.7629 (8.0293)  fam_loss: 4.1239 (3.7871)  manu_loss: 3.1525 (2.8566)  ot_loss: 2.0215 (1.9657)  base_loss: 16.1504 (14.6730)  time: 0.5004  data: 0.2641  max mem: 11381
+Epoch: [69]  [311/312]  eta: 0:00:00  lr: 0.000066  sp_loss: 8.3197 (8.0578)  fam_loss: 3.8284 (3.8018)  manu_loss: 2.9110 (2.8689)  ot_loss: 1.9824 (1.9697)  base_loss: 14.9759 (14.7284)  time: 0.4568  data: 0.2300  max mem: 11381
+Epoch: [69] Total time: 0:02:30 (0.4827 s / it)
+Averaged stats: lr: 0.000066  sp_loss: 8.3197 (8.0578)  fam_loss: 3.8284 (3.8018)  manu_loss: 2.9110 (2.8689)  ot_loss: 1.9824 (1.9697)  base_loss: 14.9759 (14.7284)
+Test:  [  0/391]  eta: 0:43:10  sploss: 6.0430 (6.0430)  famloss: 1.9207 (1.9207)  manuloss: 1.2145 (1.2145)  acc1: 2.3438 (2.3438)  acc5: 11.7188 (11.7188)  family_acc1: 58.9844 (58.9844)  manu_acc1: 73.8281 (73.8281)  time: 6.6251  data: 6.3598  max mem: 11381
+Test:  [250/391]  eta: 0:01:14  sploss: 6.2109 (6.2316)  famloss: 2.0906 (2.0863)  manuloss: 1.5172 (1.5008)  acc1: 2.7344 (3.1297)  acc5: 16.0156 (15.5487)  family_acc1: 55.8594 (55.7769)  manu_acc1: 67.5781 (69.0628)  time: 0.5495  data: 0.3117  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.9307 (6.1600)  famloss: 1.8570 (2.0242)  manuloss: 1.1168 (1.4257)  acc1: 3.5156 (3.3090)  acc5: 17.5781 (15.9710)  family_acc1: 59.3750 (56.8450)  manu_acc1: 77.7344 (70.5900)  time: 0.4578  data: 0.2215  max mem: 11381
+Test: Total time: 0:03:25 (0.5251 s / it)
+* Acc@1 3.309 Acc@5 15.971 family@1 56.845 manu@1 70.590 sploss 6.160 fmloss 2.024 mfloss 1.426
+FPA: 2.874% | TICE: 95.468%   
+ wAP: 10.114  |  LCA: 285.954   |   Precision and Recall: 4.657%
+Accuracy of the network on the 100000 test images: 3.3%
+Max accuracy: 3.31%
+Epoch: [70]  [  0/312]  eta: 0:39:43  lr: 0.000063  sp_loss: 8.7817 (8.7817)  fam_loss: 4.1575 (4.1575)  manu_loss: 3.3082 (3.3082)  ot_loss: 2.0605 (2.0605)  base_loss: 16.2474 (16.2474)  time: 7.6379  data: 7.3611  max mem: 11381
+Epoch: [70]  [250/312]  eta: 0:00:30  lr: 0.000063  sp_loss: 7.6835 (8.0610)  fam_loss: 3.6714 (3.8046)  manu_loss: 2.7121 (2.8692)  ot_loss: 1.9414 (1.9658)  base_loss: 14.0669 (14.7348)  time: 0.3734  data: 0.1239  max mem: 11381
+Epoch: [70]  [311/312]  eta: 0:00:00  lr: 0.000063  sp_loss: 8.0502 (8.0451)  fam_loss: 3.7946 (3.7985)  manu_loss: 2.9031 (2.8685)  ot_loss: 1.9375 (1.9640)  base_loss: 14.6118 (14.7121)  time: 0.3929  data: 0.1589  max mem: 11381
+Epoch: [70] Total time: 0:02:31 (0.4861 s / it)
+Averaged stats: lr: 0.000063  sp_loss: 8.0502 (8.0451)  fam_loss: 3.7946 (3.7985)  manu_loss: 2.9031 (2.8685)  ot_loss: 1.9375 (1.9640)  base_loss: 14.6118 (14.7121)
+Test:  [  0/391]  eta: 0:40:58  sploss: 6.2786 (6.2786)  famloss: 1.9693 (1.9693)  manuloss: 1.2010 (1.2010)  acc1: 1.1719 (1.1719)  acc5: 8.5938 (8.5938)  family_acc1: 56.6406 (56.6406)  manu_acc1: 75.0000 (75.0000)  time: 6.2889  data: 5.9553  max mem: 11381
+Test:  [250/391]  eta: 0:01:23  sploss: 6.4427 (6.4744)  famloss: 2.1630 (2.1472)  manuloss: 1.5520 (1.5402)  acc1: 2.3438 (2.1352)  acc5: 11.3281 (11.7032)  family_acc1: 54.2969 (54.9365)  manu_acc1: 67.5781 (68.5072)  time: 0.5043  data: 0.2445  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.1850 (6.4061)  famloss: 1.8797 (2.0828)  manuloss: 1.1129 (1.4629)  acc1: 2.3438 (2.2240)  acc5: 12.8906 (12.0950)  family_acc1: 58.9844 (56.0310)  manu_acc1: 77.3438 (70.0370)  time: 0.4729  data: 0.2431  max mem: 11381
+Test: Total time: 0:03:43 (0.5714 s / it)
+* Acc@1 2.224 Acc@5 12.095 family@1 56.031 manu@1 70.037 sploss 6.406 fmloss 2.083 mfloss 1.463
+FPA: 1.945% | TICE: 96.896%   
+ wAP: 9.068  |  LCA: 289.914   |   Precision and Recall: 3.376%
+Accuracy of the network on the 100000 test images: 2.2%
+Max accuracy: 3.31%
+Epoch: [71]  [  0/312]  eta: 0:39:21  lr: 0.000059  sp_loss: 6.9313 (6.9313)  fam_loss: 3.0301 (3.0301)  manu_loss: 2.1351 (2.1351)  ot_loss: 1.8193 (1.8193)  base_loss: 12.0965 (12.0965)  time: 7.5691  data: 7.2833  max mem: 11381
+Epoch: [71]  [250/312]  eta: 0:00:30  lr: 0.000059  sp_loss: 8.6126 (8.1233)  fam_loss: 4.1955 (3.8559)  manu_loss: 3.0722 (2.9273)  ot_loss: 2.0078 (1.9731)  base_loss: 15.8815 (14.9064)  time: 0.3552  data: 0.1047  max mem: 11381
+Epoch: [71]  [311/312]  eta: 0:00:00  lr: 0.000059  sp_loss: 8.6326 (8.1552)  fam_loss: 4.0837 (3.8733)  manu_loss: 3.0372 (2.9317)  ot_loss: 2.0117 (1.9763)  base_loss: 15.7963 (14.9603)  time: 0.3519  data: 0.1170  max mem: 11381
+Epoch: [71] Total time: 0:02:33 (0.4924 s / it)
+Averaged stats: lr: 0.000059  sp_loss: 8.6326 (8.1552)  fam_loss: 4.0837 (3.8733)  manu_loss: 3.0372 (2.9317)  ot_loss: 2.0117 (1.9763)  base_loss: 15.7963 (14.9603)
+Test:  [  0/391]  eta: 1:03:29  sploss: 6.1851 (6.1851)  famloss: 1.9316 (1.9316)  manuloss: 1.2369 (1.2369)  acc1: 1.1719 (1.1719)  acc5: 8.9844 (8.9844)  family_acc1: 58.9844 (58.9844)  manu_acc1: 75.3906 (75.3906)  time: 9.7428  data: 9.2875  max mem: 11381
+Test:  [250/391]  eta: 0:01:22  sploss: 6.2971 (6.3575)  famloss: 2.0728 (2.0822)  manuloss: 1.5144 (1.4903)  acc1: 1.9531 (2.3235)  acc5: 13.2812 (13.4260)  family_acc1: 55.0781 (55.9621)  manu_acc1: 67.5781 (69.4410)  time: 0.4493  data: 0.2329  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 6.0612 (6.2858)  famloss: 1.8159 (2.0172)  manuloss: 1.1191 (1.4138)  acc1: 2.7344 (2.4770)  acc5: 15.2344 (13.8470)  family_acc1: 59.7656 (57.1290)  manu_acc1: 76.9531 (70.9770)  time: 0.3773  data: 0.1703  max mem: 11381
+Test: Total time: 0:03:40 (0.5635 s / it)
+* Acc@1 2.477 Acc@5 13.847 family@1 57.129 manu@1 70.977 sploss 6.286 fmloss 2.017 mfloss 1.414
+FPA: 2.191% | TICE: 96.514%   
+ wAP: 9.420  |  LCA: 289.114   |   Precision and Recall: 3.637%
+Accuracy of the network on the 100000 test images: 2.5%
+Max accuracy: 3.31%
+Epoch: [72]  [  0/312]  eta: 0:31:52  lr: 0.000056  sp_loss: 6.6199 (6.6199)  fam_loss: 3.0625 (3.0625)  manu_loss: 2.4027 (2.4027)  ot_loss: 1.7900 (1.7900)  base_loss: 12.0852 (12.0852)  time: 6.1287  data: 5.8417  max mem: 11381
+Epoch: [72]  [250/312]  eta: 0:00:26  lr: 0.000056  sp_loss: 8.0683 (7.9713)  fam_loss: 3.6401 (3.7715)  manu_loss: 2.7477 (2.8450)  ot_loss: 1.9238 (1.9532)  base_loss: 14.3295 (14.5879)  time: 0.3427  data: 0.1015  max mem: 11381
+Epoch: [72]  [311/312]  eta: 0:00:00  lr: 0.000056  sp_loss: 8.1397 (7.9848)  fam_loss: 3.8317 (3.7802)  manu_loss: 2.8199 (2.8517)  ot_loss: 1.9102 (1.9550)  base_loss: 14.9058 (14.6167)  time: 0.3232  data: 0.0925  max mem: 11381
+Epoch: [72] Total time: 0:02:11 (0.4229 s / it)
+Averaged stats: lr: 0.000056  sp_loss: 8.1397 (7.9848)  fam_loss: 3.8317 (3.7802)  manu_loss: 2.8199 (2.8517)  ot_loss: 1.9102 (1.9550)  base_loss: 14.9058 (14.6167)
+Test:  [  0/391]  eta: 0:39:00  sploss: 5.9725 (5.9725)  famloss: 1.8406 (1.8406)  manuloss: 1.1894 (1.1894)  acc1: 1.5625 (1.5625)  acc5: 14.0625 (14.0625)  family_acc1: 60.5469 (60.5469)  manu_acc1: 76.5625 (76.5625)  time: 5.9869  data: 5.6303  max mem: 11381
+Test:  [250/391]  eta: 0:01:01  sploss: 6.1431 (6.1855)  famloss: 2.0424 (2.0656)  manuloss: 1.5281 (1.4900)  acc1: 3.1250 (3.0970)  acc5: 16.4062 (16.8249)  family_acc1: 55.8594 (56.0570)  manu_acc1: 67.1875 (69.3678)  time: 0.3898  data: 0.1766  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.8781 (6.1137)  famloss: 1.8091 (2.0020)  manuloss: 1.1199 (1.4141)  acc1: 3.5156 (3.2950)  acc5: 19.1406 (17.2730)  family_acc1: 60.9375 (57.1480)  manu_acc1: 76.9531 (70.9150)  time: 0.4420  data: 0.2424  max mem: 11381
+Test: Total time: 0:03:02 (0.4669 s / it)
+* Acc@1 3.295 Acc@5 17.273 family@1 57.148 manu@1 70.915 sploss 6.114 fmloss 2.002 mfloss 1.414
+FPA: 2.896% | TICE: 95.510%   
+ wAP: 10.139  |  LCA: 285.910   |   Precision and Recall: 4.669%
+Accuracy of the network on the 100000 test images: 3.3%
+Max accuracy: 3.31%
+Epoch: [73]  [  0/312]  eta: 0:34:55  lr: 0.000054  sp_loss: 9.2740 (9.2740)  fam_loss: 4.4500 (4.4500)  manu_loss: 3.3424 (3.3424)  ot_loss: 2.0547 (2.0547)  base_loss: 17.0664 (17.0664)  time: 6.7169  data: 6.4262  max mem: 11381
+Epoch: [73]  [250/312]  eta: 0:00:26  lr: 0.000054  sp_loss: 8.4062 (7.9791)  fam_loss: 4.0437 (3.7887)  manu_loss: 3.0693 (2.8590)  ot_loss: 2.0117 (1.9549)  base_loss: 15.6581 (14.6268)  time: 0.3427  data: 0.1086  max mem: 11381
+Epoch: [73]  [311/312]  eta: 0:00:00  lr: 0.000054  sp_loss: 8.4602 (7.9651)  fam_loss: 4.0585 (3.7738)  manu_loss: 2.9560 (2.8502)  ot_loss: 2.0098 (1.9541)  base_loss: 15.2210 (14.5891)  time: 0.3246  data: 0.0975  max mem: 11381
+Epoch: [73] Total time: 0:02:11 (0.4224 s / it)
+Averaged stats: lr: 0.000054  sp_loss: 8.4602 (7.9651)  fam_loss: 4.0585 (3.7738)  manu_loss: 2.9560 (2.8502)  ot_loss: 2.0098 (1.9541)  base_loss: 15.2210 (14.5891)
+Test:  [  0/391]  eta: 0:40:57  sploss: 6.0561 (6.0561)  famloss: 1.8601 (1.8601)  manuloss: 1.2162 (1.2162)  acc1: 1.1719 (1.1719)  acc5: 12.1094 (12.1094)  family_acc1: 58.5938 (58.5938)  manu_acc1: 74.6094 (74.6094)  time: 6.2847  data: 6.0424  max mem: 11381
+Test:  [250/391]  eta: 0:01:01  sploss: 6.2581 (6.2952)  famloss: 2.0754 (2.0748)  manuloss: 1.5348 (1.5057)  acc1: 2.7344 (2.5990)  acc5: 14.0625 (14.2461)  family_acc1: 54.6875 (56.1099)  manu_acc1: 67.9688 (69.2449)  time: 0.3687  data: 0.1502  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.9886 (6.2222)  famloss: 1.8286 (2.0098)  manuloss: 1.1178 (1.4295)  acc1: 3.1250 (2.7230)  acc5: 15.6250 (14.7100)  family_acc1: 60.1562 (57.2280)  manu_acc1: 78.5156 (70.8140)  time: 0.4270  data: 0.2224  max mem: 11381
+Test: Total time: 0:02:49 (0.4326 s / it)
+* Acc@1 2.723 Acc@5 14.710 family@1 57.228 manu@1 70.814 sploss 6.222 fmloss 2.010 mfloss 1.430
+FPA: 2.400% | TICE: 96.210%   
+ wAP: 9.642  |  LCA: 288.139   |   Precision and Recall: 3.967%
+Accuracy of the network on the 100000 test images: 2.7%
+Max accuracy: 3.31%
+Epoch: [74]  [  0/312]  eta: 0:32:29  lr: 0.000051  sp_loss: 7.6911 (7.6911)  fam_loss: 3.8018 (3.8018)  manu_loss: 2.8055 (2.8055)  ot_loss: 1.9375 (1.9375)  base_loss: 14.2985 (14.2985)  time: 6.2488  data: 5.9508  max mem: 11381
+Epoch: [74]  [250/312]  eta: 0:00:27  lr: 0.000051  sp_loss: 8.1471 (7.9695)  fam_loss: 3.7716 (3.7907)  manu_loss: 2.8234 (2.8637)  ot_loss: 1.9004 (1.9513)  base_loss: 14.9052 (14.6238)  time: 0.3659  data: 0.1322  max mem: 11381
+Epoch: [74]  [311/312]  eta: 0:00:00  lr: 0.000051  sp_loss: 7.1802 (7.9533)  fam_loss: 3.3901 (3.7764)  manu_loss: 2.4803 (2.8482)  ot_loss: 1.8643 (1.9495)  base_loss: 12.8906 (14.5780)  time: 0.3281  data: 0.1017  max mem: 11381
+Epoch: [74] Total time: 0:02:20 (0.4491 s / it)
+Averaged stats: lr: 0.000051  sp_loss: 7.1802 (7.9533)  fam_loss: 3.3901 (3.7764)  manu_loss: 2.4803 (2.8482)  ot_loss: 1.8643 (1.9495)  base_loss: 12.8906 (14.5780)
+Test:  [  0/391]  eta: 0:43:50  sploss: 5.9127 (5.9127)  famloss: 1.8496 (1.8496)  manuloss: 1.1348 (1.1348)  acc1: 1.9531 (1.9531)  acc5: 12.5000 (12.5000)  family_acc1: 59.3750 (59.3750)  manu_acc1: 78.1250 (78.1250)  time: 6.7264  data: 6.4036  max mem: 11381
+Test:  [250/391]  eta: 0:01:11  sploss: 6.1181 (6.1596)  famloss: 2.0562 (2.0663)  manuloss: 1.4993 (1.4872)  acc1: 3.5156 (3.2199)  acc5: 16.4062 (16.1744)  family_acc1: 55.4688 (56.1940)  manu_acc1: 67.5781 (69.4721)  time: 0.4607  data: 0.2451  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.8437 (6.0855)  famloss: 1.8214 (2.0007)  manuloss: 1.1220 (1.4098)  acc1: 4.2969 (3.3730)  acc5: 17.5781 (16.6160)  family_acc1: 59.7656 (57.3380)  manu_acc1: 77.7344 (71.0320)  time: 0.4083  data: 0.2082  max mem: 11381
+Test: Total time: 0:03:16 (0.5028 s / it)
+* Acc@1 3.373 Acc@5 16.616 family@1 57.338 manu@1 71.032 sploss 6.085 fmloss 2.001 mfloss 1.410
+FPA: 2.981% | TICE: 95.468%   
+ wAP: 10.229  |  LCA: 285.828   |   Precision and Recall: 4.713%
+Accuracy of the network on the 100000 test images: 3.4%
+Max accuracy: 3.37%
+Epoch: [75]  [  0/312]  eta: 0:35:49  lr: 0.000048  sp_loss: 8.5386 (8.5386)  fam_loss: 4.0141 (4.0141)  manu_loss: 2.7898 (2.7898)  ot_loss: 1.9834 (1.9834)  base_loss: 15.3424 (15.3424)  time: 6.8896  data: 6.6316  max mem: 11381
+Epoch: [75]  [250/312]  eta: 0:00:27  lr: 0.000048  sp_loss: 7.7449 (7.9492)  fam_loss: 3.7475 (3.7823)  manu_loss: 2.8394 (2.8440)  ot_loss: 1.9268 (1.9479)  base_loss: 14.3844 (14.5755)  time: 0.3507  data: 0.1108  max mem: 11381
+Epoch: [75]  [311/312]  eta: 0:00:00  lr: 0.000048  sp_loss: 7.9184 (7.9671)  fam_loss: 3.7383 (3.7877)  manu_loss: 2.8891 (2.8485)  ot_loss: 1.9453 (1.9497)  base_loss: 14.5236 (14.6033)  time: 0.3215  data: 0.0937  max mem: 11381
+Epoch: [75] Total time: 0:02:16 (0.4361 s / it)
+Averaged stats: lr: 0.000048  sp_loss: 7.9184 (7.9671)  fam_loss: 3.7383 (3.7877)  manu_loss: 2.8891 (2.8485)  ot_loss: 1.9453 (1.9497)  base_loss: 14.5236 (14.6033)
+Test:  [  0/391]  eta: 0:40:37  sploss: 5.9681 (5.9681)  famloss: 1.8743 (1.8743)  manuloss: 1.1880 (1.1880)  acc1: 1.5625 (1.5625)  acc5: 14.0625 (14.0625)  family_acc1: 58.9844 (58.9844)  manu_acc1: 76.9531 (76.9531)  time: 6.2343  data: 5.9845  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 6.1334 (6.1985)  famloss: 2.0673 (2.0627)  manuloss: 1.4868 (1.4790)  acc1: 3.5156 (3.1873)  acc5: 14.8438 (15.3153)  family_acc1: 55.8594 (56.5659)  manu_acc1: 68.3594 (69.5904)  time: 0.3318  data: 0.1171  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.8712 (6.1216)  famloss: 1.8090 (1.9962)  manuloss: 1.1138 (1.4028)  acc1: 4.2969 (3.3600)  acc5: 16.0156 (15.8340)  family_acc1: 61.7188 (57.7190)  manu_acc1: 77.7344 (71.1770)  time: 0.4288  data: 0.2277  max mem: 11381
+Test: Total time: 0:02:49 (0.4329 s / it)
+* Acc@1 3.360 Acc@5 15.834 family@1 57.719 manu@1 71.177 sploss 6.122 fmloss 1.996 mfloss 1.403
+FPA: 2.993% | TICE: 95.465%   
+ wAP: 10.258  |  LCA: 285.896   |   Precision and Recall: 4.689%
+Accuracy of the network on the 100000 test images: 3.4%
+Max accuracy: 3.37%
+Epoch: [76]  [  0/312]  eta: 0:33:22  lr: 0.000045  sp_loss: 8.4799 (8.4799)  fam_loss: 4.1725 (4.1725)  manu_loss: 2.9617 (2.9617)  ot_loss: 2.0137 (2.0137)  base_loss: 15.6142 (15.6142)  time: 6.4170  data: 6.1225  max mem: 11381
+Epoch: [76]  [250/312]  eta: 0:00:27  lr: 0.000045  sp_loss: 8.3697 (7.9058)  fam_loss: 3.8307 (3.7612)  manu_loss: 2.9710 (2.8207)  ot_loss: 1.9453 (1.9403)  base_loss: 15.0696 (14.4877)  time: 0.3486  data: 0.1011  max mem: 11381
+Epoch: [76]  [311/312]  eta: 0:00:00  lr: 0.000045  sp_loss: 8.3747 (7.9231)  fam_loss: 3.9786 (3.7681)  manu_loss: 2.9532 (2.8250)  ot_loss: 1.9580 (1.9396)  base_loss: 15.3970 (14.5161)  time: 0.3338  data: 0.1015  max mem: 11381
+Epoch: [76] Total time: 0:02:17 (0.4399 s / it)
+Averaged stats: lr: 0.000045  sp_loss: 8.3747 (7.9231)  fam_loss: 3.9786 (3.7681)  manu_loss: 2.9532 (2.8250)  ot_loss: 1.9580 (1.9396)  base_loss: 15.3970 (14.5161)
+Test:  [  0/391]  eta: 0:48:03  sploss: 5.9764 (5.9764)  famloss: 1.8770 (1.8770)  manuloss: 1.1860 (1.1860)  acc1: 1.5625 (1.5625)  acc5: 12.5000 (12.5000)  family_acc1: 60.1562 (60.1562)  manu_acc1: 78.1250 (78.1250)  time: 7.3738  data: 7.1399  max mem: 11381
+Test:  [250/391]  eta: 0:01:02  sploss: 6.1539 (6.2109)  famloss: 2.0759 (2.0604)  manuloss: 1.5021 (1.4805)  acc1: 2.7344 (2.8822)  acc5: 13.6719 (15.2173)  family_acc1: 54.6875 (56.2516)  manu_acc1: 67.1875 (69.6200)  time: 0.3447  data: 0.1189  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.9070 (6.1397)  famloss: 1.8215 (1.9965)  manuloss: 1.1167 (1.4046)  acc1: 3.5156 (3.0030)  acc5: 16.7969 (15.6930)  family_acc1: 61.3281 (57.3700)  manu_acc1: 77.3438 (71.1790)  time: 0.4068  data: 0.2005  max mem: 11381
+Test: Total time: 0:02:50 (0.4360 s / it)
+* Acc@1 3.003 Acc@5 15.693 family@1 57.370 manu@1 71.179 sploss 6.140 fmloss 1.997 mfloss 1.405
+FPA: 2.653% | TICE: 96.042%   
+ wAP: 9.910  |  LCA: 287.275   |   Precision and Recall: 4.251%
+Accuracy of the network on the 100000 test images: 3.0%
+Max accuracy: 3.37%
+Epoch: [77]  [  0/312]  eta: 0:33:00  lr: 0.000043  sp_loss: 8.7114 (8.7114)  fam_loss: 4.2305 (4.2305)  manu_loss: 3.3075 (3.3075)  ot_loss: 1.9834 (1.9834)  base_loss: 16.2494 (16.2494)  time: 6.3475  data: 6.0599  max mem: 11381
+Epoch: [77]  [250/312]  eta: 0:00:27  lr: 0.000043  sp_loss: 8.0787 (7.9349)  fam_loss: 3.7852 (3.7837)  manu_loss: 3.0071 (2.8398)  ot_loss: 1.9521 (1.9415)  base_loss: 14.8778 (14.5584)  time: 0.3338  data: 0.0962  max mem: 11381
+Epoch: [77]  [311/312]  eta: 0:00:00  lr: 0.000043  sp_loss: 7.8264 (7.9383)  fam_loss: 3.8999 (3.7797)  manu_loss: 2.9078 (2.8396)  ot_loss: 1.9346 (1.9416)  base_loss: 14.6698 (14.5577)  time: 0.3236  data: 0.0941  max mem: 11381
+Epoch: [77] Total time: 0:02:15 (0.4335 s / it)
+Averaged stats: lr: 0.000043  sp_loss: 7.8264 (7.9383)  fam_loss: 3.8999 (3.7797)  manu_loss: 2.9078 (2.8396)  ot_loss: 1.9346 (1.9416)  base_loss: 14.6698 (14.5577)
+Test:  [  0/391]  eta: 0:43:32  sploss: 5.9011 (5.9011)  famloss: 1.8540 (1.8540)  manuloss: 1.1532 (1.1532)  acc1: 1.9531 (1.9531)  acc5: 14.0625 (14.0625)  family_acc1: 59.3750 (59.3750)  manu_acc1: 77.7344 (77.7344)  time: 6.6813  data: 6.3630  max mem: 11381
+Test:  [250/391]  eta: 0:01:01  sploss: 6.0873 (6.1316)  famloss: 2.0623 (2.0492)  manuloss: 1.5057 (1.4748)  acc1: 3.5156 (3.3538)  acc5: 15.6250 (16.1370)  family_acc1: 56.6406 (56.6142)  manu_acc1: 68.3594 (69.6869)  time: 0.3515  data: 0.1323  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.8012 (6.0581)  famloss: 1.8447 (1.9845)  manuloss: 1.0824 (1.3978)  acc1: 4.2969 (3.5150)  acc5: 17.5781 (16.5640)  family_acc1: 60.9375 (57.7150)  manu_acc1: 78.5156 (71.2470)  time: 0.4099  data: 0.2081  max mem: 11381
+Test: Total time: 0:02:50 (0.4356 s / it)
+* Acc@1 3.515 Acc@5 16.564 family@1 57.715 manu@1 71.247 sploss 6.058 fmloss 1.985 mfloss 1.398
+FPA: 3.113% | TICE: 95.157%   
+ wAP: 10.396  |  LCA: 285.191   |   Precision and Recall: 4.918%
+Accuracy of the network on the 100000 test images: 3.5%
+Max accuracy: 3.52%
+Epoch: [78]  [  0/312]  eta: 0:31:26  lr: 0.000040  sp_loss: 5.7425 (5.7425)  fam_loss: 2.6437 (2.6437)  manu_loss: 2.0947 (2.0947)  ot_loss: 1.7451 (1.7451)  base_loss: 10.4810 (10.4810)  time: 6.0479  data: 5.7571  max mem: 11381
+Epoch: [78]  [250/312]  eta: 0:00:27  lr: 0.000040  sp_loss: 8.4242 (7.8488)  fam_loss: 3.8837 (3.7316)  manu_loss: 2.9857 (2.8079)  ot_loss: 1.9541 (1.9274)  base_loss: 15.4850 (14.3883)  time: 0.3263  data: 0.0926  max mem: 11381
+Epoch: [78]  [311/312]  eta: 0:00:00  lr: 0.000040  sp_loss: 8.2526 (7.8714)  fam_loss: 3.9013 (3.7451)  manu_loss: 2.8256 (2.8142)  ot_loss: 1.9736 (1.9299)  base_loss: 14.9233 (14.4307)  time: 0.3199  data: 0.0893  max mem: 11381
+Epoch: [78] Total time: 0:02:14 (0.4304 s / it)
+Averaged stats: lr: 0.000040  sp_loss: 8.2526 (7.8714)  fam_loss: 3.9013 (3.7451)  manu_loss: 2.8256 (2.8142)  ot_loss: 1.9736 (1.9299)  base_loss: 14.9233 (14.4307)
+Test:  [  0/391]  eta: 0:40:40  sploss: 5.8785 (5.8785)  famloss: 1.8226 (1.8226)  manuloss: 1.1146 (1.1146)  acc1: 2.3438 (2.3438)  acc5: 13.6719 (13.6719)  family_acc1: 62.1094 (62.1094)  manu_acc1: 78.9062 (78.9062)  time: 6.2422  data: 5.8853  max mem: 11381
+Test:  [250/391]  eta: 0:01:03  sploss: 6.0600 (6.1119)  famloss: 2.0265 (2.0381)  manuloss: 1.4707 (1.4684)  acc1: 3.5156 (3.1857)  acc5: 17.1875 (17.1719)  family_acc1: 55.8594 (56.7807)  manu_acc1: 68.3594 (69.8254)  time: 0.3895  data: 0.1549  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.8044 (6.0414)  famloss: 1.8085 (1.9725)  manuloss: 1.1021 (1.3917)  acc1: 3.5156 (3.3490)  acc5: 17.9688 (17.6490)  family_acc1: 60.5469 (57.9650)  manu_acc1: 78.1250 (71.3860)  time: 0.4112  data: 0.2093  max mem: 11381
+Test: Total time: 0:02:51 (0.4396 s / it)
+* Acc@1 3.349 Acc@5 17.649 family@1 57.965 manu@1 71.386 sploss 6.041 fmloss 1.972 mfloss 1.392
+FPA: 2.988% | TICE: 95.502%   
+ wAP: 10.277  |  LCA: 285.953   |   Precision and Recall: 4.676%
+Accuracy of the network on the 100000 test images: 3.3%
+Max accuracy: 3.52%
+Epoch: [79]  [  0/312]  eta: 0:32:03  lr: 0.000038  sp_loss: 6.6615 (6.6615)  fam_loss: 3.0461 (3.0461)  manu_loss: 2.3587 (2.3587)  ot_loss: 1.6914 (1.6914)  base_loss: 12.0663 (12.0663)  time: 6.1662  data: 5.8858  max mem: 11381
+Epoch: [79]  [250/312]  eta: 0:00:29  lr: 0.000038  sp_loss: 8.5321 (7.9085)  fam_loss: 3.9825 (3.7629)  manu_loss: 3.0286 (2.8362)  ot_loss: 1.9951 (1.9348)  base_loss: 15.5963 (14.5076)  time: 0.3778  data: 0.1460  max mem: 11381
+Epoch: [79]  [311/312]  eta: 0:00:00  lr: 0.000038  sp_loss: 8.5595 (7.9175)  fam_loss: 4.0970 (3.7704)  manu_loss: 3.0515 (2.8385)  ot_loss: 1.9619 (1.9345)  base_loss: 15.7321 (14.5265)  time: 0.3980  data: 0.1731  max mem: 11381
+Epoch: [79] Total time: 0:02:26 (0.4695 s / it)
+Averaged stats: lr: 0.000038  sp_loss: 8.5595 (7.9175)  fam_loss: 4.0970 (3.7704)  manu_loss: 3.0515 (2.8385)  ot_loss: 1.9619 (1.9345)  base_loss: 15.7321 (14.5265)
+Test:  [  0/391]  eta: 0:42:04  sploss: 5.8429 (5.8429)  famloss: 1.8741 (1.8741)  manuloss: 1.2065 (1.2065)  acc1: 3.1250 (3.1250)  acc5: 15.2344 (15.2344)  family_acc1: 58.9844 (58.9844)  manu_acc1: 75.7812 (75.7812)  time: 6.4564  data: 6.2102  max mem: 11381
+Test:  [250/391]  eta: 0:01:03  sploss: 5.9901 (6.0467)  famloss: 2.0059 (2.0159)  manuloss: 1.4694 (1.4552)  acc1: 3.5156 (3.5732)  acc5: 17.5781 (17.8832)  family_acc1: 55.8594 (57.2133)  manu_acc1: 68.3594 (70.0293)  time: 0.3414  data: 0.1269  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.7498 (5.9692)  famloss: 1.7779 (1.9509)  manuloss: 1.1171 (1.3784)  acc1: 4.2969 (3.7660)  acc5: 19.9219 (18.4260)  family_acc1: 61.7188 (58.2820)  manu_acc1: 78.9062 (71.6250)  time: 0.3918  data: 0.1944  max mem: 11381
+Test: Total time: 0:03:02 (0.4657 s / it)
+* Acc@1 3.766 Acc@5 18.426 family@1 58.282 manu@1 71.625 sploss 5.969 fmloss 1.951 mfloss 1.378
+FPA: 3.387% | TICE: 94.911%   
+ wAP: 10.680  |  LCA: 284.396   |   Precision and Recall: 5.174%
+Accuracy of the network on the 100000 test images: 3.8%
+Max accuracy: 3.77%
+Epoch: [80]  [  0/312]  eta: 0:32:03  lr: 0.000035  sp_loss: 8.1865 (8.1865)  fam_loss: 3.9840 (3.9840)  manu_loss: 3.0594 (3.0594)  ot_loss: 1.9639 (1.9639)  base_loss: 15.2299 (15.2299)  time: 6.1644  data: 5.8970  max mem: 11381
+Epoch: [80]  [250/312]  eta: 0:00:28  lr: 0.000035  sp_loss: 8.3264 (7.8222)  fam_loss: 4.0603 (3.7270)  manu_loss: 3.0081 (2.8079)  ot_loss: 1.9844 (1.9270)  base_loss: 15.5287 (14.3571)  time: 0.5245  data: 0.2876  max mem: 11381
+Epoch: [80]  [311/312]  eta: 0:00:00  lr: 0.000035  sp_loss: 7.8044 (7.8437)  fam_loss: 3.6977 (3.7404)  manu_loss: 2.7738 (2.8187)  ot_loss: 1.8965 (1.9278)  base_loss: 14.2588 (14.4028)  time: 0.4246  data: 0.1975  max mem: 11381
+Epoch: [80] Total time: 0:02:22 (0.4564 s / it)
+Averaged stats: lr: 0.000035  sp_loss: 7.8044 (7.8437)  fam_loss: 3.6977 (3.7404)  manu_loss: 2.7738 (2.8187)  ot_loss: 1.8965 (1.9278)  base_loss: 14.2588 (14.4028)
+Test:  [  0/391]  eta: 0:45:25  sploss: 5.8524 (5.8524)  famloss: 1.8312 (1.8312)  manuloss: 1.1563 (1.1563)  acc1: 3.5156 (3.5156)  acc5: 14.0625 (14.0625)  family_acc1: 59.3750 (59.3750)  manu_acc1: 75.7812 (75.7812)  time: 6.9705  data: 6.7167  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 6.0278 (6.0794)  famloss: 2.0320 (2.0326)  manuloss: 1.4944 (1.4678)  acc1: 3.1250 (3.2013)  acc5: 17.1875 (17.2513)  family_acc1: 55.4688 (56.8725)  manu_acc1: 68.7500 (69.9250)  time: 0.3399  data: 0.1232  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.7775 (6.0021)  famloss: 1.7941 (1.9679)  manuloss: 1.0861 (1.3904)  acc1: 3.9062 (3.4170)  acc5: 18.7500 (17.7300)  family_acc1: 61.3281 (58.0940)  manu_acc1: 78.1250 (71.4870)  time: 0.4236  data: 0.2189  max mem: 11381
+Test: Total time: 0:02:45 (0.4244 s / it)
+* Acc@1 3.417 Acc@5 17.730 family@1 58.094 manu@1 71.487 sploss 6.002 fmloss 1.968 mfloss 1.390
+FPA: 3.042% | TICE: 95.364%   
+ wAP: 10.352  |  LCA: 285.638   |   Precision and Recall: 4.777%
+Accuracy of the network on the 100000 test images: 3.4%
+Max accuracy: 3.77%
+Epoch: [81]  [  0/312]  eta: 0:33:23  lr: 0.000033  sp_loss: 8.6251 (8.6251)  fam_loss: 4.2374 (4.2374)  manu_loss: 3.3731 (3.3731)  ot_loss: 2.0742 (2.0742)  base_loss: 16.2356 (16.2356)  time: 6.4207  data: 6.1485  max mem: 11381
+Epoch: [81]  [250/312]  eta: 0:00:27  lr: 0.000033  sp_loss: 7.7221 (7.7782)  fam_loss: 3.7192 (3.7126)  manu_loss: 2.8663 (2.7962)  ot_loss: 1.9355 (1.9193)  base_loss: 14.2000 (14.2870)  time: 0.3959  data: 0.1472  max mem: 11381
+Epoch: [81]  [311/312]  eta: 0:00:00  lr: 0.000033  sp_loss: 8.0484 (7.7513)  fam_loss: 3.9593 (3.6938)  manu_loss: 2.8760 (2.7814)  ot_loss: 1.9180 (1.9163)  base_loss: 14.8716 (14.2265)  time: 0.3243  data: 0.0941  max mem: 11381
+Epoch: [81] Total time: 0:02:17 (0.4392 s / it)
+Averaged stats: lr: 0.000033  sp_loss: 8.0484 (7.7513)  fam_loss: 3.9593 (3.6938)  manu_loss: 2.8760 (2.7814)  ot_loss: 1.9180 (1.9163)  base_loss: 14.8716 (14.2265)
+Test:  [  0/391]  eta: 0:42:00  sploss: 5.7616 (5.7616)  famloss: 1.7935 (1.7935)  manuloss: 1.1286 (1.1286)  acc1: 2.7344 (2.7344)  acc5: 15.2344 (15.2344)  family_acc1: 61.3281 (61.3281)  manu_acc1: 76.5625 (76.5625)  time: 6.4466  data: 6.2085  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 5.9517 (5.9813)  famloss: 2.0292 (2.0129)  manuloss: 1.5052 (1.4598)  acc1: 4.2969 (3.8798)  acc5: 19.1406 (18.8714)  family_acc1: 56.2500 (57.2351)  manu_acc1: 68.3594 (70.0713)  time: 0.3410  data: 0.1173  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6666 (5.9026)  famloss: 1.7576 (1.9487)  manuloss: 1.0719 (1.3821)  acc1: 4.6875 (4.0540)  acc5: 20.7031 (19.4090)  family_acc1: 61.3281 (58.3820)  manu_acc1: 78.9062 (71.6520)  time: 0.4275  data: 0.2134  max mem: 11381
+Test: Total time: 0:02:46 (0.4253 s / it)
+* Acc@1 4.054 Acc@5 19.409 family@1 58.382 manu@1 71.652 sploss 5.903 fmloss 1.949 mfloss 1.382
+FPA: 3.619% | TICE: 94.518%   
+ wAP: 10.944  |  LCA: 283.191   |   Precision and Recall: 5.548%
+Accuracy of the network on the 100000 test images: 4.1%
+Max accuracy: 4.05%
+Epoch: [82]  [  0/312]  eta: 0:30:43  lr: 0.000031  sp_loss: 6.6871 (6.6871)  fam_loss: 3.1615 (3.1615)  manu_loss: 2.3636 (2.3636)  ot_loss: 1.7539 (1.7539)  base_loss: 12.2122 (12.2122)  time: 5.9096  data: 5.6329  max mem: 11381
+Epoch: [82]  [250/312]  eta: 0:00:30  lr: 0.000031  sp_loss: 7.9662 (7.7586)  fam_loss: 3.8629 (3.7019)  manu_loss: 2.9036 (2.7851)  ot_loss: 1.9512 (1.9178)  base_loss: 14.6886 (14.2457)  time: 0.4365  data: 0.1852  max mem: 11381
+Epoch: [82]  [311/312]  eta: 0:00:00  lr: 0.000031  sp_loss: 6.7776 (7.7602)  fam_loss: 3.3181 (3.7058)  manu_loss: 2.5025 (2.7889)  ot_loss: 1.7959 (1.9178)  base_loss: 12.5639 (14.2549)  time: 0.4724  data: 0.2333  max mem: 11381
+Epoch: [82] Total time: 0:02:33 (0.4904 s / it)
+Averaged stats: lr: 0.000031  sp_loss: 6.7776 (7.7602)  fam_loss: 3.3181 (3.7058)  manu_loss: 2.5025 (2.7889)  ot_loss: 1.7959 (1.9178)  base_loss: 12.5639 (14.2549)
+Test:  [  0/391]  eta: 0:40:48  sploss: 5.6676 (5.6676)  famloss: 1.7883 (1.7883)  manuloss: 1.1656 (1.1656)  acc1: 3.1250 (3.1250)  acc5: 18.7500 (18.7500)  family_acc1: 59.7656 (59.7656)  manu_acc1: 75.7812 (75.7812)  time: 6.2628  data: 5.9400  max mem: 11381
+Test:  [250/391]  eta: 0:01:16  sploss: 5.8346 (5.8713)  famloss: 1.9866 (1.9899)  manuloss: 1.4915 (1.4441)  acc1: 3.9062 (4.3327)  acc5: 21.8750 (21.9341)  family_acc1: 56.2500 (57.6257)  manu_acc1: 68.7500 (70.2347)  time: 0.5505  data: 0.3404  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.5422 (5.7933)  famloss: 1.7576 (1.9265)  manuloss: 1.0694 (1.3670)  acc1: 5.0781 (4.5600)  acc5: 24.6094 (22.5320)  family_acc1: 61.7188 (58.7070)  manu_acc1: 79.2969 (71.8500)  time: 0.4476  data: 0.2486  max mem: 11381
+Test: Total time: 0:03:26 (0.5294 s / it)
+* Acc@1 4.560 Acc@5 22.532 family@1 58.707 manu@1 71.850 sploss 5.793 fmloss 1.927 mfloss 1.367
+FPA: 4.056% | TICE: 93.836%   
+ wAP: 11.425  |  LCA: 281.230   |   Precision and Recall: 6.192%
+Accuracy of the network on the 100000 test images: 4.6%
+Max accuracy: 4.56%
+Epoch: [83]  [  0/312]  eta: 0:36:14  lr: 0.000029  sp_loss: 8.0767 (8.0767)  fam_loss: 3.7678 (3.7678)  manu_loss: 2.7434 (2.7434)  ot_loss: 1.9062 (1.9062)  base_loss: 14.5879 (14.5879)  time: 6.9694  data: 6.7028  max mem: 11381
+Epoch: [83]  [250/312]  eta: 0:00:27  lr: 0.000029  sp_loss: 7.2170 (7.6087)  fam_loss: 3.4082 (3.6330)  manu_loss: 2.5357 (2.7231)  ot_loss: 1.8242 (1.8916)  base_loss: 13.1383 (13.9647)  time: 0.3421  data: 0.1098  max mem: 11381
+Epoch: [83]  [311/312]  eta: 0:00:00  lr: 0.000029  sp_loss: 7.7258 (7.6499)  fam_loss: 3.7012 (3.6501)  manu_loss: 2.7600 (2.7409)  ot_loss: 1.9062 (1.8960)  base_loss: 14.1538 (14.0409)  time: 0.3263  data: 0.0996  max mem: 11381
+Epoch: [83] Total time: 0:02:18 (0.4432 s / it)
+Averaged stats: lr: 0.000029  sp_loss: 7.7258 (7.6499)  fam_loss: 3.7012 (3.6501)  manu_loss: 2.7600 (2.7409)  ot_loss: 1.9062 (1.8960)  base_loss: 14.1538 (14.0409)
+Test:  [  0/391]  eta: 0:43:33  sploss: 5.7362 (5.7362)  famloss: 1.8035 (1.8035)  manuloss: 1.1436 (1.1436)  acc1: 2.3438 (2.3438)  acc5: 15.6250 (15.6250)  family_acc1: 58.9844 (58.9844)  manu_acc1: 76.1719 (76.1719)  time: 6.6840  data: 6.3704  max mem: 11381
+Test:  [250/391]  eta: 0:01:15  sploss: 5.8959 (5.9375)  famloss: 2.0006 (1.9988)  manuloss: 1.4949 (1.4453)  acc1: 3.5156 (3.6868)  acc5: 21.0938 (20.3670)  family_acc1: 55.4688 (57.3487)  manu_acc1: 69.1406 (70.1771)  time: 0.4130  data: 0.2001  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6412 (5.8597)  famloss: 1.7552 (1.9334)  manuloss: 1.0583 (1.3671)  acc1: 4.6875 (3.9100)  acc5: 23.0469 (20.9430)  family_acc1: 61.7188 (58.5180)  manu_acc1: 78.1250 (71.8190)  time: 0.4220  data: 0.2237  max mem: 11381
+Test: Total time: 0:03:25 (0.5265 s / it)
+* Acc@1 3.910 Acc@5 20.943 family@1 58.518 manu@1 71.819 sploss 5.860 fmloss 1.933 mfloss 1.367
+FPA: 3.490% | TICE: 94.799%   
+ wAP: 10.834  |  LCA: 283.805   |   Precision and Recall: 5.365%
+Accuracy of the network on the 100000 test images: 3.9%
+Max accuracy: 4.56%
+Epoch: [84]  [  0/312]  eta: 0:31:40  lr: 0.000027  sp_loss: 6.9251 (6.9251)  fam_loss: 3.2643 (3.2643)  manu_loss: 2.4133 (2.4133)  ot_loss: 1.7686 (1.7686)  base_loss: 12.6028 (12.6028)  time: 6.0902  data: 5.8190  max mem: 11381
+Epoch: [84]  [250/312]  eta: 0:00:32  lr: 0.000027  sp_loss: 7.9297 (7.8530)  fam_loss: 3.8571 (3.7603)  manu_loss: 2.9419 (2.8242)  ot_loss: 1.9102 (1.9242)  base_loss: 14.8581 (14.4376)  time: 0.4012  data: 0.1632  max mem: 11381
+Epoch: [84]  [311/312]  eta: 0:00:00  lr: 0.000027  sp_loss: 8.5224 (7.8118)  fam_loss: 4.0109 (3.7362)  manu_loss: 3.0115 (2.8087)  ot_loss: 1.9258 (1.9172)  base_loss: 15.5994 (14.3567)  time: 0.3754  data: 0.1506  max mem: 11381
+Epoch: [84] Total time: 0:02:41 (0.5163 s / it)
+Averaged stats: lr: 0.000027  sp_loss: 8.5224 (7.8118)  fam_loss: 4.0109 (3.7362)  manu_loss: 3.0115 (2.8087)  ot_loss: 1.9258 (1.9172)  base_loss: 15.5994 (14.3567)
+Test:  [  0/391]  eta: 0:44:23  sploss: 5.7638 (5.7638)  famloss: 1.8378 (1.8378)  manuloss: 1.1907 (1.1907)  acc1: 2.3438 (2.3438)  acc5: 14.4531 (14.4531)  family_acc1: 58.9844 (58.9844)  manu_acc1: 76.9531 (76.9531)  time: 6.8109  data: 6.5763  max mem: 11381
+Test:  [250/391]  eta: 0:01:07  sploss: 5.9219 (5.9700)  famloss: 2.0225 (2.0043)  manuloss: 1.4780 (1.4551)  acc1: 3.9062 (3.6355)  acc5: 19.1406 (18.6271)  family_acc1: 56.2500 (57.2958)  manu_acc1: 68.7500 (70.1335)  time: 0.5363  data: 0.3140  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6965 (5.8944)  famloss: 1.7584 (1.9384)  manuloss: 1.0786 (1.3764)  acc1: 4.6875 (3.8440)  acc5: 20.3125 (19.1240)  family_acc1: 60.9375 (58.4640)  manu_acc1: 79.2969 (71.7960)  time: 0.4034  data: 0.2015  max mem: 11381
+Test: Total time: 0:03:01 (0.4647 s / it)
+* Acc@1 3.844 Acc@5 19.124 family@1 58.464 manu@1 71.796 sploss 5.894 fmloss 1.938 mfloss 1.376
+FPA: 3.444% | TICE: 94.884%   
+ wAP: 10.771  |  LCA: 284.157   |   Precision and Recall: 5.255%
+Accuracy of the network on the 100000 test images: 3.8%
+Max accuracy: 4.56%
+Epoch: [85]  [  0/312]  eta: 0:33:50  lr: 0.000025  sp_loss: 7.2175 (7.2175)  fam_loss: 3.4700 (3.4700)  manu_loss: 2.6664 (2.6664)  ot_loss: 1.8291 (1.8291)  base_loss: 13.3538 (13.3538)  time: 6.5072  data: 6.1649  max mem: 11381
+Epoch: [85]  [250/312]  eta: 0:00:28  lr: 0.000025  sp_loss: 7.6697 (7.8265)  fam_loss: 3.5946 (3.7456)  manu_loss: 2.6650 (2.8166)  ot_loss: 1.8750 (1.9161)  base_loss: 13.9362 (14.3886)  time: 0.5212  data: 0.2874  max mem: 11381
+Epoch: [85]  [311/312]  eta: 0:00:00  lr: 0.000025  sp_loss: 8.0893 (7.8403)  fam_loss: 3.9775 (3.7502)  manu_loss: 2.9505 (2.8220)  ot_loss: 1.9414 (1.9164)  base_loss: 15.0619 (14.4126)  time: 0.4037  data: 0.1782  max mem: 11381
+Epoch: [85] Total time: 0:02:21 (0.4545 s / it)
+Averaged stats: lr: 0.000025  sp_loss: 8.0893 (7.8403)  fam_loss: 3.9775 (3.7502)  manu_loss: 2.9505 (2.8220)  ot_loss: 1.9414 (1.9164)  base_loss: 15.0619 (14.4126)
+Test:  [  0/391]  eta: 0:40:07  sploss: 5.6826 (5.6826)  famloss: 1.7692 (1.7692)  manuloss: 1.1422 (1.1422)  acc1: 2.7344 (2.7344)  acc5: 15.6250 (15.6250)  family_acc1: 57.8125 (57.8125)  manu_acc1: 77.3438 (77.3438)  time: 6.1560  data: 5.9045  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 5.8478 (5.8913)  famloss: 1.9609 (1.9734)  manuloss: 1.4698 (1.4332)  acc1: 3.9062 (4.0728)  acc5: 21.4844 (20.7389)  family_acc1: 56.6406 (57.6849)  manu_acc1: 68.7500 (70.4199)  time: 0.3302  data: 0.1161  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.5857 (5.8147)  famloss: 1.7494 (1.9102)  manuloss: 1.0767 (1.3567)  acc1: 5.0781 (4.3040)  acc5: 22.6562 (21.3350)  family_acc1: 61.7188 (58.7900)  manu_acc1: 78.9062 (72.0700)  time: 0.4144  data: 0.2136  max mem: 11381
+Test: Total time: 0:02:46 (0.4259 s / it)
+* Acc@1 4.304 Acc@5 21.335 family@1 58.790 manu@1 72.070 sploss 5.815 fmloss 1.910 mfloss 1.357
+FPA: 3.853% | TICE: 94.251%   
+ wAP: 11.213  |  LCA: 282.421   |   Precision and Recall: 5.807%
+Accuracy of the network on the 100000 test images: 4.3%
+Max accuracy: 4.56%
+Epoch: [86]  [  0/312]  eta: 0:32:38  lr: 0.000023  sp_loss: 6.0434 (6.0434)  fam_loss: 2.7734 (2.7734)  manu_loss: 2.1899 (2.1899)  ot_loss: 1.7197 (1.7197)  base_loss: 11.0067 (11.0067)  time: 6.2769  data: 5.9859  max mem: 11381
+Epoch: [86]  [250/312]  eta: 0:00:26  lr: 0.000023  sp_loss: 7.8843 (7.7602)  fam_loss: 3.8375 (3.7261)  manu_loss: 2.7916 (2.7976)  ot_loss: 1.9238 (1.9070)  base_loss: 14.9122 (14.2839)  time: 0.3228  data: 0.0911  max mem: 11381
+Epoch: [86]  [311/312]  eta: 0:00:00  lr: 0.000023  sp_loss: 7.9595 (7.8040)  fam_loss: 3.8187 (3.7452)  manu_loss: 2.7768 (2.8107)  ot_loss: 1.8975 (1.9121)  base_loss: 14.5177 (14.3599)  time: 0.3140  data: 0.0870  max mem: 11381
+Epoch: [86] Total time: 0:02:09 (0.4151 s / it)
+Averaged stats: lr: 0.000023  sp_loss: 7.9595 (7.8040)  fam_loss: 3.8187 (3.7452)  manu_loss: 2.7768 (2.8107)  ot_loss: 1.8975 (1.9121)  base_loss: 14.5177 (14.3599)
+Test:  [  0/391]  eta: 0:41:50  sploss: 5.7049 (5.7049)  famloss: 1.8029 (1.8029)  manuloss: 1.1350 (1.1350)  acc1: 2.7344 (2.7344)  acc5: 17.1875 (17.1875)  family_acc1: 59.7656 (59.7656)  manu_acc1: 76.5625 (76.5625)  time: 6.4213  data: 6.1147  max mem: 11381
+Test:  [250/391]  eta: 0:01:02  sploss: 5.8645 (5.9052)  famloss: 1.9657 (1.9763)  manuloss: 1.4514 (1.4366)  acc1: 3.9062 (3.9950)  acc5: 20.7031 (20.0822)  family_acc1: 56.2500 (57.7347)  manu_acc1: 68.3594 (70.4183)  time: 0.3302  data: 0.1118  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6096 (5.8305)  famloss: 1.7593 (1.9118)  manuloss: 1.1038 (1.3580)  acc1: 5.0781 (4.1370)  acc5: 20.7031 (20.6830)  family_acc1: 61.3281 (58.8850)  manu_acc1: 78.5156 (72.0700)  time: 0.4257  data: 0.2107  max mem: 11381
+Test: Total time: 0:02:48 (0.4311 s / it)
+* Acc@1 4.137 Acc@5 20.683 family@1 58.885 manu@1 72.070 sploss 5.831 fmloss 1.912 mfloss 1.358
+FPA: 3.727% | TICE: 94.485%   
+ wAP: 11.076  |  LCA: 282.999   |   Precision and Recall: 5.622%
+Accuracy of the network on the 100000 test images: 4.1%
+Max accuracy: 4.56%
+Epoch: [87]  [  0/312]  eta: 0:35:31  lr: 0.000021  sp_loss: 7.3598 (7.3598)  fam_loss: 3.4043 (3.4043)  manu_loss: 2.5863 (2.5863)  ot_loss: 1.8184 (1.8184)  base_loss: 13.3504 (13.3504)  time: 6.8324  data: 6.5660  max mem: 11381
+Epoch: [87]  [250/312]  eta: 0:00:25  lr: 0.000021  sp_loss: 7.8930 (7.7398)  fam_loss: 3.8313 (3.7032)  manu_loss: 2.9028 (2.7888)  ot_loss: 1.9297 (1.9054)  base_loss: 14.5573 (14.2318)  time: 0.3376  data: 0.1031  max mem: 11381
+Epoch: [87]  [311/312]  eta: 0:00:00  lr: 0.000021  sp_loss: 8.1374 (7.7354)  fam_loss: 3.8441 (3.6975)  manu_loss: 2.8672 (2.7825)  ot_loss: 1.9277 (1.9053)  base_loss: 14.9970 (14.2154)  time: 0.3199  data: 0.0910  max mem: 11381
+Epoch: [87] Total time: 0:02:08 (0.4133 s / it)
+Averaged stats: lr: 0.000021  sp_loss: 8.1374 (7.7354)  fam_loss: 3.8441 (3.6975)  manu_loss: 2.8672 (2.7825)  ot_loss: 1.9277 (1.9053)  base_loss: 14.9970 (14.2154)
+Test:  [  0/391]  eta: 0:55:12  sploss: 5.6867 (5.6867)  famloss: 1.8177 (1.8177)  manuloss: 1.1842 (1.1842)  acc1: 3.5156 (3.5156)  acc5: 17.9688 (17.9688)  family_acc1: 59.7656 (59.7656)  manu_acc1: 76.1719 (76.1719)  time: 8.4721  data: 8.2463  max mem: 11381
+Test:  [250/391]  eta: 0:01:20  sploss: 5.8326 (5.8768)  famloss: 1.9765 (1.9716)  manuloss: 1.4504 (1.4299)  acc1: 4.2969 (4.0183)  acc5: 19.9219 (20.4837)  family_acc1: 57.8125 (57.7658)  manu_acc1: 68.7500 (70.6269)  time: 0.4540  data: 0.2367  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.5823 (5.8026)  famloss: 1.7346 (1.9072)  manuloss: 1.0593 (1.3519)  acc1: 4.6875 (4.2140)  acc5: 21.8750 (21.0530)  family_acc1: 62.1094 (58.9200)  manu_acc1: 78.5156 (72.2160)  time: 0.4078  data: 0.2051  max mem: 11381
+Test: Total time: 0:03:33 (0.5452 s / it)
+* Acc@1 4.214 Acc@5 21.053 family@1 58.920 manu@1 72.216 sploss 5.803 fmloss 1.907 mfloss 1.352
+FPA: 3.783% | TICE: 94.438%   
+ wAP: 11.150  |  LCA: 282.813   |   Precision and Recall: 5.695%
+Accuracy of the network on the 100000 test images: 4.2%
+Max accuracy: 4.56%
+Epoch: [88]  [  0/312]  eta: 0:32:12  lr: 0.000020  sp_loss: 6.3587 (6.3587)  fam_loss: 2.9814 (2.9814)  manu_loss: 2.1610 (2.1610)  ot_loss: 1.8027 (1.8027)  base_loss: 11.5010 (11.5010)  time: 6.1947  data: 5.9245  max mem: 11381
+Epoch: [88]  [250/312]  eta: 0:00:30  lr: 0.000020  sp_loss: 7.9671 (7.6938)  fam_loss: 3.7796 (3.6709)  manu_loss: 2.8785 (2.7568)  ot_loss: 1.9092 (1.8970)  base_loss: 14.8400 (14.1216)  time: 0.5618  data: 0.3314  max mem: 11381
+Epoch: [88]  [311/312]  eta: 0:00:00  lr: 0.000020  sp_loss: 7.2851 (7.6699)  fam_loss: 3.6255 (3.6636)  manu_loss: 2.6701 (2.7516)  ot_loss: 1.8740 (1.8960)  base_loss: 13.6001 (14.0852)  time: 0.4899  data: 0.2637  max mem: 11381
+Epoch: [88] Total time: 0:02:34 (0.4950 s / it)
+Averaged stats: lr: 0.000020  sp_loss: 7.2851 (7.6699)  fam_loss: 3.6255 (3.6636)  manu_loss: 2.6701 (2.7516)  ot_loss: 1.8740 (1.8960)  base_loss: 13.6001 (14.0852)
+Test:  [  0/391]  eta: 0:39:08  sploss: 5.6259 (5.6259)  famloss: 1.7787 (1.7787)  manuloss: 1.1067 (1.1067)  acc1: 2.7344 (2.7344)  acc5: 17.1875 (17.1875)  family_acc1: 61.7188 (61.7188)  manu_acc1: 77.7344 (77.7344)  time: 6.0062  data: 5.7272  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 5.7734 (5.8326)  famloss: 1.9521 (1.9632)  manuloss: 1.4615 (1.4252)  acc1: 4.2969 (4.3405)  acc5: 21.4844 (21.6478)  family_acc1: 57.0312 (57.9650)  manu_acc1: 69.5312 (70.7280)  time: 0.3330  data: 0.1177  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.5288 (5.7533)  famloss: 1.7437 (1.8982)  manuloss: 1.0777 (1.3481)  acc1: 5.0781 (4.5810)  acc5: 23.8281 (22.3110)  family_acc1: 61.2500 (59.1290)  manu_acc1: 78.5156 (72.3050)  time: 0.4224  data: 0.2194  max mem: 11381
+Test: Total time: 0:02:46 (0.4261 s / it)
+* Acc@1 4.581 Acc@5 22.311 family@1 59.129 manu@1 72.305 sploss 5.753 fmloss 1.898 mfloss 1.348
+FPA: 4.106% | TICE: 93.940%   
+ wAP: 11.495  |  LCA: 281.363   |   Precision and Recall: 6.161%
+Accuracy of the network on the 100000 test images: 4.6%
+Max accuracy: 4.58%
+Epoch: [89]  [  0/312]  eta: 0:32:07  lr: 0.000018  sp_loss: 8.9560 (8.9560)  fam_loss: 4.2425 (4.2425)  manu_loss: 3.1781 (3.1781)  ot_loss: 2.0059 (2.0059)  base_loss: 16.3765 (16.3765)  time: 6.1765  data: 5.8916  max mem: 11381
+Epoch: [89]  [250/312]  eta: 0:00:27  lr: 0.000018  sp_loss: 8.0317 (7.7702)  fam_loss: 3.9016 (3.7284)  manu_loss: 2.8323 (2.7921)  ot_loss: 1.9121 (1.9035)  base_loss: 14.8567 (14.2907)  time: 0.5335  data: 0.3018  max mem: 11381
+Epoch: [89]  [311/312]  eta: 0:00:00  lr: 0.000018  sp_loss: 7.7259 (7.7450)  fam_loss: 3.7354 (3.7166)  manu_loss: 2.7228 (2.7842)  ot_loss: 1.9307 (1.9030)  base_loss: 14.4764 (14.2458)  time: 0.4597  data: 0.2346  max mem: 11381
+Epoch: [89] Total time: 0:02:17 (0.4410 s / it)
+Averaged stats: lr: 0.000018  sp_loss: 7.7259 (7.7450)  fam_loss: 3.7354 (3.7166)  manu_loss: 2.7228 (2.7842)  ot_loss: 1.9307 (1.9030)  base_loss: 14.4764 (14.2458)
+Test:  [  0/391]  eta: 0:41:10  sploss: 5.8776 (5.8776)  famloss: 1.8607 (1.8607)  manuloss: 1.1916 (1.1916)  acc1: 2.7344 (2.7344)  acc5: 12.8906 (12.8906)  family_acc1: 58.2031 (58.2031)  manu_acc1: 76.5625 (76.5625)  time: 6.3183  data: 6.0287  max mem: 11381
+Test:  [250/391]  eta: 0:01:00  sploss: 6.0474 (6.1009)  famloss: 2.0400 (2.0324)  manuloss: 1.4720 (1.4687)  acc1: 3.1250 (3.1841)  acc5: 15.6250 (15.6359)  family_acc1: 56.2500 (57.1371)  manu_acc1: 68.7500 (70.1257)  time: 0.3324  data: 0.1126  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.8060 (6.0284)  famloss: 1.8039 (1.9655)  manuloss: 1.1024 (1.3906)  acc1: 3.5156 (3.3050)  acc5: 18.3594 (16.1420)  family_acc1: 61.2500 (58.3320)  manu_acc1: 78.1250 (71.6980)  time: 0.4162  data: 0.2105  max mem: 11381
+Test: Total time: 0:02:50 (0.4356 s / it)
+* Acc@1 3.305 Acc@5 16.142 family@1 58.332 manu@1 71.698 sploss 6.028 fmloss 1.966 mfloss 1.391
+FPA: 2.981% | TICE: 95.762%   
+ wAP: 10.282  |  LCA: 286.441   |   Precision and Recall: 4.531%
+Accuracy of the network on the 100000 test images: 3.3%
+Max accuracy: 4.58%
+Epoch: [90]  [  0/312]  eta: 0:32:02  lr: 0.000017  sp_loss: 6.3173 (6.3173)  fam_loss: 2.9851 (2.9851)  manu_loss: 2.2159 (2.2159)  ot_loss: 1.6973 (1.6973)  base_loss: 11.5184 (11.5184)  time: 6.1630  data: 5.8822  max mem: 11381
+Epoch: [90]  [250/312]  eta: 0:00:27  lr: 0.000017  sp_loss: 7.4553 (7.6742)  fam_loss: 3.6565 (3.6788)  manu_loss: 2.6259 (2.7596)  ot_loss: 1.8418 (1.8911)  base_loss: 13.8856 (14.1127)  time: 0.4848  data: 0.2343  max mem: 11381
+Epoch: [90]  [311/312]  eta: 0:00:00  lr: 0.000017  sp_loss: 7.5126 (7.6480)  fam_loss: 3.5667 (3.6641)  manu_loss: 2.7738 (2.7485)  ot_loss: 1.8643 (1.8888)  base_loss: 13.8873 (14.0606)  time: 0.4209  data: 0.1820  max mem: 11381
+Epoch: [90] Total time: 0:02:15 (0.4353 s / it)
+Averaged stats: lr: 0.000017  sp_loss: 7.5126 (7.6480)  fam_loss: 3.5667 (3.6641)  manu_loss: 2.7738 (2.7485)  ot_loss: 1.8643 (1.8888)  base_loss: 13.8873 (14.0606)
+Test:  [  0/391]  eta: 0:49:09  sploss: 5.6502 (5.6502)  famloss: 1.7924 (1.7924)  manuloss: 1.1303 (1.1303)  acc1: 3.1250 (3.1250)  acc5: 18.3594 (18.3594)  family_acc1: 58.5938 (58.5938)  manu_acc1: 75.7812 (75.7812)  time: 7.5427  data: 7.1760  max mem: 11381
+Test:  [250/391]  eta: 0:01:19  sploss: 5.8182 (5.8694)  famloss: 1.9787 (1.9751)  manuloss: 1.4665 (1.4316)  acc1: 3.9062 (4.0401)  acc5: 20.3125 (20.7156)  family_acc1: 57.4219 (57.8872)  manu_acc1: 69.1406 (70.5491)  time: 0.5108  data: 0.2403  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.5683 (5.7953)  famloss: 1.7708 (1.9104)  manuloss: 1.0794 (1.3544)  acc1: 4.6875 (4.2640)  acc5: 21.8750 (21.2930)  family_acc1: 62.1094 (58.9850)  manu_acc1: 78.5156 (72.1680)  time: 0.4533  data: 0.2406  max mem: 11381
+Test: Total time: 0:03:33 (0.5467 s / it)
+* Acc@1 4.264 Acc@5 21.293 family@1 58.985 manu@1 72.168 sploss 5.795 fmloss 1.910 mfloss 1.354
+FPA: 3.821% | TICE: 94.394%   
+ wAP: 11.199  |  LCA: 282.761   |   Precision and Recall: 5.726%
+Accuracy of the network on the 100000 test images: 4.3%
+Max accuracy: 4.58%
+Epoch: [91]  [  0/312]  eta: 0:32:54  lr: 0.000016  sp_loss: 7.0117 (7.0117)  fam_loss: 3.3769 (3.3769)  manu_loss: 2.3303 (2.3303)  ot_loss: 1.8428 (1.8428)  base_loss: 12.7189 (12.7189)  time: 6.3291  data: 6.0382  max mem: 11381
+Epoch: [91]  [250/312]  eta: 0:00:30  lr: 0.000016  sp_loss: 8.0119 (7.7111)  fam_loss: 3.8228 (3.6922)  manu_loss: 2.7833 (2.7676)  ot_loss: 1.9258 (1.8980)  base_loss: 14.5389 (14.1709)  time: 0.4757  data: 0.2249  max mem: 11381
+Epoch: [91]  [311/312]  eta: 0:00:00  lr: 0.000016  sp_loss: 8.3017 (7.7378)  fam_loss: 3.8689 (3.7061)  manu_loss: 2.8784 (2.7800)  ot_loss: 1.9307 (1.9006)  base_loss: 15.0619 (14.2239)  time: 0.4650  data: 0.2284  max mem: 11381
+Epoch: [91] Total time: 0:02:32 (0.4900 s / it)
+Averaged stats: lr: 0.000016  sp_loss: 8.3017 (7.7378)  fam_loss: 3.8689 (3.7061)  manu_loss: 2.8784 (2.7800)  ot_loss: 1.9307 (1.9006)  base_loss: 15.0619 (14.2239)
+Test:  [  0/391]  eta: 0:47:41  sploss: 5.7740 (5.7740)  famloss: 1.8155 (1.8155)  manuloss: 1.1764 (1.1764)  acc1: 3.5156 (3.5156)  acc5: 15.2344 (15.2344)  family_acc1: 58.9844 (58.9844)  manu_acc1: 76.1719 (76.1719)  time: 7.3189  data: 7.0353  max mem: 11381
+Test:  [250/391]  eta: 0:01:23  sploss: 5.9295 (5.9897)  famloss: 2.0021 (2.0043)  manuloss: 1.4824 (1.4523)  acc1: 3.9062 (3.6417)  acc5: 17.1875 (17.5283)  family_acc1: 57.0312 (57.7596)  manu_acc1: 69.1406 (70.4074)  time: 0.6332  data: 0.4217  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6957 (5.9154)  famloss: 1.7888 (1.9390)  manuloss: 1.1141 (1.3750)  acc1: 3.9062 (3.8200)  acc5: 19.5312 (18.0320)  family_acc1: 61.7188 (58.8630)  manu_acc1: 78.7500 (71.9720)  time: 0.3338  data: 0.1260  max mem: 11381
+Test: Total time: 0:03:42 (0.5699 s / it)
+* Acc@1 3.820 Acc@5 18.032 family@1 58.863 manu@1 71.972 sploss 5.915 fmloss 1.939 mfloss 1.375
+FPA: 3.423% | TICE: 95.071%   
+ wAP: 10.792  |  LCA: 284.570   |   Precision and Recall: 5.149%
+Accuracy of the network on the 100000 test images: 3.8%
+Max accuracy: 4.58%
+Epoch: [92]  [  0/312]  eta: 0:37:03  lr: 0.000015  sp_loss: 8.7591 (8.7591)  fam_loss: 4.6152 (4.6152)  manu_loss: 3.3804 (3.3804)  ot_loss: 2.0723 (2.0723)  base_loss: 16.7546 (16.7546)  time: 7.1266  data: 6.8470  max mem: 11381
+Epoch: [92]  [250/312]  eta: 0:00:30  lr: 0.000015  sp_loss: 7.1682 (7.5868)  fam_loss: 3.4226 (3.6328)  manu_loss: 2.6805 (2.7241)  ot_loss: 1.8447 (1.8842)  base_loss: 13.2053 (13.9437)  time: 0.3443  data: 0.0924  max mem: 11381
+Epoch: [92]  [311/312]  eta: 0:00:00  lr: 0.000015  sp_loss: 7.5904 (7.6240)  fam_loss: 3.6068 (3.6442)  manu_loss: 2.8245 (2.7328)  ot_loss: 1.8848 (1.8871)  base_loss: 14.0153 (14.0010)  time: 0.3354  data: 0.1045  max mem: 11381
+Epoch: [92] Total time: 0:02:29 (0.4800 s / it)
+Averaged stats: lr: 0.000015  sp_loss: 7.5904 (7.6240)  fam_loss: 3.6068 (3.6442)  manu_loss: 2.8245 (2.7328)  ot_loss: 1.8848 (1.8871)  base_loss: 14.0153 (14.0010)
+Test:  [  0/391]  eta: 0:53:11  sploss: 5.6520 (5.6520)  famloss: 1.8015 (1.8015)  manuloss: 1.1570 (1.1570)  acc1: 3.1250 (3.1250)  acc5: 17.5781 (17.5781)  family_acc1: 59.3750 (59.3750)  manu_acc1: 76.1719 (76.1719)  time: 8.1636  data: 7.9207  max mem: 11381
+Test:  [250/391]  eta: 0:01:20  sploss: 5.8345 (5.8876)  famloss: 1.9550 (1.9798)  manuloss: 1.4641 (1.4381)  acc1: 3.9062 (3.9701)  acc5: 19.5312 (19.7429)  family_acc1: 58.2031 (57.9417)  manu_acc1: 69.1406 (70.6284)  time: 0.6136  data: 0.3185  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.5956 (5.8139)  famloss: 1.7606 (1.9138)  manuloss: 1.0853 (1.3592)  acc1: 4.6875 (4.1740)  acc5: 20.7031 (20.2310)  family_acc1: 62.1094 (59.0670)  manu_acc1: 78.5156 (72.2280)  time: 0.3018  data: 0.0989  max mem: 11381
+Test: Total time: 0:03:36 (0.5527 s / it)
+* Acc@1 4.174 Acc@5 20.231 family@1 59.067 manu@1 72.228 sploss 5.814 fmloss 1.914 mfloss 1.359
+FPA: 3.744% | TICE: 94.658%   
+ wAP: 11.129  |  LCA: 283.201   |   Precision and Recall: 5.592%
+Accuracy of the network on the 100000 test images: 4.2%
+Max accuracy: 4.58%
+Epoch: [93]  [  0/312]  eta: 0:42:46  lr: 0.000014  sp_loss: 8.3419 (8.3419)  fam_loss: 3.7095 (3.7095)  manu_loss: 2.7514 (2.7514)  ot_loss: 1.8564 (1.8564)  base_loss: 14.8028 (14.8028)  time: 8.2246  data: 7.9431  max mem: 11381
+Epoch: [93]  [250/312]  eta: 0:00:34  lr: 0.000014  sp_loss: 7.5781 (7.6494)  fam_loss: 3.7039 (3.6596)  manu_loss: 2.7188 (2.7467)  ot_loss: 1.8574 (1.8894)  base_loss: 13.9457 (14.0557)  time: 0.5217  data: 0.2748  max mem: 11381
+Epoch: [93]  [311/312]  eta: 0:00:00  lr: 0.000014  sp_loss: 7.5825 (7.7127)  fam_loss: 3.7835 (3.7013)  manu_loss: 2.8704 (2.7812)  ot_loss: 1.9082 (1.8976)  base_loss: 14.3194 (14.1952)  time: 0.3504  data: 0.1145  max mem: 11381
+Epoch: [93] Total time: 0:02:47 (0.5377 s / it)
+Averaged stats: lr: 0.000014  sp_loss: 7.5825 (7.7127)  fam_loss: 3.7835 (3.7013)  manu_loss: 2.8704 (2.7812)  ot_loss: 1.9082 (1.8976)  base_loss: 14.3194 (14.1952)
+Test:  [  0/391]  eta: 0:55:01  sploss: 5.6802 (5.6802)  famloss: 1.8075 (1.8075)  manuloss: 1.1413 (1.1413)  acc1: 3.1250 (3.1250)  acc5: 16.7969 (16.7969)  family_acc1: 58.2031 (58.2031)  manu_acc1: 76.5625 (76.5625)  time: 8.4431  data: 7.8469  max mem: 11381
+Test:  [250/391]  eta: 0:01:20  sploss: 5.8532 (5.9037)  famloss: 1.9748 (1.9837)  manuloss: 1.4539 (1.4356)  acc1: 3.9062 (3.9825)  acc5: 19.5312 (19.2931)  family_acc1: 57.0312 (58.0179)  manu_acc1: 69.5312 (70.6891)  time: 0.5875  data: 0.2709  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6190 (5.8273)  famloss: 1.7583 (1.9178)  manuloss: 1.0654 (1.3572)  acc1: 4.6875 (4.1890)  acc5: 20.7031 (19.8440)  family_acc1: 61.3281 (59.1180)  manu_acc1: 78.5156 (72.2560)  time: 0.4811  data: 0.2493  max mem: 11381
+Test: Total time: 0:03:37 (0.5561 s / it)
+* Acc@1 4.189 Acc@5 19.844 family@1 59.118 manu@1 72.256 sploss 5.827 fmloss 1.918 mfloss 1.357
+FPA: 3.774% | TICE: 94.606%   
+ wAP: 11.148  |  LCA: 283.131   |   Precision and Recall: 5.606%
+Accuracy of the network on the 100000 test images: 4.2%
+Max accuracy: 4.58%
+Epoch: [94]  [  0/312]  eta: 0:31:40  lr: 0.000013  sp_loss: 8.5288 (8.5288)  fam_loss: 4.2140 (4.2140)  manu_loss: 3.1996 (3.1996)  ot_loss: 1.9463 (1.9463)  base_loss: 15.9423 (15.9423)  time: 6.0918  data: 5.7955  max mem: 11381
+Epoch: [94]  [250/312]  eta: 0:00:34  lr: 0.000013  sp_loss: 7.8132 (7.7091)  fam_loss: 3.8533 (3.7013)  manu_loss: 2.9193 (2.7621)  ot_loss: 1.9336 (1.8959)  base_loss: 14.6967 (14.1724)  time: 0.5887  data: 0.3443  max mem: 11381
+Epoch: [94]  [311/312]  eta: 0:00:00  lr: 0.000013  sp_loss: 8.0443 (7.6655)  fam_loss: 3.8359 (3.6828)  manu_loss: 2.9949 (2.7511)  ot_loss: 1.9287 (1.8905)  base_loss: 15.0405 (14.0995)  time: 0.4675  data: 0.2390  max mem: 11381
+Epoch: [94] Total time: 0:02:49 (0.5442 s / it)
+Averaged stats: lr: 0.000013  sp_loss: 8.0443 (7.6655)  fam_loss: 3.8359 (3.6828)  manu_loss: 2.9949 (2.7511)  ot_loss: 1.9287 (1.8905)  base_loss: 15.0405 (14.0995)
+Test:  [  0/391]  eta: 0:56:21  sploss: 5.7264 (5.7264)  famloss: 1.8148 (1.8148)  manuloss: 1.1588 (1.1588)  acc1: 3.1250 (3.1250)  acc5: 15.6250 (15.6250)  family_acc1: 58.9844 (58.9844)  manu_acc1: 77.7344 (77.7344)  time: 8.6472  data: 8.3951  max mem: 11381
+Test:  [250/391]  eta: 0:01:22  sploss: 5.9219 (5.9673)  famloss: 1.9907 (1.9950)  manuloss: 1.4404 (1.4446)  acc1: 3.9062 (3.6448)  acc5: 17.9688 (17.8614)  family_acc1: 57.4219 (57.8296)  manu_acc1: 69.5312 (70.4961)  time: 0.4071  data: 0.1968  max mem: 11381
+Test:  [390/391]  eta: 0:00:00  sploss: 5.6802 (5.8944)  famloss: 1.7681 (1.9287)  manuloss: 1.0819 (1.3658)  acc1: 3.9062 (3.8060)  acc5: 19.1406 (18.3500)  family_acc1: 61.7188 (58.9640)  manu_acc1: 78.1250 (72.1190)  time: 0.4946  data: 0.2955  max mem: 11381
+Test: Total time: 0:03:42 (0.5691 s / it)
+* Acc@1 3.806 Acc@5 18.350 family@1 58.964 manu@1 72.119 sploss 5.894 fmloss 1.929 mfloss 1.366
+FPA: 3.425% | TICE: 95.106%   
+ wAP: 10.793  |  LCA: 284.596   |   Precision and Recall: 5.138%
+Accuracy of the network on the 100000 test images: 3.8%
+Max accuracy: 4.58%
+Epoch: [95]  [  0/312]  eta: 0:33:24  lr: 0.000012  sp_loss: 7.5398 (7.5398)  fam_loss: 3.8033 (3.8033)  manu_loss: 2.8914 (2.8914)  ot_loss: 1.9111 (1.9111)  base_loss: 14.2346 (14.2346)  time: 6.4242  data: 6.1207  max mem: 11381

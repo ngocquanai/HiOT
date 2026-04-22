@@ -1,0 +1,44 @@
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 565, in <module>
+    main(args)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 493, in main
+    utils.save_on_master({
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/utils.py", line 216, in save_on_master
+    torch.save(*args, **kwargs)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/serialization.py", line 618, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/serialization.py", line 492, in _open_zipfile_writer
+    return container(name_or_buffer)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/serialization.py", line 463, in __init__
+    super().__init__(torch._C.PyTorchFileWriter(self.name))
+RuntimeError: Parent directory output/few_shot/two/0.5ot does not exist.
+[2026-01-24 20:48:40,864] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 1238559) of binary: /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/bin/python3.10
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+deit/main_suppix_hier.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-01-24_20:48:40
+  host      : sdc2-hpc-dgx-a100-005
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 1238559)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

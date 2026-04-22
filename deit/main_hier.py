@@ -18,9 +18,9 @@ from timm.scheduler import create_scheduler
 from timm.optim import create_optimizer
 from timm.utils import NativeScaler, get_state_dict, ModelEma
 
-from datasets import build_dataset
+from dataset.datasets import build_dataset
 
-from engine_vit_hier import train_one_epoch, evaluate
+from engine_vit_hier import train_one_epoch, evaluate, evaluate_hier
 from engine_vit_hier_eval import evaluate_detail
 from losses import DistillationLoss
 from samplers import RASampler
@@ -194,6 +194,23 @@ def get_args_parser():
     
     parser.add_argument('--filename', default='results.csv', type=str)
     parser.add_argument('--random_seed', default=1, type=int)
+
+
+    # FEW SHOT setting
+    parser.add_argument('--few_shot', type=int, default=0,
+                        help='if few_shot > 0, doing few-shot setting with corresponding shots. (default: 0)')
+
+    parser.add_argument('--ot_loss', action='store_true', default=False, help='Use OT loss')
+    parser.add_argument('--learnable_ot', action='store_true', default=False, help='Use learnable weight for OT')
+    parser.add_argument('--ot_weight', default= 1, type= float)
+
+    parser.add_argument(
+        '--label_weight', 
+        type=int, 
+        nargs='+', 
+        default=[1, 2, 3], 
+        help='List of weight at family, order, species labels for OT (e.g., --label_weight 1 2 4)'
+    )
     return parser
 
 
@@ -467,34 +484,40 @@ def main(args):
                     'args': args,
                 }, checkpoint_path)
              
+        if epoch > -1 :
 
-        test_stats = evaluate(data_loader_val, model, device, len(args.nb_classes))
-        print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
-        
-        if max_accuracy < test_stats["acc1"]:
-            max_accuracy = test_stats["acc1"]
-            if args.output_dir:
-                checkpoint_paths = [output_dir / 'best_checkpoint.pth']
-                for checkpoint_path in checkpoint_paths:
-                    utils.save_on_master({
-                        'model': model_without_ddp.state_dict(),
-                        'optimizer': optimizer.state_dict(),
-                        'lr_scheduler': lr_scheduler.state_dict(),
-                        'epoch': epoch,
-                        'accuracy': max_accuracy,
-                        'model_ema': get_state_dict(model_ema),
-                        'scaler': loss_scaler.state_dict(),
-                        'args': args,
-                    }, checkpoint_path)
+            test_stats = evaluate_hier(data_loader_val, model, device, len(args.nb_classes))
+            print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
             
-        print(f'Max accuracy: {max_accuracy:.2f}%')
+            if max_accuracy < test_stats["acc1"]:
+                max_accuracy = test_stats["acc1"]
+                if args.output_dir:
+                    checkpoint_paths = [output_dir / 'best_checkpoint.pth']
+                    for checkpoint_path in checkpoint_paths:
+                        utils.save_on_master({
+                            'model': model_without_ddp.state_dict(),
+                            'optimizer': optimizer.state_dict(),
+                            'lr_scheduler': lr_scheduler.state_dict(),
+                            'epoch': epoch,
+                            'accuracy': max_accuracy,
+                            'model_ema': get_state_dict(model_ema),
+                            'scaler': loss_scaler.state_dict(),
+                            'args': args,
+                        }, checkpoint_path)
+                
+            print(f'Max accuracy: {max_accuracy:.2f}%')
 
-        log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
-                     **{f'test_{k}': v for k, v in test_stats.items()},
-                     'epoch': epoch,
-                     'n_parameters': n_parameters}
+            log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
+                        **{f'test_{k}': v for k, v in test_stats.items()},
+                        'epoch': epoch,
+                        'n_parameters': n_parameters}
         
-        
+        else :
+            log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
+                        'epoch': epoch,
+                        'n_parameters': n_parameters}
+            
+            
         
         
         if args.output_dir and utils.is_main_process():

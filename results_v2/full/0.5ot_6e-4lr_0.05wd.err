@@ -1,0 +1,65 @@
+[2026-01-17 10:22:36,183] torch.distributed.run: [WARNING] 
+[2026-01-17 10:22:36,183] torch.distributed.run: [WARNING] *****************************************
+[2026-01-17 10:22:36,183] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2026-01-17 10:22:36,183] torch.distributed.run: [WARNING] *****************************************
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 565, in <module>
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 481, in main
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/engine_hier.py", line 43, in train_one_epoch
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/utils.py", line 139, in log_every
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1345, in _next_data
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1371, in _process_data
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/_utils.py", line 694, in reraise
+PIL.UnidentifiedImageError: Caught UnidentifiedImageError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/dataset/inat21_mini_seeds.py", line 74, in __getitem__
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/PIL/Image.py", line 3560, in open
+PIL.UnidentifiedImageError: cannot identify image file <_io.BufferedReader name='../dataset/train_mini/03793_Animalia_Chordata_Aves_Passeriformes_Emberizidae_Emberiza_rustica/c8308a98-9553-42bd-b85f-ff1f19514ec0.jpg'>
+
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 565, in <module>
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 481, in main
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/engine_hier.py", line 43, in train_one_epoch
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/utils.py", line 139, in log_every
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1345, in _next_data
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1371, in _process_data
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/_utils.py", line 694, in reraise
+PIL.UnidentifiedImageError: Caught UnidentifiedImageError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/dataset/inat21_mini_seeds.py", line 74, in __getitem__
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/PIL/Image.py", line 3560, in open
+PIL.UnidentifiedImageError: cannot identify image file <_io.BufferedReader name='../dataset/train_mini/03793_Animalia_Chordata_Aves_Passeriformes_Emberizidae_Emberiza_rustica/c8308a98-9553-42bd-b85f-ff1f19514ec0.jpg'>
+
+[2026-01-17 11:09:33,504] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 2843009) of binary: /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/bin/python3.10
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 255, in launch_agent
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 124, in wrapper
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 739, in run
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 770, in _record_worker_events
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 811, in _construct_event
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 386, in _get_fq_hostname
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/socket.py", line 805, in getfqdn
+LookupError: unknown encoding: idna
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/bin/torchrun", line 7, in <module>
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 280, in launch_agent
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 753, in get_event_failed
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 811, in _construct_event
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 386, in _get_fq_hostname
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/socket.py", line 805, in getfqdn
+LookupError: unknown encoding: idna

@@ -1,0 +1,320 @@
+Namespace(batch_size=256, epochs=100, bce_loss=False, unscale_lr=False, few_shot=0, model='cast_small', input_size=224, drop=0.0, drop_path=0.1, model_ema=True, model_ema_decay=0.99996, model_ema_force_cpu=False, num_superpixels=196, opt='adamw', opt_eps=1e-08, opt_betas=None, clip_grad=None, momentum=0.9, weight_decay=0.05, sched='cosine', lr=0.0004, lr_noise=None, lr_noise_pct=0.67, lr_noise_std=1.0, warmup_lr=1e-06, min_lr=1e-05, decay_epochs=30, warmup_epochs=5, cooldown_epochs=10, patience_epochs=10, decay_rate=0.1, color_jitter=0.3, aa='rand-m9-mstd0.5-inc1', smoothing=0.1, train_interpolation='bicubic', repeated_aug=True, train_mode=True, ThreeAugment=False, src=False, reprob=0.25, remode='pixel', recount=1, resplit=False, mixup=0.8, cutmix=1.0, cutmix_minmax=None, mixup_prob=1.0, mixup_switch_prob=0.5, mixup_mode='batch', teacher_model='regnety_160', teacher_path='', distillation_type='none', distillation_alpha=0.5, distillation_tau=1.0, cosub=False, finetune='best_checkpoint.pth', attn_only=False, data_path='../dataset/', data_set='INAT21-MINI-HIER-SUPERPIXEL', path_yn=False, inat_category='name', output_dir='./output/new_baseline/full/0.5ot_4e-4lr_0.05wd', device='cuda', seed=0, resume='', start_epoch=0, eval=False, eval_crop_ratio=0.875, dist_eval=False, num_workers=12, pin_mem=True, distributed=True, world_size=1, dist_url='env://', globalkl=False, ot_loss=True, learnable_ot=False, ot_weight=0.5, base_weight=0.5, globalbce=False, gk_weight=1, filename='results.csv', breeds_sort='entity13', random_seed=1, local_rank=-1, tree_path='./data/inat21_3tree.json', label_weight=[1, 2, 3])
+Namespace(batch_size=256, epochs=100, bce_loss=False, unscale_lr=False, few_shot=0, model='cast_small', input_size=224, drop=0.0, drop_path=0.1, model_ema=True, model_ema_decay=0.99996, model_ema_force_cpu=False, num_superpixels=196, opt='adamw', opt_eps=1e-08, opt_betas=None, clip_grad=None, momentum=0.9, weight_decay=0.05, sched='cosine', lr=0.0004, lr_noise=None, lr_noise_pct=0.67, lr_noise_std=1.0, warmup_lr=1e-06, min_lr=1e-05, decay_epochs=30, warmup_epochs=5, cooldown_epochs=10, patience_epochs=10, decay_rate=0.1, color_jitter=0.3, aa='rand-m9-mstd0.5-inc1', smoothing=0.1, train_interpolation='bicubic', repeated_aug=True, train_mode=True, ThreeAugment=False, src=False, reprob=0.25, remode='pixel', recount=1, resplit=False, mixup=0.8, cutmix=1.0, cutmix_minmax=None, mixup_prob=1.0, mixup_switch_prob=0.5, mixup_mode='batch', teacher_model='regnety_160', teacher_path='', distillation_type='none', distillation_alpha=0.5, distillation_tau=1.0, cosub=False, finetune='best_checkpoint.pth', attn_only=False, data_path='../dataset/', data_set='INAT21-MINI-HIER-SUPERPIXEL', path_yn=False, inat_category='name', output_dir='./output/new_baseline/full/0.5ot_4e-4lr_0.05wd', device='cuda', seed=0, resume='', start_epoch=0, eval=False, eval_crop_ratio=0.875, dist_eval=False, num_workers=12, pin_mem=True, distributed=True, world_size=1, dist_url='env://', globalkl=False, ot_loss=True, learnable_ot=False, ot_weight=0.5, base_weight=0.5, globalbce=False, gk_weight=1, filename='results.csv', breeds_sort='entity13', random_seed=1, local_rank=-1, tree_path='./data/inat21_3tree.json', label_weight=[1, 2, 3])
+| distributed init (rank 0): env://
+| distributed init (rank 1): env://
+seed 0
+args.nb_classes [10000, 1103, 273]
+Creating model: cast_small
+dict_keys(['model', 'optimizer', 'lr_scheduler', 'epoch', 'model_ema', 'scaler', 'args'])
+Removing key head.weight from pretrained checkpoint
+Removing key head.bias from pretrained checkpoint
+number of params: 30556704
+Start training for 100 epochs
+Epoch: [0]  [  0/976]  eta: 3:56:48  lr: 0.000001  sp_loss: 9.2673 (9.2673)  fam_loss: 7.0897 (7.0897)  manu_loss: 5.6321 (5.6321)  ot_loss: 0.5587 (0.5587)  base_loss: 9.3894 (9.3894)  time: 14.5583  data: 8.0129  max mem: 10976
+Epoch: [0]  [250/976]  eta: 0:06:35  lr: 0.000001  sp_loss: 9.2586 (9.2674)  fam_loss: 7.0006 (7.0428)  manu_loss: 5.3574 (5.5019)  ot_loss: 0.5574 (0.5580)  base_loss: 9.3246 (9.3589)  time: 0.5427  data: 0.1562  max mem: 11360
+Epoch: [0]  [500/976]  eta: 0:04:10  lr: 0.000001  sp_loss: 9.2436 (9.2638)  fam_loss: 6.8635 (6.9888)  manu_loss: 4.8940 (5.3212)  ot_loss: 0.5566 (0.5574)  base_loss: 9.2091 (9.3155)  time: 0.4376  data: 0.0682  max mem: 11360
+Epoch: [0]  [750/976]  eta: 0:01:57  lr: 0.000001  sp_loss: 9.2436 (9.2610)  fam_loss: 6.6768 (6.9170)  manu_loss: 4.6008 (5.1260)  ot_loss: 0.5570 (0.5572)  base_loss: 9.1014 (9.2625)  time: 0.5019  data: 0.1445  max mem: 11360
+Epoch: [0]  [975/976]  eta: 0:00:00  lr: 0.000001  sp_loss: 9.2515 (9.2592)  fam_loss: 6.5370 (6.8435)  manu_loss: 4.5328 (4.9966)  ot_loss: 0.5578 (0.5572)  base_loss: 9.0473 (9.2188)  time: 0.4101  data: 0.0825  max mem: 11360
+Epoch: [0] Total time: 0:08:24 (0.5173 s / it)
+Averaged stats: lr: 0.000001  sp_loss: 9.2515 (9.2598)  fam_loss: 6.5370 (6.8435)  manu_loss: 4.5328 (4.9957)  ot_loss: 0.5578 (0.5572)  base_loss: 9.0473 (9.2191)
+Epoch: [1]  [  0/976]  eta: 2:02:00  lr: 0.000001  sp_loss: 9.2382 (9.2382)  fam_loss: 6.5769 (6.5769)  manu_loss: 4.3094 (4.3094)  ot_loss: 0.5578 (0.5578)  base_loss: 9.0173 (9.0173)  time: 7.5010  data: 7.1655  max mem: 11360
+Epoch: [1]  [250/976]  eta: 0:06:25  lr: 0.000001  sp_loss: 9.2599 (9.2519)  fam_loss: 6.3369 (6.4408)  manu_loss: 4.4505 (4.4586)  ot_loss: 0.5587 (0.5583)  base_loss: 8.9810 (9.0077)  time: 0.4141  data: 0.0380  max mem: 11360
+Epoch: [1]  [500/976]  eta: 0:04:09  lr: 0.000001  sp_loss: 9.2446 (9.2502)  fam_loss: 6.2224 (6.3685)  manu_loss: 4.3486 (4.4310)  ot_loss: 0.5597 (0.5588)  base_loss: 8.9158 (8.9804)  time: 0.5178  data: 0.0004  max mem: 11360
+Epoch: [1]  [750/976]  eta: 0:01:57  lr: 0.000001  sp_loss: 9.2416 (9.2489)  fam_loss: 6.1783 (6.3121)  manu_loss: 4.2966 (4.4003)  ot_loss: 0.5604 (0.5592)  base_loss: 8.8916 (8.9572)  time: 0.5445  data: 0.0056  max mem: 11360
+Epoch: [1]  [975/976]  eta: 0:00:00  lr: 0.000001  sp_loss: 9.2370 (9.2479)  fam_loss: 6.0521 (6.2660)  manu_loss: 4.1753 (4.3703)  ot_loss: 0.5611 (0.5596)  base_loss: 8.8443 (8.9374)  time: 0.4077  data: 0.0001  max mem: 11360
+Epoch: [1] Total time: 0:08:25 (0.5179 s / it)
+Averaged stats: lr: 0.000001  sp_loss: 9.2370 (9.2479)  fam_loss: 6.0521 (6.2622)  manu_loss: 4.1753 (4.3669)  ot_loss: 0.5611 (0.5596)  base_loss: 8.8443 (8.9360)
+Epoch: [2]  [  0/976]  eta: 1:51:42  lr: 0.000081  sp_loss: 9.1924 (9.1924)  fam_loss: 6.0187 (6.0187)  manu_loss: 4.1816 (4.1816)  ot_loss: 0.5612 (0.5612)  base_loss: 8.8001 (8.8001)  time: 6.8668  data: 6.2532  max mem: 11360
+Epoch: [2]  [250/976]  eta: 0:06:26  lr: 0.000081  sp_loss: 9.2050 (9.2241)  fam_loss: 5.1528 (5.4539)  manu_loss: 3.5136 (3.6712)  ot_loss: 0.5727 (0.5709)  base_loss: 8.3638 (8.5174)  time: 0.4336  data: 0.0892  max mem: 11361
+Epoch: [2]  [500/976]  eta: 0:04:09  lr: 0.000081  sp_loss: 9.0634 (9.1786)  fam_loss: 5.0053 (5.1855)  manu_loss: 3.3736 (3.4942)  ot_loss: 0.5850 (0.5760)  base_loss: 8.1934 (8.3685)  time: 0.5188  data: 0.1424  max mem: 11361
+Epoch: [2]  [750/976]  eta: 0:01:57  lr: 0.000081  sp_loss: 8.8422 (9.0902)  fam_loss: 4.8655 (5.0420)  manu_loss: 3.3249 (3.4128)  ot_loss: 0.5966 (0.5823)  base_loss: 8.0280 (8.2543)  time: 0.5968  data: 0.2009  max mem: 11361
+Epoch: [2]  [975/976]  eta: 0:00:00  lr: 0.000081  sp_loss: 8.5660 (8.9799)  fam_loss: 4.7381 (4.9325)  manu_loss: 3.2482 (3.3456)  ot_loss: 0.6177 (0.5895)  base_loss: 7.8336 (8.1440)  time: 0.4326  data: 0.0001  max mem: 11361
+Epoch: [2] Total time: 0:08:25 (0.5177 s / it)
+Averaged stats: lr: 0.000081  sp_loss: 8.5660 (8.9824)  fam_loss: 4.7381 (4.9340)  manu_loss: 3.2482 (3.3442)  ot_loss: 0.6177 (0.5893)  base_loss: 7.8336 (8.1456)
+Epoch: [3]  [  0/976]  eta: 1:48:51  lr: 0.000161  sp_loss: 8.7415 (8.7415)  fam_loss: 5.0659 (5.0659)  manu_loss: 3.4930 (3.4930)  ot_loss: 0.6072 (0.6072)  base_loss: 8.0335 (8.0335)  time: 6.6923  data: 6.3227  max mem: 11361
+Epoch: [3]  [250/976]  eta: 0:06:29  lr: 0.000161  sp_loss: 8.1195 (8.3078)  fam_loss: 4.4635 (4.5624)  manu_loss: 3.1231 (3.1413)  ot_loss: 0.6526 (0.6355)  base_loss: 7.4591 (7.5967)  time: 0.4552  data: 0.0004  max mem: 11361
+Epoch: [3]  [500/976]  eta: 0:04:11  lr: 0.000161  sp_loss: 7.9410 (8.1647)  fam_loss: 4.4150 (4.5361)  manu_loss: 3.0869 (3.1389)  ot_loss: 0.6675 (0.6474)  base_loss: 7.3181 (7.5024)  time: 0.5384  data: 0.0005  max mem: 11361
+Epoch: [3]  [750/976]  eta: 0:01:57  lr: 0.000161  sp_loss: 7.8343 (8.0263)  fam_loss: 4.5456 (4.4874)  manu_loss: 3.1555 (3.1149)  ot_loss: 0.6775 (0.6586)  base_loss: 7.2773 (7.4021)  time: 0.5476  data: 0.0005  max mem: 11361
+Epoch: [3]  [975/976]  eta: 0:00:00  lr: 0.000161  sp_loss: 7.5717 (7.9148)  fam_loss: 4.3299 (4.4515)  manu_loss: 3.0282 (3.0957)  ot_loss: 0.6964 (0.6674)  base_loss: 7.0987 (7.3220)  time: 0.3815  data: 0.0001  max mem: 11361
+Epoch: [3] Total time: 0:08:22 (0.5152 s / it)
+Averaged stats: lr: 0.000161  sp_loss: 7.5717 (7.9199)  fam_loss: 4.3299 (4.4554)  manu_loss: 3.0282 (3.0986)  ot_loss: 0.6964 (0.6670)  base_loss: 7.0987 (7.3264)
+Epoch: [4]  [  0/976]  eta: 1:52:11  lr: 0.000240  sp_loss: 6.9240 (6.9240)  fam_loss: 3.9918 (3.9918)  manu_loss: 2.6435 (2.6435)  ot_loss: 0.7287 (0.7287)  base_loss: 6.5493 (6.5493)  time: 6.8969  data: 6.5233  max mem: 11361
+Epoch: [4]  [250/976]  eta: 0:06:23  lr: 0.000240  sp_loss: 7.3253 (7.3513)  fam_loss: 4.3829 (4.3211)  manu_loss: 3.1144 (3.0423)  ot_loss: 0.7091 (0.7096)  base_loss: 6.9026 (6.9401)  time: 0.4985  data: 0.0895  max mem: 11361
+Epoch: [4]  [500/976]  eta: 0:04:09  lr: 0.000240  sp_loss: 7.5090 (7.3047)  fam_loss: 4.4742 (4.3010)  manu_loss: 3.1924 (3.0282)  ot_loss: 0.7030 (0.7141)  base_loss: 7.0364 (6.9029)  time: 0.5723  data: 0.0005  max mem: 11361
+Epoch: [4]  [750/976]  eta: 0:01:57  lr: 0.000240  sp_loss: 7.1205 (7.2532)  fam_loss: 4.2238 (4.2867)  manu_loss: 3.0259 (3.0217)  ot_loss: 0.7229 (0.7180)  base_loss: 6.7626 (6.8659)  time: 0.5386  data: 0.0004  max mem: 11361
+Epoch: [4]  [975/976]  eta: 0:00:00  lr: 0.000240  sp_loss: 6.6757 (7.1974)  fam_loss: 4.0352 (4.2666)  manu_loss: 2.8689 (3.0119)  ot_loss: 0.7486 (0.7219)  base_loss: 6.4173 (6.8253)  time: 0.3356  data: 0.0001  max mem: 11361
+Epoch: [4] Total time: 0:08:22 (0.5147 s / it)
+Averaged stats: lr: 0.000240  sp_loss: 6.6757 (7.2015)  fam_loss: 4.0352 (4.2707)  manu_loss: 2.8689 (3.0152)  ot_loss: 0.7486 (0.7215)  base_loss: 6.4173 (6.8290)
+Epoch: [5]  [  0/976]  eta: 2:05:37  lr: 0.000320  sp_loss: 7.4833 (7.4833)  fam_loss: 4.6069 (4.6069)  manu_loss: 3.3223 (3.3223)  ot_loss: 0.7108 (0.7108)  base_loss: 7.1095 (7.1095)  time: 7.7226  data: 7.3738  max mem: 11361
+Epoch: [5]  [250/976]  eta: 0:06:33  lr: 0.000320  sp_loss: 7.1650 (6.9192)  fam_loss: 4.2270 (4.2016)  manu_loss: 3.0605 (2.9851)  ot_loss: 0.7309 (0.7389)  base_loss: 6.7760 (6.6349)  time: 0.4639  data: 0.0005  max mem: 11361
+Epoch: [5]  [500/976]  eta: 0:04:09  lr: 0.000320  sp_loss: 6.8374 (6.9085)  fam_loss: 4.1909 (4.2044)  manu_loss: 2.8985 (2.9899)  ot_loss: 0.7492 (0.7398)  base_loss: 6.5571 (6.6288)  time: 0.5311  data: 0.0004  max mem: 11361
+Epoch: [5]  [750/976]  eta: 0:01:57  lr: 0.000320  sp_loss: 7.0133 (6.8701)  fam_loss: 4.3331 (4.1886)  manu_loss: 3.0791 (2.9824)  ot_loss: 0.7301 (0.7421)  base_loss: 6.7302 (6.5999)  time: 0.5233  data: 0.0004  max mem: 11361
+Epoch: [5]  [975/976]  eta: 0:00:00  lr: 0.000320  sp_loss: 6.8037 (6.8393)  fam_loss: 4.0738 (4.1764)  manu_loss: 2.9367 (2.9772)  ot_loss: 0.7480 (0.7438)  base_loss: 6.4901 (6.5768)  time: 0.4023  data: 0.0001  max mem: 11361
+Epoch: [5] Total time: 0:08:21 (0.5142 s / it)
+Averaged stats: lr: 0.000320  sp_loss: 6.8037 (6.8273)  fam_loss: 4.0738 (4.1701)  manu_loss: 2.9367 (2.9709)  ot_loss: 0.7480 (0.7447)  base_loss: 6.4901 (6.5676)
+Epoch: [6]  [  0/976]  eta: 1:50:06  lr: 0.000398  sp_loss: 6.2708 (6.2708)  fam_loss: 3.9604 (3.9604)  manu_loss: 2.7199 (2.7199)  ot_loss: 0.7673 (0.7673)  base_loss: 6.1518 (6.1518)  time: 6.7686  data: 6.3968  max mem: 11361
+Epoch: [6]  [250/976]  eta: 0:06:22  lr: 0.000398  sp_loss: 6.3211 (6.7225)  fam_loss: 3.9051 (4.1926)  manu_loss: 2.8232 (2.9997)  ot_loss: 0.7492 (0.7486)  base_loss: 6.1709 (6.5116)  time: 0.5347  data: 0.1116  max mem: 11361
+Epoch: [6]  [500/976]  eta: 0:04:05  lr: 0.000398  sp_loss: 6.8915 (6.7217)  fam_loss: 4.3132 (4.1941)  manu_loss: 3.0438 (3.0053)  ot_loss: 0.7442 (0.7490)  base_loss: 6.6386 (6.5121)  time: 0.5079  data: 0.0005  max mem: 11361
+Epoch: [6]  [750/976]  eta: 0:01:56  lr: 0.000398  sp_loss: 6.6318 (6.6857)  fam_loss: 4.1826 (4.1748)  manu_loss: 2.9619 (2.9885)  ot_loss: 0.7482 (0.7509)  base_loss: 6.4764 (6.4831)  time: 0.5634  data: 0.0005  max mem: 11361
+Epoch: [6]  [975/976]  eta: 0:00:00  lr: 0.000398  sp_loss: 6.5918 (6.6567)  fam_loss: 4.1323 (4.1585)  manu_loss: 2.9709 (2.9791)  ot_loss: 0.7552 (0.7525)  base_loss: 6.4093 (6.4599)  time: 0.3386  data: 0.0001  max mem: 11361
+Epoch: [6] Total time: 0:08:19 (0.5117 s / it)
+Averaged stats: lr: 0.000398  sp_loss: 6.5918 (6.6555)  fam_loss: 4.1323 (4.1555)  manu_loss: 2.9709 (2.9759)  ot_loss: 0.7552 (0.7524)  base_loss: 6.4093 (6.4579)
+Epoch: [7]  [  0/976]  eta: 2:09:47  lr: 0.000397  sp_loss: 5.5985 (5.5985)  fam_loss: 3.4233 (3.4233)  manu_loss: 2.5380 (2.5380)  ot_loss: 0.8299 (0.8299)  base_loss: 5.6060 (5.6060)  time: 7.9793  data: 7.6312  max mem: 11361
+Epoch: [7]  [250/976]  eta: 0:06:26  lr: 0.000397  sp_loss: 6.3949 (6.3221)  fam_loss: 3.9888 (3.9944)  manu_loss: 2.8975 (2.8637)  ot_loss: 0.7651 (0.7698)  base_loss: 6.2588 (6.2039)  time: 0.4603  data: 0.0119  max mem: 11361
+Epoch: [7]  [500/976]  eta: 0:04:09  lr: 0.000397  sp_loss: 6.3660 (6.3985)  fam_loss: 3.9728 (4.0449)  manu_loss: 2.8947 (2.9034)  ot_loss: 0.7594 (0.7651)  base_loss: 6.2415 (6.2660)  time: 0.4352  data: 0.0005  max mem: 11361
+Epoch: [7]  [750/976]  eta: 0:01:57  lr: 0.000397  sp_loss: 6.5980 (6.3924)  fam_loss: 4.0383 (4.0391)  manu_loss: 2.9805 (2.9018)  ot_loss: 0.7522 (0.7656)  base_loss: 6.3927 (6.2602)  time: 0.5479  data: 0.0005  max mem: 11361
+Epoch: [7]  [975/976]  eta: 0:00:00  lr: 0.000397  sp_loss: 6.4177 (6.3865)  fam_loss: 4.0668 (4.0352)  manu_loss: 2.9826 (2.8985)  ot_loss: 0.7494 (0.7655)  base_loss: 6.3014 (6.2546)  time: 0.4016  data: 0.0001  max mem: 11361
+Epoch: [7] Total time: 0:08:21 (0.5141 s / it)
+Averaged stats: lr: 0.000397  sp_loss: 6.4177 (6.4032)  fam_loss: 4.0668 (4.0444)  manu_loss: 2.9826 (2.9043)  ot_loss: 0.7494 (0.7647)  base_loss: 6.3014 (6.2674)
+Epoch: [8]  [  0/976]  eta: 2:02:11  lr: 0.000395  sp_loss: 4.8028 (4.8028)  fam_loss: 2.9326 (2.9326)  manu_loss: 2.1480 (2.1480)  ot_loss: 0.8348 (0.8348)  base_loss: 4.9423 (4.9423)  time: 7.5113  data: 7.1613  max mem: 11361
+Epoch: [8]  [250/976]  eta: 0:06:38  lr: 0.000395  sp_loss: 6.1672 (6.2304)  fam_loss: 3.8899 (3.9744)  manu_loss: 2.7558 (2.8601)  ot_loss: 0.7623 (0.7732)  base_loss: 6.0575 (6.1406)  time: 0.4600  data: 0.0006  max mem: 11361
+Epoch: [8]  [500/976]  eta: 0:04:12  lr: 0.000395  sp_loss: 6.1349 (6.2534)  fam_loss: 3.8800 (3.9806)  manu_loss: 2.7541 (2.8673)  ot_loss: 0.7712 (0.7716)  base_loss: 6.0484 (6.1560)  time: 0.5211  data: 0.0004  max mem: 11361
+Epoch: [8]  [750/976]  eta: 0:01:58  lr: 0.000395  sp_loss: 6.2553 (6.2737)  fam_loss: 4.1145 (3.9938)  manu_loss: 3.0046 (2.8764)  ot_loss: 0.7501 (0.7701)  base_loss: 6.2028 (6.1721)  time: 0.5138  data: 0.0004  max mem: 11361
+Epoch: [8]  [975/976]  eta: 0:00:00  lr: 0.000395  sp_loss: 6.5441 (6.2781)  fam_loss: 4.1578 (3.9948)  manu_loss: 3.0135 (2.8766)  ot_loss: 0.7556 (0.7698)  base_loss: 6.3729 (6.1745)  time: 0.3642  data: 0.0001  max mem: 11361
+Epoch: [8] Total time: 0:08:25 (0.5184 s / it)
+Averaged stats: lr: 0.000395  sp_loss: 6.5441 (6.2646)  fam_loss: 4.1578 (3.9849)  manu_loss: 3.0135 (2.8693)  ot_loss: 0.7556 (0.7707)  base_loss: 6.3729 (6.1630)
+Epoch: [9]  [  0/976]  eta: 2:08:03  lr: 0.000394  sp_loss: 5.2026 (5.2026)  fam_loss: 3.2881 (3.2881)  manu_loss: 2.3985 (2.3985)  ot_loss: 0.8237 (0.8237)  base_loss: 5.2995 (5.2995)  time: 7.8720  data: 7.5188  max mem: 11361
+Epoch: [9]  [250/976]  eta: 0:06:22  lr: 0.000394  sp_loss: 6.5289 (6.1441)  fam_loss: 4.1891 (3.9439)  manu_loss: 3.0040 (2.8484)  ot_loss: 0.7488 (0.7752)  base_loss: 6.3678 (6.0780)  time: 0.4576  data: 0.0516  max mem: 11361
+Epoch: [9]  [500/976]  eta: 0:04:07  lr: 0.000394  sp_loss: 6.3414 (6.1363)  fam_loss: 4.0346 (3.9354)  manu_loss: 2.9177 (2.8400)  ot_loss: 0.7495 (0.7754)  base_loss: 6.2317 (6.0697)  time: 0.5496  data: 0.0232  max mem: 11361
+Epoch: [9]  [750/976]  eta: 0:01:57  lr: 0.000394  sp_loss: 6.2848 (6.1415)  fam_loss: 4.0251 (3.9407)  manu_loss: 2.9336 (2.8447)  ot_loss: 0.7613 (0.7751)  base_loss: 6.2071 (6.0746)  time: 0.5371  data: 0.0005  max mem: 11361
+Epoch: [9]  [975/976]  eta: 0:00:00  lr: 0.000394  sp_loss: 5.8753 (6.1439)  fam_loss: 3.8777 (3.9403)  manu_loss: 2.7946 (2.8433)  ot_loss: 0.7688 (0.7749)  base_loss: 5.9135 (6.0754)  time: 0.3720  data: 0.0001  max mem: 11361
+Epoch: [9] Total time: 0:08:22 (0.5154 s / it)
+Averaged stats: lr: 0.000394  sp_loss: 5.8753 (6.1384)  fam_loss: 3.8777 (3.9347)  manu_loss: 2.7946 (2.8382)  ot_loss: 0.7688 (0.7752)  base_loss: 5.9135 (6.0700)
+Epoch: [10]  [  0/976]  eta: 2:11:19  lr: 0.000392  sp_loss: 6.6341 (6.6341)  fam_loss: 4.1152 (4.1152)  manu_loss: 3.0127 (3.0127)  ot_loss: 0.7459 (0.7459)  base_loss: 6.4250 (6.4250)  time: 8.0728  data: 7.7298  max mem: 11361
+Epoch: [10]  [250/976]  eta: 0:06:29  lr: 0.000392  sp_loss: 6.0764 (6.0206)  fam_loss: 3.8572 (3.8832)  manu_loss: 2.7915 (2.7991)  ot_loss: 0.7741 (0.7798)  base_loss: 6.0045 (5.9814)  time: 0.4334  data: 0.0284  max mem: 11361
+Epoch: [10]  [500/976]  eta: 0:04:08  lr: 0.000392  sp_loss: 6.6337 (6.0867)  fam_loss: 4.2160 (3.9242)  manu_loss: 3.0595 (2.8313)  ot_loss: 0.7536 (0.7764)  base_loss: 6.4540 (6.0348)  time: 0.4812  data: 0.0202  max mem: 11361
+Epoch: [10]  [750/976]  eta: 0:01:57  lr: 0.000392  sp_loss: 6.3497 (6.0747)  fam_loss: 4.1022 (3.9140)  manu_loss: 2.9182 (2.8261)  ot_loss: 0.7617 (0.7768)  base_loss: 6.2468 (6.0243)  time: 0.5633  data: 0.0006  max mem: 11361
+Epoch: [10]  [975/976]  eta: 0:00:00  lr: 0.000392  sp_loss: 6.2253 (6.0579)  fam_loss: 3.9290 (3.9024)  manu_loss: 2.8927 (2.8182)  ot_loss: 0.7591 (0.7771)  base_loss: 6.1175 (6.0102)  time: 0.4169  data: 0.0001  max mem: 11361
+Epoch: [10] Total time: 0:08:22 (0.5145 s / it)
+Averaged stats: lr: 0.000392  sp_loss: 6.2253 (6.0718)  fam_loss: 3.9290 (3.9100)  manu_loss: 2.8927 (2.8247)  ot_loss: 0.7591 (0.7765)  base_loss: 6.1175 (6.0210)
+Epoch: [11]  [  0/976]  eta: 1:51:45  lr: 0.000390  sp_loss: 4.7059 (4.7059)  fam_loss: 2.8809 (2.8809)  manu_loss: 2.1251 (2.1251)  ot_loss: 0.8239 (0.8239)  base_loss: 4.8561 (4.8561)  time: 6.8705  data: 6.4632  max mem: 11361
+Epoch: [11]  [250/976]  eta: 0:06:30  lr: 0.000390  sp_loss: 6.1476 (5.9376)  fam_loss: 3.8825 (3.8376)  manu_loss: 2.7914 (2.7725)  ot_loss: 0.7636 (0.7831)  base_loss: 6.0503 (5.9165)  time: 0.4623  data: 0.0005  max mem: 11361
+Epoch: [11]  [500/976]  eta: 0:04:08  lr: 0.000390  sp_loss: 5.6160 (5.9765)  fam_loss: 3.6602 (3.8644)  manu_loss: 2.7459 (2.7901)  ot_loss: 0.7630 (0.7809)  base_loss: 5.6550 (5.9483)  time: 0.5755  data: 0.0004  max mem: 11361
+Epoch: [11]  [750/976]  eta: 0:01:56  lr: 0.000390  sp_loss: 6.2832 (5.9963)  fam_loss: 4.0687 (3.8732)  manu_loss: 2.9324 (2.7961)  ot_loss: 0.7640 (0.7795)  base_loss: 6.2195 (5.9623)  time: 0.5318  data: 0.0316  max mem: 11361
+Epoch: [11]  [975/976]  eta: 0:00:00  lr: 0.000390  sp_loss: 6.4083 (5.9966)  fam_loss: 4.1131 (3.8704)  manu_loss: 2.9120 (2.7954)  ot_loss: 0.7600 (0.7794)  base_loss: 6.2748 (5.9615)  time: 0.4230  data: 0.0603  max mem: 11361
+Epoch: [11] Total time: 0:08:18 (0.5103 s / it)
+Averaged stats: lr: 0.000390  sp_loss: 6.4083 (5.9775)  fam_loss: 4.1131 (3.8598)  manu_loss: 2.9120 (2.7881)  ot_loss: 0.7600 (0.7803)  base_loss: 6.2748 (5.9468)
+Epoch: [12]  [  0/976]  eta: 2:06:10  lr: 0.000388  sp_loss: 4.0560 (4.0560)  fam_loss: 2.6876 (2.6876)  manu_loss: 1.9155 (1.9155)  ot_loss: 0.8622 (0.8622)  base_loss: 4.4074 (4.4074)  time: 7.7566  data: 7.4103  max mem: 11361
+Epoch: [12]  [250/976]  eta: 0:06:25  lr: 0.000388  sp_loss: 6.1363 (5.8546)  fam_loss: 3.8990 (3.8018)  manu_loss: 2.8333 (2.7421)  ot_loss: 0.7750 (0.7853)  base_loss: 6.1017 (5.8538)  time: 0.4311  data: 0.0754  max mem: 11361
+Epoch: [12]  [500/976]  eta: 0:04:05  lr: 0.000388  sp_loss: 5.7639 (5.8371)  fam_loss: 3.6682 (3.7945)  manu_loss: 2.7012 (2.7361)  ot_loss: 0.7928 (0.7864)  base_loss: 5.7461 (5.8405)  time: 0.4651  data: 0.0005  max mem: 11361
+Epoch: [12]  [750/976]  eta: 0:01:56  lr: 0.000388  sp_loss: 6.0103 (5.8427)  fam_loss: 3.6884 (3.7907)  manu_loss: 2.7363 (2.7382)  ot_loss: 0.7754 (0.7860)  base_loss: 5.9167 (5.8429)  time: 0.5420  data: 0.0005  max mem: 11361
+Epoch: [12]  [975/976]  eta: 0:00:00  lr: 0.000388  sp_loss: 6.3230 (5.8719)  fam_loss: 4.0817 (3.8080)  manu_loss: 2.8848 (2.7517)  ot_loss: 0.7619 (0.7843)  base_loss: 6.1989 (5.8658)  time: 0.4072  data: 0.0001  max mem: 11361
+Epoch: [12] Total time: 0:08:17 (0.5096 s / it)
+Averaged stats: lr: 0.000388  sp_loss: 6.3230 (5.9109)  fam_loss: 4.0817 (3.8298)  manu_loss: 2.8848 (2.7697)  ot_loss: 0.7619 (0.7824)  base_loss: 6.1989 (5.8966)
+Epoch: [13]  [  0/976]  eta: 2:07:37  lr: 0.000386  sp_loss: 6.1483 (6.1483)  fam_loss: 3.9754 (3.9754)  manu_loss: 2.9273 (2.9273)  ot_loss: 0.7877 (0.7877)  base_loss: 6.1056 (6.1056)  time: 7.8459  data: 7.4876  max mem: 11361
+Epoch: [13]  [250/976]  eta: 0:06:24  lr: 0.000386  sp_loss: 5.9211 (5.8588)  fam_loss: 3.7790 (3.8123)  manu_loss: 2.7891 (2.7553)  ot_loss: 0.7768 (0.7835)  base_loss: 5.9047 (5.8586)  time: 0.5191  data: 0.0138  max mem: 11361
+Epoch: [13]  [500/976]  eta: 0:04:08  lr: 0.000386  sp_loss: 5.9525 (5.8699)  fam_loss: 3.9166 (3.8157)  manu_loss: 2.8413 (2.7595)  ot_loss: 0.7770 (0.7827)  base_loss: 5.9865 (5.8665)  time: 0.5426  data: 0.1087  max mem: 11361
+Epoch: [13]  [750/976]  eta: 0:01:56  lr: 0.000386  sp_loss: 6.3950 (5.8553)  fam_loss: 4.0818 (3.8084)  manu_loss: 2.9335 (2.7530)  ot_loss: 0.7606 (0.7834)  base_loss: 6.2683 (5.8553)  time: 0.4817  data: 0.0005  max mem: 11361
+Epoch: [13]  [975/976]  eta: 0:00:00  lr: 0.000386  sp_loss: 5.8048 (5.8282)  fam_loss: 3.6913 (3.7886)  manu_loss: 2.6699 (2.7401)  ot_loss: 0.7775 (0.7847)  base_loss: 5.7848 (5.8326)  time: 0.3654  data: 0.0001  max mem: 11361
+Epoch: [13] Total time: 0:08:18 (0.5104 s / it)
+Averaged stats: lr: 0.000386  sp_loss: 5.8048 (5.8472)  fam_loss: 3.6913 (3.7991)  manu_loss: 2.6699 (2.7473)  ot_loss: 0.7775 (0.7839)  base_loss: 5.7848 (5.8472)
+Epoch: [14]  [  0/976]  eta: 1:59:12  lr: 0.000384  sp_loss: 4.6876 (4.6876)  fam_loss: 3.1316 (3.1316)  manu_loss: 2.2822 (2.2822)  ot_loss: 0.8349 (0.8349)  base_loss: 4.9378 (4.9378)  time: 7.3285  data: 6.9615  max mem: 11361
+Epoch: [14]  [250/976]  eta: 0:06:21  lr: 0.000384  sp_loss: 5.9643 (5.7787)  fam_loss: 3.8470 (3.7690)  manu_loss: 2.8736 (2.7286)  ot_loss: 0.7736 (0.7866)  base_loss: 6.0065 (5.7963)  time: 0.4462  data: 0.0610  max mem: 11361
+Epoch: [14]  [500/976]  eta: 0:04:05  lr: 0.000384  sp_loss: 6.0956 (5.8082)  fam_loss: 4.0082 (3.7819)  manu_loss: 2.9283 (2.7364)  ot_loss: 0.7694 (0.7856)  base_loss: 6.0546 (5.8178)  time: 0.4840  data: 0.0005  max mem: 11361
+Epoch: [14]  [750/976]  eta: 0:01:56  lr: 0.000384  sp_loss: 6.0236 (5.8062)  fam_loss: 3.9599 (3.7822)  manu_loss: 2.8253 (2.7382)  ot_loss: 0.7678 (0.7851)  base_loss: 5.9743 (5.8170)  time: 0.5408  data: 0.0005  max mem: 11361
+Epoch: [14]  [975/976]  eta: 0:00:00  lr: 0.000384  sp_loss: 5.6346 (5.8381)  fam_loss: 3.7008 (3.7980)  manu_loss: 2.6724 (2.7492)  ot_loss: 0.7791 (0.7833)  base_loss: 5.6783 (5.8410)  time: 0.3908  data: 0.0001  max mem: 11361
+Epoch: [14] Total time: 0:08:18 (0.5105 s / it)
+Averaged stats: lr: 0.000384  sp_loss: 5.6346 (5.8162)  fam_loss: 3.7008 (3.7826)  manu_loss: 2.6724 (2.7374)  ot_loss: 0.7791 (0.7845)  base_loss: 5.6783 (5.8226)
+Epoch: [15]  [  0/976]  eta: 1:58:39  lr: 0.000381  sp_loss: 4.1710 (4.1710)  fam_loss: 2.8000 (2.8000)  manu_loss: 2.0837 (2.0837)  ot_loss: 0.8781 (0.8781)  base_loss: 4.5312 (4.5312)  time: 7.2949  data: 6.9327  max mem: 11361
+Epoch: [15]  [250/976]  eta: 0:06:29  lr: 0.000381  sp_loss: 6.1229 (5.6358)  fam_loss: 3.8952 (3.6892)  manu_loss: 2.8409 (2.6746)  ot_loss: 0.7740 (0.7925)  base_loss: 6.0840 (5.6851)  time: 0.5259  data: 0.0005  max mem: 11361
+Epoch: [15]  [500/976]  eta: 0:04:08  lr: 0.000381  sp_loss: 6.0533 (5.6789)  fam_loss: 4.0108 (3.7102)  manu_loss: 2.8491 (2.6868)  ot_loss: 0.7730 (0.7907)  base_loss: 6.0425 (5.7171)  time: 0.5529  data: 0.0004  max mem: 11361
+Epoch: [15]  [750/976]  eta: 0:01:56  lr: 0.000381  sp_loss: 5.8132 (5.7204)  fam_loss: 3.6955 (3.7293)  manu_loss: 2.7515 (2.7014)  ot_loss: 0.7706 (0.7885)  base_loss: 5.8004 (5.7478)  time: 0.5597  data: 0.0005  max mem: 11361
+Epoch: [15]  [975/976]  eta: 0:00:00  lr: 0.000381  sp_loss: 6.0372 (5.7236)  fam_loss: 3.9089 (3.7275)  manu_loss: 2.8473 (2.7015)  ot_loss: 0.7623 (0.7883)  base_loss: 5.9948 (5.7491)  time: 0.4113  data: 0.0001  max mem: 11361
+Epoch: [15] Total time: 0:08:19 (0.5113 s / it)
+Averaged stats: lr: 0.000381  sp_loss: 6.0372 (5.7410)  fam_loss: 3.9089 (3.7397)  manu_loss: 2.8473 (2.7088)  ot_loss: 0.7623 (0.7876)  base_loss: 5.9948 (5.7635)
+Epoch: [16]  [  0/976]  eta: 1:49:23  lr: 0.000379  sp_loss: 5.4126 (5.4126)  fam_loss: 3.3477 (3.3477)  manu_loss: 2.3555 (2.3555)  ot_loss: 0.8051 (0.8051)  base_loss: 5.4232 (5.4232)  time: 6.7251  data: 6.3357  max mem: 11361
+Epoch: [16]  [250/976]  eta: 0:06:19  lr: 0.000379  sp_loss: 6.0139 (5.7130)  fam_loss: 3.8504 (3.7422)  manu_loss: 2.7886 (2.7143)  ot_loss: 0.7791 (0.7881)  base_loss: 5.9695 (5.7479)  time: 0.4384  data: 0.0752  max mem: 11361
+Epoch: [16]  [500/976]  eta: 0:04:04  lr: 0.000379  sp_loss: 5.4608 (5.6759)  fam_loss: 3.6374 (3.7129)  manu_loss: 2.7095 (2.6949)  ot_loss: 0.7851 (0.7896)  base_loss: 5.5802 (5.7160)  time: 0.4932  data: 0.0113  max mem: 11361
+Epoch: [16]  [750/976]  eta: 0:01:55  lr: 0.000379  sp_loss: 5.6291 (5.6752)  fam_loss: 3.6832 (3.7107)  manu_loss: 2.6648 (2.6921)  ot_loss: 0.7890 (0.7900)  base_loss: 5.7061 (5.7149)  time: 0.5755  data: 0.0005  max mem: 11361
+Epoch: [16]  [975/976]  eta: 0:00:00  lr: 0.000379  sp_loss: 6.0520 (5.6851)  fam_loss: 3.8328 (3.7115)  manu_loss: 2.8257 (2.6923)  ot_loss: 0.7685 (0.7893)  base_loss: 5.9548 (5.7208)  time: 0.3803  data: 0.0001  max mem: 11361
+Epoch: [16] Total time: 0:08:16 (0.5089 s / it)
+Averaged stats: lr: 0.000379  sp_loss: 6.0520 (5.7104)  fam_loss: 3.8328 (3.7295)  manu_loss: 2.8257 (2.7036)  ot_loss: 0.7685 (0.7881)  base_loss: 5.9548 (5.7415)
+Epoch: [17]  [  0/976]  eta: 2:07:22  lr: 0.000376  sp_loss: 6.4439 (6.4439)  fam_loss: 4.3272 (4.3272)  manu_loss: 3.1495 (3.1495)  ot_loss: 0.7522 (0.7522)  base_loss: 6.3834 (6.3834)  time: 7.8302  data: 7.4666  max mem: 11361
+Epoch: [17]  [250/976]  eta: 0:06:21  lr: 0.000376  sp_loss: 6.1583 (5.6644)  fam_loss: 3.9437 (3.7044)  manu_loss: 2.8506 (2.6923)  ot_loss: 0.7663 (0.7900)  base_loss: 6.0499 (5.7059)  time: 0.4371  data: 0.0184  max mem: 11361
+Epoch: [17]  [500/976]  eta: 0:04:06  lr: 0.000376  sp_loss: 5.8238 (5.6316)  fam_loss: 3.8015 (3.6838)  manu_loss: 2.7493 (2.6731)  ot_loss: 0.7745 (0.7916)  base_loss: 5.8262 (5.6789)  time: 0.5496  data: 0.0005  max mem: 11361
+Epoch: [17]  [750/976]  eta: 0:01:55  lr: 0.000376  sp_loss: 5.9862 (5.6471)  fam_loss: 3.8315 (3.6914)  manu_loss: 2.7507 (2.6794)  ot_loss: 0.7798 (0.7909)  base_loss: 5.9351 (5.6906)  time: 0.5451  data: 0.0005  max mem: 11361
+Epoch: [17]  [975/976]  eta: 0:00:00  lr: 0.000376  sp_loss: 5.6883 (5.6441)  fam_loss: 3.7532 (3.6867)  manu_loss: 2.7148 (2.6736)  ot_loss: 0.7825 (0.7910)  base_loss: 5.7135 (5.6867)  time: 0.4022  data: 0.0001  max mem: 11361
+Epoch: [17] Total time: 0:08:16 (0.5087 s / it)
+Averaged stats: lr: 0.000376  sp_loss: 5.6883 (5.6372)  fam_loss: 3.7532 (3.6821)  manu_loss: 2.7148 (2.6706)  ot_loss: 0.7825 (0.7915)  base_loss: 5.7135 (5.6813)
+Epoch: [18]  [  0/976]  eta: 1:38:37  lr: 0.000373  sp_loss: 6.1288 (6.1288)  fam_loss: 4.0888 (4.0888)  manu_loss: 3.0502 (3.0502)  ot_loss: 0.7645 (0.7645)  base_loss: 6.1265 (6.1265)  time: 6.0633  data: 5.5608  max mem: 11361
+Epoch: [18]  [250/976]  eta: 0:06:25  lr: 0.000373  sp_loss: 5.5494 (5.5886)  fam_loss: 3.6629 (3.6666)  manu_loss: 2.6764 (2.6559)  ot_loss: 0.7860 (0.7936)  base_loss: 5.6186 (5.6469)  time: 0.4590  data: 0.0903  max mem: 11361
+Epoch: [18]  [500/976]  eta: 0:04:07  lr: 0.000373  sp_loss: 5.8691 (5.5879)  fam_loss: 3.8224 (3.6625)  manu_loss: 2.7598 (2.6578)  ot_loss: 0.7776 (0.7938)  base_loss: 5.8811 (5.6459)  time: 0.4601  data: 0.0416  max mem: 11361
+Epoch: [18]  [750/976]  eta: 0:01:56  lr: 0.000373  sp_loss: 5.4203 (5.6486)  fam_loss: 3.6026 (3.7006)  manu_loss: 2.6775 (2.6856)  ot_loss: 0.7789 (0.7905)  base_loss: 5.5303 (5.6946)  time: 0.5281  data: 0.0005  max mem: 11361
+Epoch: [18]  [975/976]  eta: 0:00:00  lr: 0.000373  sp_loss: 4.9298 (5.6404)  fam_loss: 3.1755 (3.6929)  manu_loss: 2.2708 (2.6804)  ot_loss: 0.8179 (0.7904)  base_loss: 5.0882 (5.6871)  time: 0.4303  data: 0.0001  max mem: 11361
+Epoch: [18] Total time: 0:08:17 (0.5100 s / it)
+Averaged stats: lr: 0.000373  sp_loss: 4.9298 (5.6243)  fam_loss: 3.1755 (3.6832)  manu_loss: 2.2708 (2.6732)  ot_loss: 0.8179 (0.7909)  base_loss: 5.0882 (5.6742)
+Epoch: [19]  [  0/976]  eta: 1:59:45  lr: 0.000370  sp_loss: 6.0584 (6.0584)  fam_loss: 3.8030 (3.8030)  manu_loss: 2.7841 (2.7841)  ot_loss: 0.7615 (0.7615)  base_loss: 5.9621 (5.9621)  time: 7.3618  data: 7.0024  max mem: 11361
+Epoch: [19]  [250/976]  eta: 0:06:28  lr: 0.000370  sp_loss: 5.7151 (5.5345)  fam_loss: 3.7720 (3.6242)  manu_loss: 2.7254 (2.6350)  ot_loss: 0.7791 (0.7944)  base_loss: 5.7470 (5.6006)  time: 0.4835  data: 0.0005  max mem: 11361
+Epoch: [19]  [500/976]  eta: 0:04:06  lr: 0.000370  sp_loss: 5.0980 (5.5395)  fam_loss: 3.3538 (3.6300)  manu_loss: 2.4605 (2.6355)  ot_loss: 0.8081 (0.7945)  base_loss: 5.2530 (5.6052)  time: 0.4919  data: 0.0004  max mem: 11361
+Epoch: [19]  [750/976]  eta: 0:01:56  lr: 0.000370  sp_loss: 5.7260 (5.5724)  fam_loss: 3.7304 (3.6482)  manu_loss: 2.7159 (2.6483)  ot_loss: 0.7831 (0.7932)  base_loss: 5.7519 (5.6309)  time: 0.5420  data: 0.0005  max mem: 11361
+Epoch: [19]  [975/976]  eta: 0:00:00  lr: 0.000370  sp_loss: 5.5682 (5.5826)  fam_loss: 3.6739 (3.6520)  manu_loss: 2.5870 (2.6509)  ot_loss: 0.7806 (0.7924)  base_loss: 5.6350 (5.6380)  time: 0.4057  data: 0.0001  max mem: 11361
+Epoch: [19] Total time: 0:08:19 (0.5117 s / it)
+Averaged stats: lr: 0.000370  sp_loss: 5.5682 (5.5897)  fam_loss: 3.6739 (3.6569)  manu_loss: 2.5870 (2.6560)  ot_loss: 0.7806 (0.7918)  base_loss: 5.6350 (5.6441)
+Epoch: [20]  [  0/976]  eta: 2:08:13  lr: 0.000366  sp_loss: 5.9612 (5.9612)  fam_loss: 4.0306 (4.0306)  manu_loss: 2.9122 (2.9122)  ot_loss: 0.7677 (0.7677)  base_loss: 5.9818 (5.9818)  time: 7.8822  data: 7.5314  max mem: 11361
+Epoch: [20]  [250/976]  eta: 0:06:25  lr: 0.000366  sp_loss: 5.8855 (5.5632)  fam_loss: 3.8626 (3.6550)  manu_loss: 2.8479 (2.6545)  ot_loss: 0.7857 (0.7928)  base_loss: 5.8852 (5.6285)  time: 0.5484  data: 0.0005  max mem: 11361
+Epoch: [20]  [500/976]  eta: 0:04:07  lr: 0.000366  sp_loss: 5.7430 (5.5522)  fam_loss: 3.8680 (3.6405)  manu_loss: 2.8113 (2.6458)  ot_loss: 0.7700 (0.7930)  base_loss: 5.8065 (5.6167)  time: 0.5434  data: 0.0005  max mem: 11361
+Epoch: [20]  [750/976]  eta: 0:01:55  lr: 0.000366  sp_loss: 5.1422 (5.5560)  fam_loss: 3.3831 (3.6403)  manu_loss: 2.4770 (2.6427)  ot_loss: 0.7985 (0.7928)  base_loss: 5.3023 (5.6182)  time: 0.4562  data: 0.0005  max mem: 11361
+Epoch: [20]  [975/976]  eta: 0:00:00  lr: 0.000366  sp_loss: 5.6632 (5.5664)  fam_loss: 3.5557 (3.6426)  manu_loss: 2.6795 (2.6444)  ot_loss: 0.7765 (0.7921)  base_loss: 5.6499 (5.6249)  time: 0.4236  data: 0.0001  max mem: 11361
+Epoch: [20] Total time: 0:08:16 (0.5091 s / it)
+Averaged stats: lr: 0.000366  sp_loss: 5.6632 (5.5464)  fam_loss: 3.5557 (3.6316)  manu_loss: 2.6795 (2.6360)  ot_loss: 0.7765 (0.7929)  base_loss: 5.6499 (5.6092)
+Epoch: [21]  [  0/976]  eta: 2:08:47  lr: 0.000363  sp_loss: 6.1435 (6.1435)  fam_loss: 4.1678 (4.1678)  manu_loss: 3.1177 (3.1177)  ot_loss: 0.7621 (0.7621)  base_loss: 6.1591 (6.1591)  time: 7.9175  data: 7.5661  max mem: 11361
+Epoch: [21]  [250/976]  eta: 0:06:27  lr: 0.000363  sp_loss: 5.5184 (5.5851)  fam_loss: 3.6647 (3.6675)  manu_loss: 2.5840 (2.6672)  ot_loss: 0.7944 (0.7914)  base_loss: 5.6148 (5.6447)  time: 0.4515  data: 0.0005  max mem: 11361
+Epoch: [21]  [500/976]  eta: 0:04:08  lr: 0.000363  sp_loss: 5.4491 (5.5452)  fam_loss: 3.6302 (3.6486)  manu_loss: 2.5718 (2.6519)  ot_loss: 0.7880 (0.7931)  base_loss: 5.4943 (5.6147)  time: 0.5501  data: 0.0005  max mem: 11361
+Epoch: [21]  [750/976]  eta: 0:01:56  lr: 0.000363  sp_loss: 5.9028 (5.5344)  fam_loss: 3.8333 (3.6338)  manu_loss: 2.7645 (2.6419)  ot_loss: 0.7744 (0.7936)  base_loss: 5.8812 (5.6032)  time: 0.5298  data: 0.0005  max mem: 11361
+Epoch: [21]  [975/976]  eta: 0:00:00  lr: 0.000363  sp_loss: 5.7178 (5.5254)  fam_loss: 3.7150 (3.6239)  manu_loss: 2.6353 (2.6334)  ot_loss: 0.7819 (0.7939)  base_loss: 5.7360 (5.5940)  time: 0.3873  data: 0.0001  max mem: 11361
+Epoch: [21] Total time: 0:08:20 (0.5129 s / it)
+Averaged stats: lr: 0.000363  sp_loss: 5.7178 (5.5284)  fam_loss: 3.7150 (3.6251)  manu_loss: 2.6353 (2.6341)  ot_loss: 0.7819 (0.7936)  base_loss: 5.7360 (5.5962)
+Epoch: [22]  [  0/976]  eta: 2:06:38  lr: 0.000359  sp_loss: 6.0735 (6.0735)  fam_loss: 3.9498 (3.9498)  manu_loss: 2.9162 (2.9162)  ot_loss: 0.7775 (0.7775)  base_loss: 6.0372 (6.0372)  time: 7.7853  data: 7.4328  max mem: 11361
+Epoch: [22]  [250/976]  eta: 0:06:27  lr: 0.000359  sp_loss: 5.5984 (5.3978)  fam_loss: 3.6928 (3.5377)  manu_loss: 2.7039 (2.5673)  ot_loss: 0.7844 (0.7995)  base_loss: 5.6387 (5.4877)  time: 0.5764  data: 0.2178  max mem: 11361
+Epoch: [22]  [500/976]  eta: 0:04:06  lr: 0.000359  sp_loss: 5.0561 (5.4519)  fam_loss: 3.3620 (3.5774)  manu_loss: 2.4441 (2.5986)  ot_loss: 0.8051 (0.7965)  base_loss: 5.2215 (5.5339)  time: 0.5195  data: 0.1504  max mem: 11361
+Epoch: [22]  [750/976]  eta: 0:01:56  lr: 0.000359  sp_loss: 5.9124 (5.4729)  fam_loss: 3.7810 (3.5892)  manu_loss: 2.7136 (2.6071)  ot_loss: 0.7802 (0.7955)  base_loss: 5.8704 (5.5503)  time: 0.5128  data: 0.0005  max mem: 11361
+Epoch: [22]  [975/976]  eta: 0:00:00  lr: 0.000359  sp_loss: 6.1355 (5.5147)  fam_loss: 3.9260 (3.6127)  manu_loss: 2.8036 (2.6246)  ot_loss: 0.7692 (0.7933)  base_loss: 6.0670 (5.5831)  time: 0.3400  data: 0.0001  max mem: 11361
+Epoch: [22] Total time: 0:08:18 (0.5104 s / it)
+Averaged stats: lr: 0.000359  sp_loss: 6.1355 (5.5253)  fam_loss: 3.9260 (3.6196)  manu_loss: 2.8036 (2.6284)  ot_loss: 0.7692 (0.7930)  base_loss: 6.0670 (5.5918)
+Epoch: [23]  [  0/976]  eta: 2:08:12  lr: 0.000355  sp_loss: 4.2193 (4.2193)  fam_loss: 2.9335 (2.9335)  manu_loss: 2.1906 (2.1906)  ot_loss: 0.8574 (0.8574)  base_loss: 4.6172 (4.6172)  time: 7.8821  data: 7.5273  max mem: 11361
+Epoch: [23]  [250/976]  eta: 0:06:32  lr: 0.000355  sp_loss: 4.8600 (5.4341)  fam_loss: 3.1785 (3.5791)  manu_loss: 2.2686 (2.6004)  ot_loss: 0.8178 (0.7976)  base_loss: 5.0430 (5.5244)  time: 0.5620  data: 0.0005  max mem: 11361
+Epoch: [23]  [500/976]  eta: 0:04:09  lr: 0.000355  sp_loss: 5.7523 (5.4446)  fam_loss: 3.7463 (3.5787)  manu_loss: 2.7398 (2.6016)  ot_loss: 0.7866 (0.7968)  base_loss: 5.7773 (5.5305)  time: 0.5597  data: 0.0004  max mem: 11361
+Epoch: [23]  [750/976]  eta: 0:01:56  lr: 0.000355  sp_loss: 5.8588 (5.4481)  fam_loss: 3.7368 (3.5767)  manu_loss: 2.7791 (2.5991)  ot_loss: 0.7889 (0.7969)  base_loss: 5.8467 (5.5314)  time: 0.4331  data: 0.0004  max mem: 11361
+Epoch: [23]  [975/976]  eta: 0:00:00  lr: 0.000355  sp_loss: 5.5202 (5.4533)  fam_loss: 3.6447 (3.5782)  manu_loss: 2.6254 (2.6010)  ot_loss: 0.7906 (0.7967)  base_loss: 5.6406 (5.5351)  time: 0.3598  data: 0.0001  max mem: 11361
+Epoch: [23] Total time: 0:08:20 (0.5127 s / it)
+Averaged stats: lr: 0.000355  sp_loss: 5.5202 (5.4606)  fam_loss: 3.6447 (3.5837)  manu_loss: 2.6254 (2.6042)  ot_loss: 0.7906 (0.7963)  base_loss: 5.6406 (5.5411)
+Epoch: [24]  [  0/976]  eta: 1:58:25  lr: 0.000351  sp_loss: 3.6633 (3.6633)  fam_loss: 2.5658 (2.5658)  manu_loss: 1.9648 (1.9648)  ot_loss: 0.8715 (0.8715)  base_loss: 4.1378 (4.1378)  time: 7.2804  data: 6.9256  max mem: 11361
+Epoch: [24]  [250/976]  eta: 0:06:23  lr: 0.000351  sp_loss: 5.9025 (5.4846)  fam_loss: 3.8093 (3.6214)  manu_loss: 2.7582 (2.6392)  ot_loss: 0.7733 (0.7950)  base_loss: 5.8720 (5.5699)  time: 0.4322  data: 0.0184  max mem: 11361
+Epoch: [24]  [500/976]  eta: 0:04:06  lr: 0.000351  sp_loss: 5.4875 (5.4460)  fam_loss: 3.6294 (3.5922)  manu_loss: 2.6895 (2.6140)  ot_loss: 0.7844 (0.7964)  base_loss: 5.5751 (5.5361)  time: 0.5527  data: 0.1460  max mem: 11361
+Epoch: [24]  [750/976]  eta: 0:01:56  lr: 0.000351  sp_loss: 5.7733 (5.4636)  fam_loss: 3.6811 (3.5967)  manu_loss: 2.7419 (2.6161)  ot_loss: 0.7696 (0.7952)  base_loss: 5.7567 (5.5477)  time: 0.5197  data: 0.0005  max mem: 11361
+Epoch: [24]  [975/976]  eta: 0:00:00  lr: 0.000351  sp_loss: 5.4871 (5.4640)  fam_loss: 3.6605 (3.5943)  manu_loss: 2.6254 (2.6131)  ot_loss: 0.7677 (0.7950)  base_loss: 5.5755 (5.5469)  time: 0.3629  data: 0.0048  max mem: 11361
+Epoch: [24] Total time: 0:08:17 (0.5101 s / it)
+Averaged stats: lr: 0.000351  sp_loss: 5.4871 (5.4670)  fam_loss: 3.6605 (3.5912)  manu_loss: 2.6254 (2.6110)  ot_loss: 0.7677 (0.7949)  base_loss: 5.5755 (5.5474)
+Epoch: [25]  [  0/976]  eta: 2:05:17  lr: 0.000347  sp_loss: 4.7001 (4.7001)  fam_loss: 3.1022 (3.1022)  manu_loss: 2.1719 (2.1719)  ot_loss: 0.8281 (0.8281)  base_loss: 4.9138 (4.9138)  time: 7.7024  data: 7.3508  max mem: 11361
+Epoch: [25]  [250/976]  eta: 0:06:24  lr: 0.000347  sp_loss: 5.4107 (5.3872)  fam_loss: 3.5883 (3.5581)  manu_loss: 2.6310 (2.5925)  ot_loss: 0.7786 (0.7979)  base_loss: 5.5033 (5.4887)  time: 0.4586  data: 0.0006  max mem: 11361
+Epoch: [25]  [500/976]  eta: 0:04:09  lr: 0.000347  sp_loss: 5.8755 (5.4211)  fam_loss: 3.7426 (3.5707)  manu_loss: 2.7432 (2.5978)  ot_loss: 0.7818 (0.7967)  base_loss: 5.8677 (5.5125)  time: 0.5995  data: 0.0005  max mem: 11361
+Epoch: [25]  [750/976]  eta: 0:01:56  lr: 0.000347  sp_loss: 5.2172 (5.4178)  fam_loss: 3.4266 (3.5645)  manu_loss: 2.5349 (2.5936)  ot_loss: 0.7928 (0.7967)  base_loss: 5.3797 (5.5085)  time: 0.5633  data: 0.0005  max mem: 11361
+Epoch: [25]  [975/976]  eta: 0:00:00  lr: 0.000347  sp_loss: 5.6079 (5.4400)  fam_loss: 3.6518 (3.5728)  manu_loss: 2.6465 (2.5983)  ot_loss: 0.7852 (0.7956)  base_loss: 5.6581 (5.5242)  time: 0.4050  data: 0.0001  max mem: 11361
+Epoch: [25] Total time: 0:08:19 (0.5122 s / it)
+Averaged stats: lr: 0.000347  sp_loss: 5.6079 (5.4381)  fam_loss: 3.6518 (3.5714)  manu_loss: 2.6465 (2.5979)  ot_loss: 0.7852 (0.7959)  base_loss: 5.6581 (5.5228)
+Epoch: [26]  [  0/976]  eta: 1:54:48  lr: 0.000343  sp_loss: 5.5474 (5.5474)  fam_loss: 3.7175 (3.7175)  manu_loss: 2.6181 (2.6181)  ot_loss: 0.7843 (0.7843)  base_loss: 5.6251 (5.6251)  time: 7.0581  data: 5.4513  max mem: 11361
+Epoch: [26]  [250/976]  eta: 0:06:26  lr: 0.000343  sp_loss: 5.7278 (5.3056)  fam_loss: 3.8163 (3.4983)  manu_loss: 2.8266 (2.5482)  ot_loss: 0.7784 (0.8020)  base_loss: 5.7501 (5.4200)  time: 0.4575  data: 0.0816  max mem: 11361
+Epoch: [26]  [500/976]  eta: 0:04:07  lr: 0.000343  sp_loss: 5.9025 (5.3505)  fam_loss: 3.7981 (3.5234)  manu_loss: 2.6926 (2.5647)  ot_loss: 0.7791 (0.7998)  base_loss: 5.8797 (5.4549)  time: 0.4937  data: 0.0354  max mem: 11361
+Epoch: [26]  [750/976]  eta: 0:01:56  lr: 0.000343  sp_loss: 5.5829 (5.3295)  fam_loss: 3.6660 (3.5079)  manu_loss: 2.6560 (2.5521)  ot_loss: 0.7836 (0.8003)  base_loss: 5.6333 (5.4369)  time: 0.5448  data: 0.0005  max mem: 11361
+Epoch: [26]  [975/976]  eta: 0:00:00  lr: 0.000343  sp_loss: 5.4821 (5.3563)  fam_loss: 3.5954 (3.5222)  manu_loss: 2.5375 (2.5623)  ot_loss: 0.7847 (0.7988)  base_loss: 5.5408 (5.4575)  time: 0.4115  data: 0.0001  max mem: 11361
+Epoch: [26] Total time: 0:08:20 (0.5124 s / it)
+Averaged stats: lr: 0.000343  sp_loss: 5.4821 (5.3857)  fam_loss: 3.5954 (3.5385)  manu_loss: 2.5375 (2.5750)  ot_loss: 0.7847 (0.7975)  base_loss: 5.5408 (5.4805)
+Epoch: [27]  [  0/976]  eta: 1:55:38  lr: 0.000338  sp_loss: 5.6055 (5.6055)  fam_loss: 3.6716 (3.6716)  manu_loss: 2.7207 (2.7207)  ot_loss: 0.7868 (0.7868)  base_loss: 5.6602 (5.6602)  time: 7.1088  data: 6.7569  max mem: 11361
+Epoch: [27]  [250/976]  eta: 0:06:22  lr: 0.000338  sp_loss: 5.5079 (5.4001)  fam_loss: 3.6946 (3.5650)  manu_loss: 2.6325 (2.5933)  ot_loss: 0.7953 (0.7963)  base_loss: 5.6115 (5.4978)  time: 0.4224  data: 0.0516  max mem: 11361
+Epoch: [27]  [500/976]  eta: 0:04:08  lr: 0.000338  sp_loss: 5.3344 (5.3970)  fam_loss: 3.4930 (3.5542)  manu_loss: 2.5520 (2.5864)  ot_loss: 0.7837 (0.7962)  base_loss: 5.4525 (5.4921)  time: 0.4666  data: 0.0005  max mem: 11361
+Epoch: [27]  [750/976]  eta: 0:01:57  lr: 0.000338  sp_loss: 5.7787 (5.4194)  fam_loss: 3.7696 (3.5615)  manu_loss: 2.6796 (2.5920)  ot_loss: 0.7739 (0.7954)  base_loss: 5.8400 (5.5077)  time: 0.5858  data: 0.0004  max mem: 11361
+Epoch: [27]  [975/976]  eta: 0:00:00  lr: 0.000338  sp_loss: 5.7616 (5.4179)  fam_loss: 3.6836 (3.5587)  manu_loss: 2.6765 (2.5879)  ot_loss: 0.7720 (0.7954)  base_loss: 5.7690 (5.5056)  time: 0.3907  data: 0.0001  max mem: 11361
+Epoch: [27] Total time: 0:08:20 (0.5132 s / it)
+Averaged stats: lr: 0.000338  sp_loss: 5.7616 (5.4141)  fam_loss: 3.6836 (3.5565)  manu_loss: 2.6765 (2.5876)  ot_loss: 0.7720 (0.7956)  base_loss: 5.7690 (5.5028)
+Epoch: [28]  [  0/976]  eta: 1:49:24  lr: 0.000334  sp_loss: 5.1351 (5.1351)  fam_loss: 3.2863 (3.2863)  manu_loss: 2.3482 (2.3482)  ot_loss: 0.8056 (0.8056)  base_loss: 5.2373 (5.2373)  time: 6.7261  data: 5.4545  max mem: 11361
+Epoch: [28]  [250/976]  eta: 0:06:26  lr: 0.000334  sp_loss: 5.4292 (5.3094)  fam_loss: 3.5190 (3.4941)  manu_loss: 2.5678 (2.5449)  ot_loss: 0.8017 (0.8007)  base_loss: 5.4920 (5.4194)  time: 0.4304  data: 0.0005  max mem: 11361
+Epoch: [28]  [500/976]  eta: 0:04:06  lr: 0.000334  sp_loss: 5.7712 (5.3149)  fam_loss: 3.7084 (3.4977)  manu_loss: 2.7298 (2.5461)  ot_loss: 0.7815 (0.7993)  base_loss: 5.8024 (5.4234)  time: 0.5219  data: 0.0031  max mem: 11361
+Epoch: [28]  [750/976]  eta: 0:01:57  lr: 0.000334  sp_loss: 5.6688 (5.3360)  fam_loss: 3.7617 (3.5102)  manu_loss: 2.7289 (2.5555)  ot_loss: 0.7879 (0.7980)  base_loss: 5.7078 (5.4404)  time: 0.5462  data: 0.0010  max mem: 11361
+Epoch: [28]  [975/976]  eta: 0:00:00  lr: 0.000334  sp_loss: 5.6158 (5.3412)  fam_loss: 3.6880 (3.5125)  manu_loss: 2.7253 (2.5577)  ot_loss: 0.7864 (0.7978)  base_loss: 5.6670 (5.4443)  time: 0.3823  data: 0.0001  max mem: 11361
+Epoch: [28] Total time: 0:08:17 (0.5102 s / it)
+Averaged stats: lr: 0.000334  sp_loss: 5.6158 (5.3506)  fam_loss: 3.6880 (3.5185)  manu_loss: 2.7253 (2.5630)  ot_loss: 0.7864 (0.7974)  base_loss: 5.6670 (5.4521)
+Epoch: [29]  [  0/976]  eta: 1:50:09  lr: 0.000329  sp_loss: 6.0799 (6.0799)  fam_loss: 3.8867 (3.8867)  manu_loss: 2.8108 (2.8108)  ot_loss: 0.7787 (0.7787)  base_loss: 6.0021 (6.0021)  time: 6.7725  data: 5.9805  max mem: 11361
+Epoch: [29]  [250/976]  eta: 0:06:21  lr: 0.000329  sp_loss: 5.5158 (5.2844)  fam_loss: 3.6384 (3.4808)  manu_loss: 2.7515 (2.5353)  ot_loss: 0.7939 (0.8010)  base_loss: 5.6000 (5.4003)  time: 0.4357  data: 0.0912  max mem: 11361
+Epoch: [29]  [500/976]  eta: 0:04:06  lr: 0.000329  sp_loss: 5.5100 (5.3427)  fam_loss: 3.6244 (3.5155)  manu_loss: 2.6495 (2.5625)  ot_loss: 0.7924 (0.7978)  base_loss: 5.5792 (5.4470)  time: 0.5425  data: 0.0004  max mem: 11361
+Epoch: [29]  [750/976]  eta: 0:01:57  lr: 0.000329  sp_loss: 5.5337 (5.3289)  fam_loss: 3.6285 (3.5050)  manu_loss: 2.6202 (2.5551)  ot_loss: 0.7870 (0.7985)  base_loss: 5.5825 (5.4353)  time: 0.5886  data: 0.0005  max mem: 11361
+Epoch: [29]  [975/976]  eta: 0:00:00  lr: 0.000329  sp_loss: 5.5189 (5.3326)  fam_loss: 3.7725 (3.5036)  manu_loss: 2.6633 (2.5534)  ot_loss: 0.7808 (0.7984)  base_loss: 5.5631 (5.4366)  time: 0.3857  data: 0.0001  max mem: 11361
+Epoch: [29] Total time: 0:08:19 (0.5114 s / it)
+Averaged stats: lr: 0.000329  sp_loss: 5.5189 (5.3390)  fam_loss: 3.7725 (3.5078)  manu_loss: 2.6633 (2.5559)  ot_loss: 0.7808 (0.7981)  base_loss: 5.5631 (5.4419)
+Epoch: [30]  [  0/976]  eta: 2:00:42  lr: 0.000325  sp_loss: 5.2595 (5.2595)  fam_loss: 3.4997 (3.4997)  manu_loss: 2.5459 (2.5459)  ot_loss: 0.7665 (0.7665)  base_loss: 5.3775 (5.3775)  time: 7.4207  data: 7.0586  max mem: 11361
+Epoch: [30]  [250/976]  eta: 0:06:35  lr: 0.000325  sp_loss: 4.8717 (5.3412)  fam_loss: 3.3356 (3.5155)  manu_loss: 2.4223 (2.5642)  ot_loss: 0.8030 (0.7986)  base_loss: 5.1306 (5.4459)  time: 0.4710  data: 0.0005  max mem: 11361
+Epoch: [30]  [500/976]  eta: 0:04:12  lr: 0.000325  sp_loss: 5.2634 (5.3158)  fam_loss: 3.5042 (3.5012)  manu_loss: 2.5169 (2.5534)  ot_loss: 0.7998 (0.7990)  base_loss: 5.3809 (5.4257)  time: 0.4652  data: 0.0005  max mem: 11361
+Epoch: [30]  [750/976]  eta: 0:01:58  lr: 0.000325  sp_loss: 5.1639 (5.3355)  fam_loss: 3.5323 (3.5088)  manu_loss: 2.5498 (2.5579)  ot_loss: 0.7892 (0.7980)  base_loss: 5.3442 (5.4396)  time: 0.5431  data: 0.0004  max mem: 11361
+Epoch: [30]  [975/976]  eta: 0:00:00  lr: 0.000325  sp_loss: 5.8399 (5.3493)  fam_loss: 3.7189 (3.5150)  manu_loss: 2.7854 (2.5618)  ot_loss: 0.7742 (0.7974)  base_loss: 5.8171 (5.4498)  time: 0.3615  data: 0.0001  max mem: 11361
+Epoch: [30] Total time: 0:08:28 (0.5209 s / it)
+Averaged stats: lr: 0.000325  sp_loss: 5.8399 (5.3429)  fam_loss: 3.7189 (3.5099)  manu_loss: 2.7854 (2.5572)  ot_loss: 0.7742 (0.7978)  base_loss: 5.8171 (5.4441)
+Epoch: [31]  [  0/976]  eta: 2:01:48  lr: 0.000320  sp_loss: 6.2139 (6.2139)  fam_loss: 4.0569 (4.0569)  manu_loss: 2.9809 (2.9809)  ot_loss: 0.7572 (0.7572)  base_loss: 6.1483 (6.1483)  time: 7.4880  data: 7.1398  max mem: 11361
+Epoch: [31]  [250/976]  eta: 0:06:25  lr: 0.000320  sp_loss: 4.9301 (5.2512)  fam_loss: 3.2668 (3.4665)  manu_loss: 2.4689 (2.5276)  ot_loss: 0.7948 (0.8001)  base_loss: 5.1196 (5.3755)  time: 0.4718  data: 0.0508  max mem: 11361
+Epoch: [31]  [500/976]  eta: 0:04:07  lr: 0.000320  sp_loss: 5.6272 (5.2504)  fam_loss: 3.6389 (3.4616)  manu_loss: 2.6819 (2.5239)  ot_loss: 0.7890 (0.8004)  base_loss: 5.6774 (5.3732)  time: 0.5339  data: 0.0005  max mem: 11361
+Epoch: [31]  [750/976]  eta: 0:01:56  lr: 0.000320  sp_loss: 5.1154 (5.2990)  fam_loss: 3.4203 (3.4876)  manu_loss: 2.4575 (2.5423)  ot_loss: 0.7938 (0.7986)  base_loss: 5.2709 (5.4104)  time: 0.5113  data: 0.0004  max mem: 11361
+Epoch: [31]  [975/976]  eta: 0:00:00  lr: 0.000320  sp_loss: 5.6460 (5.3309)  fam_loss: 3.6299 (3.5049)  manu_loss: 2.6551 (2.5553)  ot_loss: 0.7893 (0.7973)  base_loss: 5.6369 (5.4352)  time: 0.4225  data: 0.0001  max mem: 11361
+Epoch: [31] Total time: 0:08:21 (0.5134 s / it)
+Averaged stats: lr: 0.000320  sp_loss: 5.6460 (5.3309)  fam_loss: 3.6299 (3.5047)  manu_loss: 2.6551 (2.5561)  ot_loss: 0.7893 (0.7975)  base_loss: 5.6369 (5.4353)
+Epoch: [32]  [  0/976]  eta: 2:03:55  lr: 0.000315  sp_loss: 5.1447 (5.1447)  fam_loss: 3.2975 (3.2975)  manu_loss: 2.2884 (2.2884)  ot_loss: 0.8096 (0.8096)  base_loss: 5.2366 (5.2366)  time: 7.6186  data: 7.2656  max mem: 11361
+Epoch: [32]  [250/976]  eta: 0:06:31  lr: 0.000315  sp_loss: 5.4901 (5.2836)  fam_loss: 3.6171 (3.4849)  manu_loss: 2.6163 (2.5376)  ot_loss: 0.7896 (0.7997)  base_loss: 5.5558 (5.3998)  time: 0.5179  data: 0.0052  max mem: 11361
+Epoch: [32]  [500/976]  eta: 0:04:11  lr: 0.000315  sp_loss: 5.6022 (5.2926)  fam_loss: 3.4481 (3.4852)  manu_loss: 2.5295 (2.5369)  ot_loss: 0.7855 (0.7998)  base_loss: 5.5732 (5.4051)  time: 0.5047  data: 0.0434  max mem: 11361
+Epoch: [32]  [750/976]  eta: 0:01:57  lr: 0.000315  sp_loss: 5.3621 (5.2961)  fam_loss: 3.4703 (3.4868)  manu_loss: 2.4668 (2.5403)  ot_loss: 0.7974 (0.7993)  base_loss: 5.4551 (5.4080)  time: 0.5214  data: 0.0500  max mem: 11361
+Epoch: [32]  [975/976]  eta: 0:00:00  lr: 0.000315  sp_loss: 5.5392 (5.3133)  fam_loss: 3.5485 (3.4941)  manu_loss: 2.6577 (2.5459)  ot_loss: 0.7902 (0.7984)  base_loss: 5.5737 (5.4206)  time: 0.4179  data: 0.0001  max mem: 11361
+Epoch: [32] Total time: 0:08:25 (0.5179 s / it)
+Averaged stats: lr: 0.000315  sp_loss: 5.5392 (5.3127)  fam_loss: 3.5485 (3.4931)  manu_loss: 2.6577 (2.5446)  ot_loss: 0.7902 (0.7984)  base_loss: 5.5737 (5.4196)
+Epoch: [33]  [  0/976]  eta: 1:58:27  lr: 0.000309  sp_loss: 6.0061 (6.0061)  fam_loss: 4.0216 (4.0216)  manu_loss: 2.8081 (2.8081)  ot_loss: 0.7688 (0.7688)  base_loss: 5.9976 (5.9976)  time: 7.2819  data: 6.9050  max mem: 11361
+Epoch: [33]  [250/976]  eta: 0:06:25  lr: 0.000309  sp_loss: 5.3727 (5.2719)  fam_loss: 3.5138 (3.4733)  manu_loss: 2.6068 (2.5288)  ot_loss: 0.7871 (0.7996)  base_loss: 5.4742 (5.3885)  time: 0.4469  data: 0.0475  max mem: 11361
+Epoch: [33]  [500/976]  eta: 0:04:08  lr: 0.000309  sp_loss: 5.0140 (5.2354)  fam_loss: 3.3252 (3.4437)  manu_loss: 2.4361 (2.5101)  ot_loss: 0.7946 (0.8014)  base_loss: 5.1626 (5.3571)  time: 0.5382  data: 0.0005  max mem: 11361
+Epoch: [33]  [750/976]  eta: 0:01:56  lr: 0.000309  sp_loss: 5.0827 (5.2688)  fam_loss: 3.3690 (3.4654)  manu_loss: 2.4370 (2.5254)  ot_loss: 0.7917 (0.7995)  base_loss: 5.2289 (5.3839)  time: 0.5014  data: 0.0005  max mem: 11361
+Epoch: [33]  [975/976]  eta: 0:00:00  lr: 0.000309  sp_loss: 5.2879 (5.2777)  fam_loss: 3.5638 (3.4698)  manu_loss: 2.5929 (2.5269)  ot_loss: 0.7948 (0.7990)  base_loss: 5.4624 (5.3904)  time: 0.3717  data: 0.0248  max mem: 11361
+Epoch: [33] Total time: 0:08:20 (0.5132 s / it)
+Averaged stats: lr: 0.000309  sp_loss: 5.2879 (5.2731)  fam_loss: 3.5638 (3.4666)  manu_loss: 2.5929 (2.5246)  ot_loss: 0.7948 (0.7996)  base_loss: 5.4624 (5.3866)
+Epoch: [34]  [  0/976]  eta: 1:55:38  lr: 0.000304  sp_loss: 6.2173 (6.2173)  fam_loss: 4.0612 (4.0612)  manu_loss: 2.8460 (2.8460)  ot_loss: 0.7517 (0.7517)  base_loss: 6.1307 (6.1307)  time: 7.1088  data: 5.7484  max mem: 11361
+Epoch: [34]  [250/976]  eta: 0:06:28  lr: 0.000304  sp_loss: 5.4021 (5.2298)  fam_loss: 3.5280 (3.4552)  manu_loss: 2.5236 (2.5182)  ot_loss: 0.7987 (0.8004)  base_loss: 5.4883 (5.3577)  time: 0.4183  data: 0.0005  max mem: 11361
+Epoch: [34]  [500/976]  eta: 0:04:08  lr: 0.000304  sp_loss: 5.1589 (5.2757)  fam_loss: 3.4383 (3.4790)  manu_loss: 2.5220 (2.5370)  ot_loss: 0.7943 (0.7984)  base_loss: 5.3352 (5.3932)  time: 0.4778  data: 0.0005  max mem: 11361
+Epoch: [34]  [750/976]  eta: 0:01:58  lr: 0.000304  sp_loss: 5.5341 (5.2676)  fam_loss: 3.5707 (3.4677)  manu_loss: 2.5713 (2.5304)  ot_loss: 0.7878 (0.7991)  base_loss: 5.5524 (5.3846)  time: 0.4556  data: 0.0005  max mem: 11361
+Epoch: [34]  [975/976]  eta: 0:00:00  lr: 0.000304  sp_loss: 5.1037 (5.2507)  fam_loss: 3.4198 (3.4540)  manu_loss: 2.5484 (2.5194)  ot_loss: 0.7954 (0.7997)  base_loss: 5.2740 (5.3695)  time: 0.4194  data: 0.0001  max mem: 11361
+Epoch: [34] Total time: 0:08:26 (0.5190 s / it)
+Averaged stats: lr: 0.000304  sp_loss: 5.1037 (5.2429)  fam_loss: 3.4198 (3.4484)  manu_loss: 2.5484 (2.5148)  ot_loss: 0.7954 (0.8001)  base_loss: 5.2740 (5.3629)
+Epoch: [35]  [  0/976]  eta: 2:06:51  lr: 0.000299  sp_loss: 5.5367 (5.5367)  fam_loss: 3.6728 (3.6728)  manu_loss: 2.7362 (2.7362)  ot_loss: 0.7893 (0.7893)  base_loss: 5.6172 (5.6172)  time: 7.7982  data: 7.4538  max mem: 11361
+Epoch: [35]  [250/976]  eta: 0:06:27  lr: 0.000299  sp_loss: 5.6432 (5.1983)  fam_loss: 3.6329 (3.4262)  manu_loss: 2.6683 (2.4979)  ot_loss: 0.7868 (0.8023)  base_loss: 5.6550 (5.3281)  time: 0.4528  data: 0.0958  max mem: 11361
+Epoch: [35]  [500/976]  eta: 0:04:08  lr: 0.000299  sp_loss: 5.1528 (5.1673)  fam_loss: 3.3041 (3.4000)  manu_loss: 2.3620 (2.4797)  ot_loss: 0.8051 (0.8040)  base_loss: 5.2461 (5.3011)  time: 0.4593  data: 0.0564  max mem: 11361
+Epoch: [35]  [750/976]  eta: 0:01:57  lr: 0.000299  sp_loss: 5.2378 (5.2180)  fam_loss: 3.4702 (3.4307)  manu_loss: 2.4558 (2.5015)  ot_loss: 0.7971 (0.8014)  base_loss: 5.3823 (5.3413)  time: 0.5826  data: 0.0221  max mem: 11361
+Epoch: [35]  [975/976]  eta: 0:00:00  lr: 0.000299  sp_loss: 5.8136 (5.2347)  fam_loss: 3.8288 (3.4424)  manu_loss: 2.8149 (2.5105)  ot_loss: 0.7755 (0.8006)  base_loss: 5.8201 (5.3554)  time: 0.4198  data: 0.1093  max mem: 11361
+Epoch: [35] Total time: 0:08:19 (0.5117 s / it)
+Averaged stats: lr: 0.000299  sp_loss: 5.8136 (5.2021)  fam_loss: 3.8288 (3.4227)  manu_loss: 2.8149 (2.4970)  ot_loss: 0.7755 (0.8017)  base_loss: 5.8201 (5.3296)
+Epoch: [36]  [  0/976]  eta: 2:07:26  lr: 0.000294  sp_loss: 6.0028 (6.0028)  fam_loss: 3.9403 (3.9403)  manu_loss: 2.9038 (2.9038)  ot_loss: 0.7697 (0.7697)  base_loss: 5.9884 (5.9884)  time: 7.8341  data: 7.4774  max mem: 11361
+Epoch: [36]  [250/976]  eta: 0:06:39  lr: 0.000294  sp_loss: 5.1330 (5.1937)  fam_loss: 3.4150 (3.4239)  manu_loss: 2.5038 (2.5017)  ot_loss: 0.8014 (0.8024)  base_loss: 5.2883 (5.3252)  time: 0.5892  data: 0.2381  max mem: 11361
+Epoch: [36]  [500/976]  eta: 0:04:16  lr: 0.000294  sp_loss: 5.7285 (5.2084)  fam_loss: 3.7412 (3.4337)  manu_loss: 2.7770 (2.5038)  ot_loss: 0.7833 (0.8014)  base_loss: 5.7607 (5.3364)  time: 0.5755  data: 0.2286  max mem: 11361
+Epoch: [36]  [750/976]  eta: 0:02:00  lr: 0.000294  sp_loss: 4.8518 (5.1724)  fam_loss: 3.1596 (3.4088)  manu_loss: 2.3028 (2.4856)  ot_loss: 0.8074 (0.8030)  base_loss: 5.0464 (5.3070)  time: 0.5501  data: 0.1995  max mem: 11361
+Epoch: [36]  [975/976]  eta: 0:00:00  lr: 0.000294  sp_loss: 5.1179 (5.1687)  fam_loss: 3.3235 (3.4021)  manu_loss: 2.4593 (2.4818)  ot_loss: 0.7918 (0.8031)  base_loss: 5.2472 (5.3025)  time: 0.3507  data: 0.0528  max mem: 11361
+Epoch: [36] Total time: 0:08:32 (0.5253 s / it)
+Averaged stats: lr: 0.000294  sp_loss: 5.1179 (5.1812)  fam_loss: 3.3235 (3.4083)  manu_loss: 2.4593 (2.4861)  ot_loss: 0.7918 (0.8024)  base_loss: 5.2472 (5.3119)
+Epoch: [37]  [  0/976]  eta: 2:08:47  lr: 0.000288  sp_loss: 5.8423 (5.8423)  fam_loss: 3.9027 (3.9027)  manu_loss: 2.8945 (2.8945)  ot_loss: 0.7862 (0.7862)  base_loss: 5.8797 (5.8797)  time: 7.9178  data: 7.5673  max mem: 11361
+Epoch: [37]  [250/976]  eta: 0:06:35  lr: 0.000288  sp_loss: 5.2117 (5.1082)  fam_loss: 3.4417 (3.3815)  manu_loss: 2.5305 (2.4697)  ot_loss: 0.8017 (0.8052)  base_loss: 5.3279 (5.2602)  time: 0.5254  data: 0.1769  max mem: 11361
+Epoch: [37]  [500/976]  eta: 0:04:09  lr: 0.000288  sp_loss: 5.5852 (5.1546)  fam_loss: 3.6600 (3.4048)  manu_loss: 2.7000 (2.4818)  ot_loss: 0.7890 (0.8034)  base_loss: 5.6338 (5.2946)  time: 0.5414  data: 0.1907  max mem: 11361
+Epoch: [37]  [750/976]  eta: 0:01:57  lr: 0.000288  sp_loss: 5.5353 (5.1529)  fam_loss: 3.6074 (3.4005)  manu_loss: 2.6885 (2.4790)  ot_loss: 0.7925 (0.8032)  base_loss: 5.5909 (5.2922)  time: 0.5364  data: 0.0477  max mem: 11361
+Epoch: [37]  [975/976]  eta: 0:00:00  lr: 0.000288  sp_loss: 5.2212 (5.1683)  fam_loss: 3.3186 (3.4054)  manu_loss: 2.4345 (2.4839)  ot_loss: 0.8014 (0.8026)  base_loss: 5.3037 (5.3030)  time: 0.4172  data: 0.1075  max mem: 11361
+Epoch: [37] Total time: 0:08:22 (0.5144 s / it)
+Averaged stats: lr: 0.000288  sp_loss: 5.2212 (5.1709)  fam_loss: 3.3186 (3.4057)  manu_loss: 2.4345 (2.4850)  ot_loss: 0.8014 (0.8023)  base_loss: 5.3037 (5.3048)
+Epoch: [38]  [  0/976]  eta: 2:05:34  lr: 0.000282  sp_loss: 4.2035 (4.2035)  fam_loss: 2.6798 (2.6798)  manu_loss: 1.9859 (1.9859)  ot_loss: 0.8516 (0.8516)  base_loss: 4.4854 (4.4854)  time: 7.7197  data: 7.3608  max mem: 11361
+Epoch: [38]  [250/976]  eta: 0:06:29  lr: 0.000282  sp_loss: 5.0000 (5.1513)  fam_loss: 3.3094 (3.3941)  manu_loss: 2.4228 (2.4755)  ot_loss: 0.8006 (0.8030)  base_loss: 5.2111 (5.2887)  time: 0.4581  data: 0.0537  max mem: 11361
+Epoch: [38]  [500/976]  eta: 0:04:09  lr: 0.000282  sp_loss: 5.2606 (5.1456)  fam_loss: 3.4811 (3.3935)  manu_loss: 2.5393 (2.4721)  ot_loss: 0.7796 (0.8030)  base_loss: 5.3877 (5.2846)  time: 0.5510  data: 0.0005  max mem: 11361
+Epoch: [38]  [750/976]  eta: 0:01:57  lr: 0.000282  sp_loss: 5.1742 (5.1494)  fam_loss: 3.3719 (3.3931)  manu_loss: 2.4935 (2.4743)  ot_loss: 0.7930 (0.8024)  base_loss: 5.2982 (5.2870)  time: 0.4695  data: 0.0005  max mem: 11361
+Epoch: [38]  [975/976]  eta: 0:00:00  lr: 0.000282  sp_loss: 5.0572 (5.1459)  fam_loss: 3.3494 (3.3870)  manu_loss: 2.4020 (2.4690)  ot_loss: 0.7938 (0.8026)  base_loss: 5.2068 (5.2826)  time: 0.4036  data: 0.0001  max mem: 11361
+Epoch: [38] Total time: 0:08:22 (0.5152 s / it)
+Averaged stats: lr: 0.000282  sp_loss: 5.0572 (5.1430)  fam_loss: 3.3494 (3.3855)  manu_loss: 2.4020 (2.4679)  ot_loss: 0.7938 (0.8030)  base_loss: 5.2068 (5.2803)
+Epoch: [39]  [  0/976]  eta: 1:58:16  lr: 0.000277  sp_loss: 5.7654 (5.7654)  fam_loss: 3.8400 (3.8400)  manu_loss: 2.8135 (2.8135)  ot_loss: 0.7827 (0.7827)  base_loss: 5.8068 (5.8068)  time: 7.2707  data: 6.9052  max mem: 11361
+Epoch: [39]  [250/976]  eta: 0:06:24  lr: 0.000277  sp_loss: 4.8474 (5.1661)  fam_loss: 3.1698 (3.4195)  manu_loss: 2.3711 (2.5007)  ot_loss: 0.8101 (0.8027)  base_loss: 5.0475 (5.3070)  time: 0.4682  data: 0.0986  max mem: 11361
+Epoch: [39]  [500/976]  eta: 0:04:07  lr: 0.000277  sp_loss: 4.9705 (5.1193)  fam_loss: 3.2493 (3.3772)  manu_loss: 2.4149 (2.4693)  ot_loss: 0.8054 (0.8043)  base_loss: 5.1288 (5.2645)  time: 0.4796  data: 0.0439  max mem: 11361
+Epoch: [39]  [750/976]  eta: 0:01:56  lr: 0.000277  sp_loss: 4.8299 (5.1130)  fam_loss: 3.1157 (3.3691)  manu_loss: 2.2759 (2.4637)  ot_loss: 0.8131 (0.8044)  base_loss: 5.0105 (5.2581)  time: 0.5286  data: 0.0004  max mem: 11361
+Epoch: [39]  [975/976]  eta: 0:00:00  lr: 0.000277  sp_loss: 5.3876 (5.1164)  fam_loss: 3.4188 (3.3688)  manu_loss: 2.5547 (2.4633)  ot_loss: 0.7877 (0.8041)  base_loss: 5.4113 (5.2599)  time: 0.4127  data: 0.0001  max mem: 11361
+Epoch: [39] Total time: 0:08:21 (0.5133 s / it)
+Averaged stats: lr: 0.000277  sp_loss: 5.3876 (5.1503)  fam_loss: 3.4188 (3.3902)  manu_loss: 2.5547 (2.4778)  ot_loss: 0.7877 (0.8027)  base_loss: 5.4113 (5.2871)
+Epoch: [40]  [  0/976]  eta: 1:49:59  lr: 0.000271  sp_loss: 3.3192 (3.3192)  fam_loss: 2.2203 (2.2203)  manu_loss: 1.6283 (1.6283)  ot_loss: 0.8785 (0.8785)  base_loss: 3.8063 (3.8063)  time: 6.7614  data: 6.3982  max mem: 11361
+Epoch: [40]  [250/976]  eta: 0:06:30  lr: 0.000271  sp_loss: 4.7965 (5.1177)  fam_loss: 3.1646 (3.3781)  manu_loss: 2.3322 (2.4707)  ot_loss: 0.8034 (0.8039)  base_loss: 4.9719 (5.2633)  time: 0.4973  data: 0.0771  max mem: 11361
+Epoch: [40]  [500/976]  eta: 0:04:11  lr: 0.000271  sp_loss: 5.4272 (5.1360)  fam_loss: 3.4960 (3.3868)  manu_loss: 2.5375 (2.4760)  ot_loss: 0.7908 (0.8028)  base_loss: 5.4920 (5.2770)  time: 0.4953  data: 0.1437  max mem: 11361
+Epoch: [40]  [750/976]  eta: 0:01:58  lr: 0.000271  sp_loss: 5.0116 (5.1504)  fam_loss: 3.3579 (3.3918)  manu_loss: 2.4320 (2.4780)  ot_loss: 0.8066 (0.8026)  base_loss: 5.2115 (5.2870)  time: 0.5797  data: 0.0005  max mem: 11361
+Epoch: [40]  [975/976]  eta: 0:00:00  lr: 0.000271  sp_loss: 5.4973 (5.1530)  fam_loss: 3.4249 (3.3909)  manu_loss: 2.5447 (2.4760)  ot_loss: 0.8005 (0.8025)  base_loss: 5.5612 (5.2880)  time: 0.4006  data: 0.0001  max mem: 11361
+Epoch: [40] Total time: 0:08:28 (0.5207 s / it)
+Averaged stats: lr: 0.000271  sp_loss: 5.4973 (5.1422)  fam_loss: 3.4249 (3.3849)  manu_loss: 2.5447 (2.4710)  ot_loss: 0.8005 (0.8027)  base_loss: 5.5612 (5.2794)
+Epoch: [41]  [  0/976]  eta: 2:01:52  lr: 0.000265  sp_loss: 4.6241 (4.6241)  fam_loss: 2.9607 (2.9607)  manu_loss: 2.1753 (2.1753)  ot_loss: 0.8375 (0.8375)  base_loss: 4.8232 (4.8232)  time: 7.4920  data: 7.1389  max mem: 11361
+Epoch: [41]  [250/976]  eta: 0:06:27  lr: 0.000265  sp_loss: 5.5135 (5.0553)  fam_loss: 3.5800 (3.3426)  manu_loss: 2.6048 (2.4481)  ot_loss: 0.7906 (0.8048)  base_loss: 5.5515 (5.2147)  time: 0.4531  data: 0.0866  max mem: 11361
+Epoch: [41]  [500/976]  eta: 0:04:09  lr: 0.000265  sp_loss: 5.4940 (5.1186)  fam_loss: 3.6015 (3.3757)  manu_loss: 2.5823 (2.4687)  ot_loss: 0.7996 (0.8025)  base_loss: 5.5539 (5.2627)  time: 0.5255  data: 0.0005  max mem: 11361
+Epoch: [41]  [750/976]  eta: 0:01:57  lr: 0.000265  sp_loss: 5.1178 (5.0993)  fam_loss: 3.4065 (3.3605)  manu_loss: 2.4485 (2.4556)  ot_loss: 0.7965 (0.8032)  base_loss: 5.2683 (5.2455)  time: 0.5357  data: 0.1165  max mem: 11361
+Epoch: [41]  [975/976]  eta: 0:00:00  lr: 0.000265  sp_loss: 5.2802 (5.0821)  fam_loss: 3.4917 (3.3482)  manu_loss: 2.5660 (2.4462)  ot_loss: 0.7925 (0.8039)  base_loss: 5.4040 (5.2312)  time: 0.3743  data: 0.0001  max mem: 11361
+Epoch: [41] Total time: 0:08:23 (0.5160 s / it)
+Averaged stats: lr: 0.000265  sp_loss: 5.2802 (5.1279)  fam_loss: 3.4917 (3.3778)  manu_loss: 2.5660 (2.4677)  ot_loss: 0.7925 (0.8022)  base_loss: 5.4040 (5.2685)
+Epoch: [42]  [  0/976]  eta: 2:07:19  lr: 0.000259  sp_loss: 5.9101 (5.9101)  fam_loss: 3.8777 (3.8777)  manu_loss: 2.8185 (2.8185)  ot_loss: 0.7625 (0.7625)  base_loss: 5.9013 (5.9013)  time: 7.8276  data: 7.4779  max mem: 11361
+Epoch: [42]  [250/976]  eta: 0:06:27  lr: 0.000259  sp_loss: 4.8245 (5.1260)  fam_loss: 3.1974 (3.3723)  manu_loss: 2.3277 (2.4694)  ot_loss: 0.8147 (0.8029)  base_loss: 5.0249 (5.2660)  time: 0.5239  data: 0.0928  max mem: 11361
+Epoch: [42]  [500/976]  eta: 0:04:08  lr: 0.000259  sp_loss: 5.0555 (5.0947)  fam_loss: 3.2972 (3.3545)  manu_loss: 2.4474 (2.4526)  ot_loss: 0.7971 (0.8037)  base_loss: 5.1853 (5.2410)  time: 0.4396  data: 0.0378  max mem: 11361
+Epoch: [42]  [750/976]  eta: 0:01:57  lr: 0.000259  sp_loss: 5.3278 (5.0771)  fam_loss: 3.5094 (3.3425)  manu_loss: 2.5711 (2.4430)  ot_loss: 0.7997 (0.8046)  base_loss: 5.4131 (5.2263)  time: 0.4764  data: 0.0291  max mem: 11361
+Epoch: [42]  [975/976]  eta: 0:00:00  lr: 0.000259  sp_loss: 5.4762 (5.0752)  fam_loss: 3.5459 (3.3403)  manu_loss: 2.5810 (2.4413)  ot_loss: 0.7882 (0.8046)  base_loss: 5.5239 (5.2244)  time: 0.4132  data: 0.0222  max mem: 11361
+Epoch: [42] Total time: 0:08:22 (0.5149 s / it)
+Averaged stats: lr: 0.000259  sp_loss: 5.4762 (5.0855)  fam_loss: 3.5459 (3.3472)  manu_loss: 2.5810 (2.4467)  ot_loss: 0.7882 (0.8045)  base_loss: 5.5239 (5.2327)
+Epoch: [43]  [  0/976]  eta: 2:09:35  lr: 0.000253  sp_loss: 5.8865 (5.8865)  fam_loss: 4.0142 (4.0142)  manu_loss: 2.8809 (2.8809)  ot_loss: 0.7741 (0.7741)  base_loss: 5.9342 (5.9342)  time: 7.9670  data: 7.6247  max mem: 11361
+Epoch: [43]  [250/976]  eta: 0:06:26  lr: 0.000253  sp_loss: 5.4452 (5.1051)  fam_loss: 3.5775 (3.3618)  manu_loss: 2.5912 (2.4594)  ot_loss: 0.7933 (0.8039)  base_loss: 5.5337 (5.2500)  time: 0.4904  data: 0.0005  max mem: 11361
+Epoch: [43]  [500/976]  eta: 0:04:09  lr: 0.000253  sp_loss: 5.2004 (5.0963)  fam_loss: 3.4264 (3.3608)  manu_loss: 2.4635 (2.4573)  ot_loss: 0.7996 (0.8037)  base_loss: 5.3328 (5.2442)  time: 0.5001  data: 0.0005  max mem: 11361
+Epoch: [43]  [750/976]  eta: 0:01:57  lr: 0.000253  sp_loss: 4.9363 (5.0821)  fam_loss: 3.1656 (3.3478)  manu_loss: 2.3784 (2.4470)  ot_loss: 0.7962 (0.8047)  base_loss: 5.0821 (5.2308)  time: 0.3963  data: 0.0005  max mem: 11361
+Epoch: [43]  [975/976]  eta: 0:00:00  lr: 0.000253  sp_loss: 4.6112 (5.0722)  fam_loss: 3.0432 (3.3388)  manu_loss: 2.2287 (2.4398)  ot_loss: 0.8143 (0.8052)  base_loss: 4.8514 (5.2218)  time: 0.3556  data: 0.0001  max mem: 11361
+Epoch: [43] Total time: 0:08:25 (0.5177 s / it)
+Averaged stats: lr: 0.000253  sp_loss: 4.6112 (5.0729)  fam_loss: 3.0432 (3.3395)  manu_loss: 2.2287 (2.4401)  ot_loss: 0.8143 (0.8049)  base_loss: 4.8514 (5.2223)

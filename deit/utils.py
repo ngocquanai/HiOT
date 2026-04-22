@@ -275,35 +275,16 @@ def create_ot_matrix(tree_path) :
         name, family, order = trees[idx]
         family = NAME + family
         order = NAME + FAMILY + order
-        H[name, family] = 1.33
-        # H[name, order] = 1
-        H[family, order] = 0.66
+        H[name, family] = 1
+        H[name, order] = 1
+        H[family, order] = 1
     
-    # # DEBUG
-    # correct = 0
-    # for idx in range(H.shape[0]) :
-    #     if idx < NAME :
-    #         if np.sum(H[idx, :]) == 3  :
-    #             correct += 1
-    #         else :
-    #             print(idx, np.sum(H[idx, :]))
-    #     elif idx < NAME + FAMILY :
-    #         if np.sum(H[idx, :]) == 2  :
-    #             correct += 1
-    #         else :
-    #             print(idx, np.sum(H[idx, :]))
-    #     else :
-    #         if np.sum(H[idx, :]) == 1  :
-    #             correct += 1
-    #         else :
-    #             print(idx, np.sum(H[idx, :]))
-    # print(correct)
+
     return H
 
 def create_hier_tree(tree_path) :
 
 
-    # Load the taxonomy data
     with open(tree_path, 'r') as f:
         taxonomy_data = json.load(f)
 
@@ -322,14 +303,11 @@ def calculate_leaf_counts(tree_path):
     with open(tree_path, 'r') as f:
         data = json.load(f)
     
-    # Key: (level_index, class_id) 
-    # Value: L_y (number of unique leaf children)
     ly_map = defaultdict(int)
     
     # levels: 0=leaf, 1=level1, 2=level2
     for l3_label, l2_label, l1_label in data:
-        # Every triplet in your JSON represents exactly ONE leaf.
-        # So we increment the leaf count for every ancestor in this specific path.
+
         ly_map[(0, l3_label)] += 1
         ly_map[(1, l2_label)] += 1
         ly_map[(2, l1_label)] += 1

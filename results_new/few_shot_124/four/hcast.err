@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 565, in <module>
+    main(args)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/deit/main_suppix_hier.py", line 549, in main
+    with (output_dir / "log.txt").open("a") as f:
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: 'output/few_shot/four/log.txt'
+[2026-01-24 03:09:13,797] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 3909932) of binary: /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/bin/python3.10
+Traceback (most recent call last):
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+deit/main_suppix_hier.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-01-24_03:09:13
+  host      : sdc2-hpc-dgx-a100-002
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3909932)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

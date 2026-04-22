@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 #SBATCH --job-name=hiot05# create a short name for your job
-#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/few_shot/four/0.5weight.out # create a output file
-#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/few_shot/four/0.5weight.err # create a error file
+#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/few_shot/four/0.5ot.out # create a output file
+#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/few_shot/four/0.5ot.err # create a error file
 #SBATCH --partition=movianr # choose partition
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=32
@@ -14,7 +14,7 @@
 #SBATCH --mail-type=end          # send email when job ends
 #SBATCH --mail-type=fail          # send email when job fails
 #SBATCH --mail-user=v.quanpn2@vinai.io
-
+#SBATCH --exclude=sdc2-hpc-dgx-a100-004
 
 module purge
 module load python/miniconda3/miniconda3
@@ -24,9 +24,9 @@ eval "$(conda shell.bash hook)"
 
 conda activate /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcast
 cd /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
-
+MASTER_PORT=$(shuf -i 9152-29535 -n 1)
 export PYTHONPATH=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
-torchrun --nproc_per_node=1  --master_port=25825 deit/main_suppix_hier.py \
+torchrun --nproc_per_node=1  --master_port=$MASTER_PORT deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
   --epochs 100 \
@@ -35,9 +35,10 @@ torchrun --nproc_per_node=1  --master_port=25825 deit/main_suppix_hier.py \
   --data-path ../dataset/ \
   --output_dir ./output/few_shot/four/0.5base0.5ot \
   --ot_loss --ot_weight 0.5 \
-  --base_weight 0.5 \
+  --learnable_ot \
   --finetune best_checkpoint.pth \
   --few_shot 4 \
   --tree_path ./data/inat21_3tree.json --distributed
 
-# chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results/
+chmod 777 -R /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/few_shot
+chmod 777 -R ./output/few_shot

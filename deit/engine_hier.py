@@ -31,10 +31,14 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     
     if args.globalkl:
         gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
+    else :
+        print("Do not use KL loss")
     
     if args.ot_loss :
         ot_criterion = HierachicalOTLoss(tree_path= args.tree_path, learnable= args.learnable_ot)
         gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
+    else :
+        print("Do not use OT loss")
 
     if args.cosub:
         criterion = torch.nn.BCEWithLogitsLoss()
@@ -65,24 +69,28 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     loss_species = criterion(outputs, targets)
                     loss_family = criterion(family_out, family_targets)
                     loss_manufacturer = criterion(manu_out, mf_targets)
-                    loss = loss_species + loss_family + loss_manufacturer
-                    if args.globalkl:
+                    base_loss = loss_species + loss_family + loss_manufacturer
+                    if args.globalkl: # add gk_loss to base_loss
                         all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
                         all_outputs = F.log_softmax(all_outputs, dim=1)
                         all_targets = torch.cat((mf_targets, family_targets, targets), dim=1)
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         gk_loss = gk_criterion(all_outputs, all_targets)
-                        loss = loss + gk_loss * args.gk_weight
+                        base_loss = base_loss + args.gk_weight * gk_loss 
+
                     
+
                     if args.ot_loss :
+                        print("Use OT loss")
                         all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
-                        all_outputs = F.log_softmax(all_outputs, dim=1)
-                        all_targets = torch.cat((0.45 * mf_targets, 0.75 * family_targets, 1.8 * targets), dim=1)
+                        all_outputs = F.softmax(all_outputs, dim=1)
+                        all_targets = torch.cat((0.45* mf_targets, 0.75* family_targets, 1.8 * targets), dim=1)
                         all_targets = F.normalize(all_targets, p=1, dim=1)
                         ot_loss = ot_criterion(all_outputs, all_targets)
-                        base_loss = criterion(all_outputs, all_targets)
-                        loss = loss + args.ot_weight * ot_loss + args.base_weight * base_loss
+                        loss = base_loss + args.ot_weight * ot_loss 
+                    else :
 
+                        loss = base_loss
 
             loss_value = loss.item()
 

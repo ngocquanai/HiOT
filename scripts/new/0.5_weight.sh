@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
 #SBATCH --job-name=hiot05# create a short name for your job
-#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/0.5weight.out # create a output file
-#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/0.5weight.err # create a error file
+#SBATCH --output=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/full/2ot.out # create a output file
+#SBATCH --error=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT/results_new/full/2ot.err # create a error file
 #SBATCH --partition=movianr # choose partition
-#SBATCH --gpus-per-node=4
+#SBATCH --gpus-per-node=2
 #SBATCH --cpus-per-task=32
 #SBATCH --mem-per-gpu=128GB
 #SBATCH --nodes=1
@@ -26,16 +26,16 @@ conda activate /lustre/scratch/client/movian/research/users/quanpn2/virtual/hcas
 cd /lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
 MASTER_PORT=$(shuf -i 9152-29535 -n 1)
 export PYTHONPATH=/lustre/scratch/client/movian/research/users/quanpn2/public/HiOT
-torchrun --nproc_per_node=4  --master_port=$MASTER_PORT deit/main_suppix_hier.py \
+CUDA_VISIBLE_DEVICES='0' torchrun --nproc_per_node=2  --master_port=$MASTER_PORT deit/main_suppix_hier.py \
   --model cast_small \
   --batch-size 256 \
   --epochs 100 \
   --num-superpixels 196 --num_workers 12 \
   --data-set INAT21-MINI-HIER-SUPERPIXEL \
   --data-path ../dataset/ \
-  --output_dir ./output/new_baseline/0.5_weight  \
-  --ot_loss --ot_weight 0.5 \
-  --base_weight 0.5 \
+  --output_dir ./output/new/full/2ot  \
+  --base_weight 1 \
+  --ot_loss --ot_weight 2 \
   --finetune best_checkpoint.pth \
   --tree_path ./data/inat21_3tree.json --distributed
 

@@ -14,6 +14,9 @@ from timm.utils import accuracy, ModelEma
 
 from losses import DistillationLoss
 import utils
+import json
+
+from losses import HierachicalOTLoss
 
 
 def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
@@ -27,6 +30,10 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     header = 'Epoch: [{}]'.format(epoch)
     print_freq = 10
     
+    if args.ot_loss :
+        ot_criterion = HierachicalOTLoss(tree_path= args.tree_path, learnable= args.learnable_ot)
+        gk_criterion = torch.nn.KLDivLoss(reduction='batchmean') 
+
     if args.cosub:
         criterion = torch.nn.BCEWithLogitsLoss()
     
@@ -52,14 +59,26 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     loss_species = criterion(samples, outputs, targets)
                     loss_family = criterion(samples, family_out, family_targets)
                     loss_manufacturer = criterion(samples, manu_out, mf_targets)
-                    loss = loss_species + loss_family + loss_manufacturer
+                    base_loss = loss_species + loss_family + loss_manufacturer
+
+                    if args.ot_loss :
+                        all_outputs = torch.cat((manu_out, family_out, outputs), dim=1)
+                        all_outputs = F.softmax(all_outputs, dim=1)
+                        all_targets = torch.cat((0.45* mf_targets, 0.75* family_targets, 1.8 * targets), dim=1)
+                        all_targets = F.normalize(all_targets, p=1, dim=1)
+                        ot_loss = ot_criterion(all_outputs, all_targets)
+                        loss = base_loss + args.ot_weight * ot_loss 
+                    else :
+                        loss = base_loss
 
                 else:
                     outputs = torch.split(outputs, outputs.shape[0]//2, dim=0)
                     loss = 0.25 * criterion(outputs[0], targets) 
                     loss = loss + 0.25 * criterion(outputs[1], targets) 
                     loss = loss + 0.25 * criterion(outputs[0], outputs[1].detach().sigmoid())
-                    loss = loss + 0.25 * criterion(outputs[1], outputs[0].detach().sigmoid()) 
+                    loss = loss + 0.25 * criterion(outputs[1], outputs[0].detach().sigmoid())
+
+ 
 
             loss_value = loss.item()
 
@@ -212,3 +231,160 @@ def evaluate(data_loader, model, device, n_classes=3):
             .format(top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.sploss, fmlosses=metric_logger.famloss, 
                     familytop1=metric_logger.family_acc1))
         return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
+
+
+
+@torch.no_grad()
+def evaluate_hier(data_loader, model, device, n_classes=3, dataset='INAT21', tree_path= './data/inat21_3tree.json'):
+    taxonomy_map = utils.create_hier_tree(tree_path)
+    L_y_map = utils.calculate_leaf_counts(tree_path)
+    criterion = torch.nn.CrossEntropyLoss()
+
+    metric_logger = utils.MetricLogger(delimiter="  ")
+    header = 'Test:'
+
+    if 'INAT18' in dataset:
+        inat_trees = json.load(open('data/inat18_3tree.json'))
+
+    elif 'INAT21' in dataset:
+        inat_trees = json.load(open('data/inat21_3tree.json'))
+
+    # switch to evaluation mode
+    model.eval()
+    results = []
+    
+    tice_cnt = 0
+    fpa_cnt = 0
+    lca_cnt = 0
+    total_cnt = 0
+    precision_cnt = 0
+    recall_cnt = 0
+    cum = 0
+    total_leaf = nb_classes[0]
+
+    if n_classes == 3:
+        results.append(['m_gt', 'm_pred', 'f_gt', 'f_pred', 's_gt', 's_pred'])
+        for images, target, family_targets, mf_targets in metric_logger.log_every(data_loader, 250, header):
+            images = images.to(device, non_blocking=True)
+            target = target.to(device, non_blocking=True)
+            family_targets = family_targets.to(device, non_blocking=True)
+            mf_targets = mf_targets.to(device, non_blocking=True)
+
+            # compute output
+            with torch.cuda.amp.autocast():
+                output, family_out, manu_out = model(images)
+                loss_species = criterion(output, target)
+                loss_family = criterion(family_out, family_targets)
+                loss_manufacturer = criterion(manu_out, mf_targets)
+
+            acc1, acc5 = accuracy(output, target, topk=(1, 5))
+            family_acc1, family_acc5 = accuracy(family_out, family_targets, topk=(1, 5))
+            manu_acc1, manu_acc5 = accuracy(manu_out, mf_targets, topk=(1, 5))
+
+            batch_size = images.shape[0]
+            metric_logger.update(sploss=loss_species.item())
+            metric_logger.update(famloss=loss_family.item())
+            metric_logger.update(manuloss=loss_manufacturer.item())
+            metric_logger.meters['acc1'].update(acc1.item(), n=batch_size)
+            metric_logger.meters['acc5'].update(acc5.item(), n=batch_size)
+            metric_logger.meters['family_acc1'].update(family_acc1.item(), n=batch_size)
+            metric_logger.meters['manu_acc1'].update(manu_acc1.item(), n=batch_size)
+
+
+
+            _, pred = torch.max(output, 1)
+            pred = pred.cpu().numpy()
+            target = target.cpu().numpy()
+
+            _, family_pred = torch.max(family_out, 1)
+            family_pred = family_pred.cpu().numpy()
+            family_targets = family_targets.cpu().numpy()
+
+            _, manu_pred = torch.max(manu_out, 1)
+            manu_pred = manu_pred.cpu().numpy()
+            mf_targets = mf_targets.cpu().numpy()
+
+            total_cnt += batch_size
+            for i in range(batch_size):
+                results.append([mf_targets[i], manu_pred[i], family_targets[i], family_pred[i], target[i], pred[i]])
+                if pred[i] == target[i] and family_pred[i] == family_targets[i] and manu_pred[i] == mf_targets[i]:
+                    fpa_cnt += 1
+
+                if 'AIR' in dataset:
+                    tice_results = [pred[i]+1, family_pred[i]+1, manu_pred[i]+1]
+                    if tice_results in air_trees:
+                        tice_cnt += 1
+                elif 'BIRD' in dataset:
+                    tice_results = [pred[i]+1, manu_pred[i]+1, family_pred[i]+1]
+                    if tice_results in birds_trees:
+                        tice_cnt += 1
+                elif 'INAT18' in dataset:
+                    tice_results = [pred[i], family_pred[i], manu_pred[i]]
+                    if tice_results in inat_trees:
+                        tice_cnt += 1
+                elif 'INAT21' in dataset:
+                    tice_results = [pred[i], family_pred[i], manu_pred[i]]
+                    if tice_results in inat_trees:
+                        tice_cnt += 1
+
+            # Calculate LCA (lowest common ancestor)
+                ancestor_pred = utils.get_ancestors(taxonomy_map, pred[i])
+                ancestor_target = utils.get_ancestors(taxonomy_map, target[i])
+                l2_ancestor_pred, l1_ancestor_pred = ancestor_pred["l2"], ancestor_pred["l1"]
+                l2_ancestor_target, l1_ancestor_target = ancestor_target["l2"], ancestor_target["l1"]
+                if pred[i] == target[i] :
+                    lca_cnt += 0
+                elif l2_ancestor_pred == l2_ancestor_target :
+                    lca_cnt += 1
+                elif l1_ancestor_pred == l1_ancestor_target :
+                    lca_cnt += 2
+                else:
+                    lca_cnt += 3
+
+            # Calculate Precision and Recall, then F1 score
+                ly_pred = 1
+                ly_target = 1
+                ly_l2_ancestor_pred = L_y_map[(1, l2_ancestor_pred)]
+                ly_l1_ancestor_pred = L_y_map[(2, l1_ancestor_pred)]
+
+
+                if pred[i] == target[i] :
+                    ly_lca = 1
+                elif l2_ancestor_pred == l2_ancestor_target :
+                    ly_lca = ly_l2_ancestor_pred
+                elif l1_ancestor_pred == l1_ancestor_target :
+                    ly_lca = ly_l1_ancestor_pred
+                else:
+                    ly_lca = total_leaf
+                
+                current_precision = (math.log(total_leaf) - math.log(ly_lca) ) / math.log(total_leaf)
+                precision_cnt += current_precision
+
+
+
+
+        # gather the stats from all processes
+        metric_logger.synchronize_between_processes()
+        print('* Acc@1 {top1.global_avg:.3f} Acc@5 {top5.global_avg:.3f} family@1 {familytop1.global_avg:.3f}' 
+            ' manu@1 {manutop1.global_avg:.3f} sploss {losses.global_avg:.3f} fmloss {fmlosses.global_avg:.3f} mfloss {mflosses.global_avg:.3f}'
+            .format(top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.sploss, fmlosses=metric_logger.famloss, mflosses=metric_logger.manuloss,
+                    familytop1=metric_logger.family_acc1, manutop1=metric_logger.manu_acc1))
+
+
+
+    total_classes = sum(nb_classes)
+    layer_weight = [n_class/total_classes for n_class in nb_classes]
+
+    top1 = metric_logger.acc1.global_avg
+    familytop1 = metric_logger.family_acc1.global_avg
+    manutop1 = metric_logger.manu_acc1.global_avg
+
+    wAP = top1 * layer_weight[0] + familytop1 * layer_weight[1] + manutop1 * layer_weight[2]
+
+
+    print(f"FPA: {(fpa_cnt / total_cnt) * 100:.3f}% | TICE: {((total_cnt - tice_cnt) / total_cnt) * 100:.3f}%   ")
+    print(f" wAP: {wAP:.3f}  |  LCA: {(lca_cnt / total_cnt) * 100:.3f}   |   Precision and Recall: {(precision_cnt / total_cnt) * 100:.3f}%")
+
+    
+    return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
+

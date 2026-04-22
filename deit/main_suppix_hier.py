@@ -201,7 +201,7 @@ def get_args_parser():
     parser.add_argument('--ot_loss', action='store_true', default=False, help='Use OT loss')
     parser.add_argument('--learnable_ot', action='store_true', default=False, help='Use learnable weight for OT')
     parser.add_argument('--ot_weight', default= 1, type= float)
-    parser.add_argument('--base_weight', default= 0, type= float)
+    parser.add_argument('--base_weight', default= 1, type= float)
     parser.add_argument('--globalbce', action='store_true', default=False, help='Use global bce loss')
     parser.add_argument('--gk_weight', default=1, type=float)
     parser.add_argument('--filename', default='results.csv', type=str)
@@ -502,7 +502,7 @@ def main(args):
                 }, checkpoint_path)
         
         if args.few_shot > 0 :
-            condition = epoch > 40 and epoch % 2 == 0
+            condition = epoch > 40
         else : # Full training
             condition = epoch > 50
              

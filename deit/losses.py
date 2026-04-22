@@ -78,52 +78,90 @@ class DistillationLoss(torch.nn.Module):
 
 
 
+# class HierachicalOTLoss(torch.nn.Module):
+#     """
+#     This module wraps a standard criterion and adds an extra knowledge distillation loss by
+#     taking a teacher model prediction and using it as additional supervision.
+#     """
+#     def __init__(self, tree_path: str, learnable= False):
+#         super().__init__()
+
+#         H = create_ot_matrix(tree_path)
+#         H = torch.from_numpy(H).float()
+#         self.register_buffer("H_base", H)
+#         self.learnable = learnable
+
+#         if learnable :
+#             print("*"*333)
+#             print("LEARNABLE OT WEIGHT!!!")
+
+#             one_matrix = torch.ones_like(H)
+#             self.weight = Parameter(one_matrix)
+#         else :
+#             pass 
+
+
+
+#         self.mse_loss = nn.MSELoss()
+#         self.scaling = self.H_base.shape[0]
+
+#     def forward(self, outputs, labels):
+
+#         if self.learnable :
+#             H = self.H_base * self.weight
+#         else :
+#             H = self.H_base
+
+#         outputs_kd = None
+#         if not isinstance(outputs, torch.Tensor):
+#             # assume that the model outputs a tuple of [outputs, outputs_kd]
+#             outputs, outputs_kd = outputs
+
+#         # base_loss = self.base_criterion(outputs, labels)
+#         H = H.to(outputs.device)
+#         labels = torch.matmul(labels, H)
+#         outputs = torch.matmul(outputs, H)
+
+#         ot_loss = self.mse_loss(outputs, labels)
+#         loss = ot_loss /self.scaling
+
+#         return loss
+
+
+
 class HierachicalOTLoss(torch.nn.Module):
     """
     This module wraps a standard criterion and adds an extra knowledge distillation loss by
     taking a teacher model prediction and using it as additional supervision.
     """
-    def __init__(self, tree_path: str, learnable= False):
+    def __init__(self, tree_path: str, learnable=False, num_classes=1000):
         super().__init__()
 
         H = create_ot_matrix(tree_path)
-        H = torch.from_numpy(H).float()
-        self.register_buffer("H_base", H)
+        self.num_nodes = H.shape[0]
+
+        H = torch.from_numpy(H).float().to("cuda")
+
+        self.H = Parameter(H, requires_grad=False)
         self.learnable = learnable
+    
+        self.w = Parameter(torch.ones(H.shape[1], dtype=torch.float).to("cuda"))
 
-        if learnable :
-            print("*"*333)
-            print("LEARNABLE OT WEIGHT!!!")
-
-            one_matrix = torch.ones_like(H)
-            self.weight = Parameter(one_matrix)
-        else :
-            pass 
-
-
-
-        self.mse_loss = nn.MSELoss()
-        self.scaling = self.H_base.shape[0]
+        if self.learnable:
+            print("LEARNABLE OT w!!!")
+            self.w.requires_grad = True
+        else:
+            self.w.requires_grad = False
 
     def forward(self, outputs, labels):
-
-        if self.learnable :
-            H = self.H_base * self.weight
-        else :
-            H = self.H_base
-
         outputs_kd = None
         if not isinstance(outputs, torch.Tensor):
             # assume that the model outputs a tuple of [outputs, outputs_kd]
             outputs, outputs_kd = outputs
 
-        # base_loss = self.base_criterion(outputs, labels)
-        H = H.to(outputs.device)
-        labels = torch.matmul(labels, H)
-        outputs = torch.matmul(outputs, H)
+        # w.abs(uH - vH) = w.abs((u-v)H)
+        diff = labels - outputs
+        diff = torch.abs(torch.matmul(diff, self.H))
+        ot_loss = (diff @ self.w).mean() 
 
-        ot_loss = self.mse_loss(outputs, labels)
-        loss = ot_loss /self.scaling
-
-        return loss
-
+        return ot_loss
